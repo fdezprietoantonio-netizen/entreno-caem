@@ -74,6 +74,10 @@ main { max-width: 960px; margin: 0 auto; padding-block: 20px 72px;
 .wk-sum div { background: var(--panel); padding: 10px 12px; display: grid; gap: 2px; }
 .wk-sum b { font: 700 1.5rem var(--f-display); font-variant-numeric: tabular-nums; }
 .wk-sum span { font-size: .78rem; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; }
+.peso-sem { display: grid; grid-template-columns: auto 6.5em minmax(0, 1fr); gap: 6px 14px; align-items: center; padding: 10px 14px; }
+.peso-sem label { display: grid; } .peso-sem small { color: var(--muted); font-size: .76rem; }
+.peso-sem input { font: 600 1.1rem var(--f-data); padding: 6px 8px; border: 1px solid var(--line); border-radius: 4px; background: var(--bg); color: var(--ink); width: 100%; }
+@media (max-width: 560px) { .peso-sem { grid-template-columns: auto 6.5em; } .peso-sem .estado-g { grid-column: 1 / 3; } }
 .wk-notes { display: flex; flex-wrap: wrap; gap: 6px; }
 .days { display: grid; gap: 10px; }
 .day { background: var(--panel); border: 1px solid var(--line); border-radius: 6px; overflow: hidden; }
@@ -462,7 +466,11 @@ function fig(id, frame) {
 }
 
 /* ================== niveles (desde el registro) ================== */
-let REG = {}, HECHOS = {};
+let REG = {}, HECHOS = {}, PESOS = {};
+/* Peso: subida limpia de 0,25–0,5 kg/mes desde 65 kg hasta abril; después se mantiene para llegar a las pruebas */
+const PESO_INI = 65, FIN_SUBIDA = new Date(2027, 3, 5);
+function franjaPeso(d) { const m = (Math.min(d, FIN_SUBIDA) - START) / (30.44 * 864e5); return [PESO_INI + 0.25 * Math.max(0, m), PESO_INI + 0.5 * Math.max(0, m)]; }
+const fmtKg = v => v.toFixed(1).replace('.', ',');
 const MESES_REG = ['2026-11', '2026-12', '2027-01', '2027-02', '2027-03', '2027-04', '2027-05', '2027-06'];
 function ultimo(k) { for (let i = MESES_REG.length - 1; i >= 0; i--) { const r = REG[MESES_REG[i]]; if (r && r.v && r.v[k] !== undefined && r.v[k] !== '' && r.v[k] !== null) return +r.v[k]; } return null; }
 // Punto de partida que me diste (9 nov 2026): 5–10 dominadas, 25–40 flexiones, nadas bien, escalas 6a+ de primero; gimnasio, cinta, piscina y rocódromo con cuerda.
@@ -658,7 +666,7 @@ const store = {
         const timer = setTimeout(() => setSync('Sin conexión con tus datos todavía'), 10000);
         this.col.onSnapshot(snap => {
           clearTimeout(timer);
-          snap.docs.forEach(doc => { const v = doc.data(); if (doc.id === 'hechos') HECHOS = { ...(v.k || {}) }; else if (doc.id.startsWith('reg-')) REG[doc.id.slice(4)] = v; });
+          snap.docs.forEach(doc => { const v = doc.data(); if (doc.id === 'hechos') HECHOS = { ...(v.k || {}) }; else if (doc.id === 'pesos') PESOS = { ...(v.k || {}) }; else if (doc.id.startsWith('reg-')) REG[doc.id.slice(4)] = v; });
           setSync(snap.metadata.fromCache ? 'Datos guardados (sin confirmar)' : 'Sincronizado en tu cuenta'); onChange();
         }, () => { clearTimeout(timer); setSync('No se pudo leer tu cuenta; uso este navegador'); this.db = null; });
         return;
@@ -666,10 +674,18 @@ const store = {
     setSync('Guardado en este navegador');
   },
   local() {
-    try { REG = JSON.parse(localStorage.getItem('caem:reg') || '{}'); HECHOS = JSON.parse(localStorage.getItem('caem:hechos') || '{}'); } catch (e) {}
+    try { REG = JSON.parse(localStorage.getItem('caem:reg') || '{}'); HECHOS = JSON.parse(localStorage.getItem('caem:hechos') || '{}'); PESOS = JSON.parse(localStorage.getItem('caem:pesos') || '{}'); } catch (e) {}
     const seed = window.CAEM_SEED; // datos que venían dentro de la app descargada
-    if (seed && !Object.keys(REG).length && !Object.keys(HECHOS).length) { const s = limpiar(seed); REG = s.reg; HECHOS = s.hechos;
-      try { localStorage.setItem('caem:reg', JSON.stringify(REG)); localStorage.setItem('caem:hechos', JSON.stringify(HECHOS)); } catch (e) {} }
+    if (seed && !Object.keys(REG).length && !Object.keys(HECHOS).length && !Object.keys(PESOS).length) { const s = limpiar(seed); REG = s.reg; HECHOS = s.hechos; PESOS = s.pesos;
+      try { localStorage.setItem('caem:reg', JSON.stringify(REG)); localStorage.setItem('caem:hechos', JSON.stringify(HECHOS)); localStorage.setItem('caem:pesos', JSON.stringify(PESOS)); } catch (e) {} }
+  },
+  _tp: null,
+  savePesos() {
+    clearTimeout(this._tp);
+    this._tp = setTimeout(() => {
+      if (this.col) { const body = { k: { ...PESOS } }; this.pend = this.pend.then(() => this.col.doc('pesos').set(body)).catch(() => setSync('No se pudo guardar en tu cuenta')); }
+      else try { localStorage.setItem('caem:pesos', JSON.stringify(PESOS)); } catch (e) {}
+    }, 800);
   },
   async saveHechosAhora() {
     if (this.col) { try { await this.col.doc('hechos').set({ k: { ...HECHOS } }); } catch (e) {} }
@@ -722,6 +738,7 @@ function renderSemana() {
       <div><b>${w.kg} kg</b><span>Mochila</span></div>
       <div><b>${MH(velC)}</b><span>m/h en la cinta (${String(velC).replace('.', ',')} km/h)</span></div>
     </div>
+    ${pesoSemHTML(w)}
     ${eventos.length ? `<div class="wk-notes">${eventos.join('')}</div>` : ''}
     ${w.f.id === 'esp' && w.k < 1 ? '<div class="aviso">Empieza el 2.º cuatrimestre: cuando tengas el horario, dime y muevo las sesiones de tarde.</div>' : ''}
     <div class="days">${dias.map(d => diaHTML(d, hoy)).join('')}</div>`;
@@ -732,6 +749,23 @@ function renderSemana() {
   el.querySelectorAll('.check input').forEach(c => c.onchange = () => {
     if (c.checked) HECHOS[c.dataset.k] = 1; else delete HECHOS[c.dataset.k]; store.saveHechos(); renderSemana(); });
   el.querySelectorAll('.ill[data-ej]').forEach(b => b.onclick = () => verEj(b.dataset.ej));
+  const pin = el.querySelector('#pesoSem');
+  if (pin) pin.oninput = () => { const v = parseFloat(pin.value.replace(',', '.'));
+    if (v >= 40 && v <= 150) PESOS[w.ds] = Math.round(v * 10) / 10; else if (pin.value.trim() === '') delete PESOS[w.ds]; else return;
+    store.savePesos(); el.querySelector('#pesoEst').innerHTML = pesoEstado(w); };
+}
+function pesoEstado(w) {
+  const [lo, hi] = franjaPeso(addD(w.lunes, 6)), v = PESOS[w.ds];
+  if (v == null) return `Objetivo esta semana: <b>${fmtKg(lo)}–${fmtKg(hi)} kg</b>. Pésate un día en ayunas, después de ir al baño.`;
+  if (v < lo - 0.3) return `<span class="no-t">Por debajo de la franja (${fmtKg(lo)}–${fmtKg(hi)}).</span> Añade unas 200 kcal al día: un bocadillo o un yogur con avena.`;
+  if (v > hi + 0.3) return `<span class="no-t">Por encima de la franja (${fmtKg(lo)}–${fmtKg(hi)}).</span> Vas rápido: quita unas 150 kcal al día dos semanas.`;
+  return `<span class="ok-t">✓ En la franja (${fmtKg(lo)}–${fmtKg(hi)} kg).</span> Subida limpia: sigue igual.`;
+}
+function pesoSemHTML(w) {
+  const v = PESOS[w.ds];
+  return `<div class="panel peso-sem"><label for="pesoSem"><b>Peso de la semana</b><small>en ayunas</small></label>
+    <input id="pesoSem" inputmode="decimal" placeholder="kg" value="${v != null ? fmtKg(v) : ''}">
+    <span class="estado-g" id="pesoEst">${pesoEstado(w)}</span></div>`;
 }
 function irSem(i) { semSel = Math.max(0, Math.min(NSEM - 1, i)); abiertos.clear(); try { sessionStorage.setItem('caem:sem', semSel); } catch (e) {} renderSemana(); window.scrollTo({ top: 0 }); }
 function diaHTML(d, hoy) {
@@ -882,11 +916,22 @@ function renderProgreso() {
       <div class="panel tile"><b>${hechos}</b><span>Sesiones marcadas como hechas</span></div>
       <div class="panel tile"><b>${Object.values(REG).filter(r => r && r.v && Object.keys(r.v).length).length}/8</b><span>Meses registrados</span></div>
     </div>
+    ${pesoChartHTML()}
     <div class="reg-top"><button class="btn" id="tabla">${tablaVista ? 'Ver gráficas' : 'Ver como tabla'}</button><span class="estado-g">La línea discontinua verde es el mínimo de la prueba.</span></div>
     ${tablaVista ? tablaHTML(charts) : `<div class="charts">${charts.map(({ m, ys, meta }) => {
       const last = [...ys].reverse().find(v => v != null), p = pasa({ ...m, meta: meta != null ? meta : m.meta }, last);
       return `<div class="panel chart" data-k="${m.k}"><h3>${esc(m.n)}</h3><div class="sub"><span>${m.u}</span>${p == null ? '' : p ? '<span class="ok-t">✓ pasa</span>' : '<span class="no-t">aún no</span>'}</div>${chartSVG(m, ys, meta)}</div>`; }).join('')}</div>`}`;
   el.querySelector('#tabla').onclick = () => { tablaVista = !tablaVista; renderProgreso(); };
+  const pc = el.querySelector('.pchart');
+  if (pc) { const svg = pc.querySelector('svg'), cross = svg.querySelector('.cross'); let tip = null;
+    svg.querySelectorAll('.hit').forEach(h => { const show = () => {
+      const i = +h.dataset.i, d = addD(START, i * 7), v = PESOS[ymd(d)], [lo, hi] = franjaPeso(addD(d, 6)), sc = svg.clientWidth / svg.viewBox.baseVal.width, cx = +h.dataset.x;
+      cross.setAttribute('x1', cx); cross.setAttribute('x2', cx); cross.setAttribute('visibility', 'visible');
+      if (!tip) { tip = document.createElement('div'); tip.className = 'tip'; pc.appendChild(tip); }
+      tip.textContent = `Sem. ${i + 1} (${fCorta(d)}): ${v != null ? fmtKg(v) + ' kg' : 'sin dato'} · objetivo ${fmtKg(lo)}–${fmtKg(hi)}`;
+      tip.style.left = (svg.offsetLeft + cx * sc) + 'px'; tip.style.top = (svg.offsetTop + (+h.dataset.y) * sc - 6) + 'px'; };
+      h.addEventListener('pointerenter', show); h.addEventListener('pointerdown', show); });
+    svg.addEventListener('pointerleave', () => { cross.setAttribute('visibility', 'hidden'); if (tip) { tip.remove(); tip = null; } }); }
   el.querySelectorAll('.chart').forEach(c => {
     const svg = c.querySelector('svg'), item = charts.find(x => x.m.k === c.dataset.k), cross = svg.querySelector('.cross');
     let tip = null;
@@ -902,6 +947,31 @@ function renderProgreso() {
     });
     svg.addEventListener('pointerleave', () => { cross.setAttribute('visibility', 'hidden'); svg.querySelectorAll('.pt').forEach(p => p.classList.remove('hi')); if (tip) { tip.remove(); tip = null; } });
   });
+}
+function pesoChartHTML() {
+  const W = 620, H = 190, L = 36, R = 44, T = 14, Bt = 24, n = NSEM;
+  const pts = [...Array(n)].map((_, i) => { const d = addD(START, i * 7); return { i, d, v: PESOS[ymd(d)], f: franjaPeso(addD(d, 6)) }; });
+  const vals = pts.filter(p => p.v != null).map(p => p.v);
+  let lo = Math.min(PESO_INI - 0.5, ...vals), hi = Math.max(franjaPeso(FIN_SUBIDA)[1] + 0.5, ...vals);
+  const x = i => L + i * (W - L - R) / (n - 1), y = v => T + (H - T - Bt) * (1 - (v - lo) / (hi - lo));
+  const band = pts.map(p => `${x(p.i).toFixed(1)},${y(p.f[1]).toFixed(1)}`).join(' ') + ' ' + [...pts].reverse().map(p => `${x(p.i).toFixed(1)},${y(p.f[0]).toFixed(1)}`).join(' ');
+  let path = ''; pts.forEach(p => { if (p.v != null) path += (path ? 'L' : 'M') + x(p.i).toFixed(1) + ' ' + y(p.v).toFixed(1); });
+  const ticks = [Math.ceil(lo), Math.round((lo + hi) / 2), Math.floor(hi)];
+  const last = [...pts].reverse().find(p => p.v != null);
+  const meses = pts.filter(p => p.d.getDate() <= 7);
+  return `<div class="panel chart pchart"><h3>Peso semanal</h3>
+    <div class="sub"><span>kg · franja verde: subida limpia de 0,25–0,5 kg/mes hasta abril, luego mantener</span>${last ? `<span>${fmtKg(last.v)} kg</span>` : ''}</div>
+    <svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Peso semanal frente a la franja objetivo">
+      <polygon points="${band}" fill="var(--ok-soft)" stroke="var(--ok)" stroke-width="1" stroke-opacity=".5"/>
+      <g class="grid">${ticks.map(t => `<line x1="${L}" x2="${W - R}" y1="${y(t)}" y2="${y(t)}"/>`).join('')}</g>
+      <g class="axis">${ticks.map(t => `<text x="${L - 6}" y="${y(t) + 3}" text-anchor="end">${t}</text>`).join('')}
+        ${meses.map(p => `<text x="${x(p.i)}" y="${H - 6}" text-anchor="middle">${MES[p.d.getMonth()]}</text>`).join('')}</g>
+      ${path ? `<path class="serie" d="${path}"/>${pts.filter(p => p.v != null).map(p => `<circle class="pt" cx="${x(p.i)}" cy="${y(p.v)}" r="4"/>`).join('')}
+        <text class="last" x="${x(last.i)}" y="${y(last.v) - 9}" text-anchor="middle">${fmtKg(last.v)}</text>`
+        : `<text class="empty" x="${(L + W - R) / 2}" y="${H / 2}" text-anchor="middle">Apunta tu peso cada semana en la pestaña Semana</text>`}
+      <line class="cross" x1="0" x2="0" y1="${T}" y2="${H - Bt}" visibility="hidden"/>
+      ${pts.map(p => `<rect class="hit" data-i="${p.i}" data-x="${x(p.i)}" data-y="${y(p.v != null ? p.v : (p.f[0] + p.f[1]) / 2)}" x="${x(p.i) - (W - L - R) / (2 * (n - 1))}" y="0" width="${(W - L - R) / (n - 1)}" height="${H}"/>`).join('')}
+    </svg></div>`;
 }
 function tablaHTML(charts) {
   return `<div class="panel scroll"><table><thead><tr><th>Marca</th>${MESES_REG.map(k => `<th class="n">${MES[+k.slice(5) - 1]}</th>`).join('')}<th class="n">Mínimo</th></tr></thead><tbody>
@@ -972,9 +1042,11 @@ function limpiar(obj) {
     Object.keys(x.v).forEach(k => { const n = Number(x.v[k]); if (claves.has(k) && isFinite(n)) v[k] = n; });
     if (Object.keys(v).length) reg[mes] = { mes, v, ts: Number(x.ts) || Date.now() }; });
   Object.keys(h).forEach(k => { if (/^\d{4}-\d{2}-\d{2}:[a-z0-9]+$/.test(k)) hechos[k] = 1; });
-  return { reg, hechos };
+  const pesos = {}, p = obj && typeof obj.pesos === 'object' ? obj.pesos : {};
+  Object.keys(p).forEach(k => { const n = Number(p[k]); if (/^\d{4}-\d{2}-\d{2}$/.test(k) && n >= 40 && n <= 150) pesos[k] = n; });
+  return { reg, hechos, pesos };
 }
-const datosJSON = () => JSON.stringify({ app: 'entreno-caem', version: 1, exportado: new Date().toISOString(), reg: REG, hechos: HECHOS }, null, 1);
+const datosJSON = () => JSON.stringify({ app: 'entreno-caem', version: 1, exportado: new Date().toISOString(), reg: REG, hechos: HECHOS, pesos: PESOS }, null, 1);
 async function guardarArchivo(filename, data, tipo) {
   let dl = null; try { dl = window.claude && window.claude.use ? await window.claude.use('downloads') : null; } catch (e) {}
   if (dl) { try { await dl.save({ filename, data }); return 'Descargado.'; } catch (e) { return e && e.code === 'declined' ? 'Descarga cancelada.' : 'No se pudo descargar aquí.'; } }
@@ -997,7 +1069,7 @@ function abrirDescargas() {
   const est = t => document.getElementById('dEst').textContent = t;
   document.getElementById('dlg-x').onclick = () => dl.close();
   document.getElementById('dApp').onclick = async () => {
-    const seed = `<script id="caem-seed">window.CAEM_SEED = ${JSON.stringify({ reg: REG, hechos: HECHOS }).replace(/</g, '\\u003c')};<\/script>`;
+    const seed = `<script id="caem-seed">window.CAEM_SEED = ${JSON.stringify({ reg: REG, hechos: HECHOS, pesos: PESOS }).replace(/</g, '\\u003c')};<\/script>`;
     est(await guardarArchivo('entreno-caem.html', SRC.replace('<script id="app">', seed + '<script id="app">'), 'text/html'));
   };
   document.getElementById('dJson').onclick = async () => est(await guardarArchivo(`entreno-caem-datos-${ymd(new Date())}.json`, datosJSON(), 'application/json'));
@@ -1007,6 +1079,7 @@ function abrirDescargas() {
     const meses = Object.keys(s.reg);
     for (const mes of meses) await store.saveReg(mes, { ...(REG[mes] || {}), ...s.reg[mes], v: { ...((REG[mes] || {}).v || {}), ...s.reg[mes].v } });
     Object.assign(HECHOS, s.hechos); await store.saveHechosAhora();
+    Object.assign(PESOS, s.pesos); store.savePesos();
     est(`Cargados ${meses.length} meses de registro y ${Object.keys(s.hechos).length} sesiones hechas.`); ruta();
   };
   try { dl.showModal(); } catch (er) {}
