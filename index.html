@@ -1,0 +1,1030 @@
+<!doctype html><html lang="es"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#c94310"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Entreno CAEM"><link rel="manifest" href="manifest.json"><link rel="icon" href="icon-192.png"><link rel="apple-touch-icon" href="icon-192.png">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}</style>
+<script>if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost' || location.hostname === '127.0.0.1')) addEventListener('load', () => navigator.serviceWorker.register('sw.js'));</script>
+</head><body>
+<title>Entreno CAEM</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Source+Sans+3:wght@400;600;700&family=JetBrains+Mono:wght@500&display=swap">
+<style>
+/* Layout: app de una columna (máx. 960 px) con barra de pestañas fija arriba; cada pestaña es una vista (#semana, #ejercicios, #registro, #progreso, #pruebas) */
+:root {
+  --bg: #eef2f5; --panel: #ffffff; --panel2: #f6f8fa; --ink: #17212a; --muted: #5b6974; --line: #d5dde3;
+  --rescue: #c94310; --rescue-soft: #fde6d8; --ice: #1d5f8a; --ice-soft: #dfedf6;
+  --ok: #2b7a3b; --ok-soft: #e0f2e4; --warn: #9a6a12; --warn-soft: #faefd5; --bad: #c0302f; --bad-soft: #fbe3e3;
+  --rock: #7a5a2e; --rock-soft: #f3eadb; --fig: #1f2b35; --fig2: #8b9aa6; --prop: #b6c2cb;
+  --f-display: "Barlow Condensed", "Arial Narrow", sans-serif;
+  --f-body: "Source Sans 3", system-ui, sans-serif;
+  --f-data: "JetBrains Mono", ui-monospace, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #10161b; --panel: #18212a; --panel2: #1e2832; --ink: #e5ebef; --muted: #96a4ae; --line: #2d3a45;
+  --rescue: #ff7e44; --rescue-soft: #3a2015; --ice: #7fbfe8; --ice-soft: #142838;
+  --ok: #6fd884; --ok-soft: #15301d; --warn: #f0c358; --warn-soft: #33290f; --bad: #ff7272; --bad-soft: #3a1a1a;
+  --rock: #d9b27a; --rock-soft: #33281a; --fig: #e5ebef; --fig2: #6f808d; --prop: #4a5966; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #10161b; --panel: #18212a; --panel2: #1e2832; --ink: #e5ebef; --muted: #96a4ae; --line: #2d3a45;
+  --rescue: #ff7e44; --rescue-soft: #3a2015; --ice: #7fbfe8; --ice-soft: #142838;
+  --ok: #6fd884; --ok-soft: #15301d; --warn: #f0c358; --warn-soft: #33290f; --bad: #ff7272; --bad-soft: #3a1a1a;
+  --rock: #d9b27a; --rock-soft: #33281a; --fig: #e5ebef; --fig2: #6f808d; --prop: #4a5966; color-scheme: dark }
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+.wk-title .chip { justify-self: start; }
+body { background: var(--bg); color: var(--ink); font: 16px/1.5 var(--f-body); }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--panel); }
+h1, h2, h3 { font-family: var(--f-display); font-weight: 700; margin: 0; line-height: 1.05; text-wrap: balance; }
+h2 { font-size: 1.7rem; text-transform: uppercase; letter-spacing: .01em; }
+h3 { font-size: 1.2rem; }
+p { margin: 0; max-width: 68ch; }
+button { font: inherit; color: inherit; }
+button:focus-visible, input:focus-visible, select:focus-visible, a:focus-visible { outline: 2px solid var(--ice); outline-offset: 2px; }
+.top { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--panel); border-bottom: 1px solid var(--line); }
+.top-in { max-width: 960px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
+  display: flex; align-items: center; gap: 14px; flex-wrap: wrap; padding-block: 8px; }
+.brand { font: 700 1.35rem var(--f-display); text-transform: uppercase; letter-spacing: .02em; }
+.brand span { color: var(--rescue); }
+nav.tabs { display: flex; gap: 2px; overflow-x: auto; flex: 1; min-width: 0; scrollbar-width: none; }
+nav.tabs a { text-decoration: none; color: var(--muted); font: 600 .9rem var(--f-body); padding: 8px 12px; border-radius: 4px; white-space: nowrap; }
+nav.tabs a.on { color: var(--ink); background: var(--panel2); box-shadow: inset 0 -2px 0 var(--rescue); }
+.sync { font: 500 .72rem var(--f-data); color: var(--muted); white-space: nowrap; }
+main { max-width: 960px; margin: 0 auto; padding-block: 20px 72px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.view { display: grid; gap: 18px; }
+.lead { color: var(--muted); }
+.panel { background: var(--panel); border: 1px solid var(--line); border-radius: 6px; }
+.chip { display: inline-flex; align-items: center; gap: 5px; font: 600 .72rem var(--f-body); text-transform: uppercase; letter-spacing: .07em; padding: 3px 8px; border-radius: 3px; white-space: nowrap; }
+.c-base { background: var(--ice-soft); color: var(--ice); } .c-nav { background: var(--ok-soft); color: var(--ok); }
+.c-ene { background: var(--warn-soft); color: var(--warn); } .c-esp { background: var(--rescue-soft); color: var(--rescue); }
+.c-afi { background: var(--rock-soft); color: var(--rock); } .c-des { background: var(--panel2); color: var(--muted); border: 1px dashed var(--line); }
+.c-ex { background: var(--bad-soft); color: var(--bad); } .c-test { background: var(--ice); color: var(--panel); }
+
+/* Semana */
+.wk-nav { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.wk-nav .arrow { width: 40px; height: 40px; border-radius: 50%; border: 1px solid var(--line); background: var(--panel); cursor: pointer; font-size: 1.2rem; }
+.wk-nav .arrow:disabled { opacity: .35; cursor: default; }
+.wk-title { flex: 1; min-width: 0; display: grid; gap: 2px; }
+.wk-title h2 { font-size: 1.9rem; }
+.wk-title .r { font: 500 .85rem var(--f-data); color: var(--muted); }
+.btn { border: 1px solid var(--line); background: var(--panel); border-radius: 4px; padding: 7px 12px; cursor: pointer; font-weight: 600; font-size: .9rem; }
+.btn.pri { background: var(--rescue); border-color: var(--rescue); color: var(--panel); }
+.wk-sum { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: 6px; overflow: hidden; }
+.wk-sum div { background: var(--panel); padding: 10px 12px; display: grid; gap: 2px; }
+.wk-sum b { font: 700 1.5rem var(--f-display); font-variant-numeric: tabular-nums; }
+.wk-sum span { font-size: .78rem; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; }
+.wk-notes { display: flex; flex-wrap: wrap; gap: 6px; }
+.days { display: grid; gap: 10px; }
+.day { background: var(--panel); border: 1px solid var(--line); border-radius: 6px; overflow: hidden; }
+.day.today { border-color: var(--rescue); box-shadow: 0 0 0 1px var(--rescue); }
+.day-h { display: flex; align-items: center; gap: 10px; padding: 10px 14px; cursor: pointer; width: 100%; background: none; border: 0; text-align: left; }
+.day-h .dn { font: 700 1.25rem var(--f-display); text-transform: uppercase; width: 3.2em; }
+.day-h .dd { font: 500 .78rem var(--f-data); color: var(--muted); width: 4.2em; }
+.day-h .ses { flex: 1; min-width: 0; display: flex; gap: 5px; flex-wrap: wrap; }
+.day-h .prog { font: 500 .75rem var(--f-data); color: var(--muted); }
+.day-h .car { color: var(--muted); transition: transform .15s; }
+.day.open .car { transform: rotate(90deg); }
+.pill { font: 600 .78rem var(--f-body); padding: 2px 8px; border-radius: 3px; white-space: nowrap; }
+.t-fuerza { background: var(--rescue-soft); color: var(--rescue); } .t-agua { background: var(--ice-soft); color: var(--ice); }
+.t-roca { background: var(--rock-soft); color: var(--rock); } .t-monte { background: var(--ok-soft); color: var(--ok); }
+.t-test { background: var(--ice); color: var(--panel); } .t-suave, .t-aux { background: var(--panel2); color: var(--muted); }
+.t-desc { background: transparent; color: var(--muted); border: 1px dashed var(--line); } .t-clase { background: var(--panel2); color: var(--muted); }
+.t-examen { background: var(--bad-soft); color: var(--bad); }
+.pill.done { text-decoration: line-through; opacity: .6; }
+.day-b { display: none; padding: 0 14px 14px; gap: 12px; }
+.day.open .day-b { display: grid; }
+.sesion { border: 1px solid var(--line); border-radius: 6px; overflow: hidden; }
+.ses-h { display: flex; align-items: center; gap: 10px; padding: 10px 12px; background: var(--panel2); flex-wrap: wrap; }
+.ses-h h3 { flex: 1; min-width: 10em; }
+.ses-h .hh { font: 500 .78rem var(--f-data); color: var(--muted); }
+.check { display: inline-flex; align-items: center; gap: 6px; font-weight: 600; font-size: .85rem; cursor: pointer; padding: 4px 8px; border-radius: 4px; border: 1px solid var(--line); background: var(--panel); }
+.check input { width: 18px; height: 18px; accent-color: var(--ok); }
+.check.on { background: var(--ok-soft); border-color: var(--ok); color: var(--ok); }
+.ses-nota { padding: 8px 12px; font-size: .88rem; color: var(--warn); background: var(--warn-soft); }
+.blq { display: grid; grid-template-columns: 64px minmax(0, 1fr) auto; gap: 2px 12px; padding: 10px 12px; border-top: 1px solid var(--line); align-items: start; }
+.blq .ill { grid-row: span 2; width: 64px; height: 54px; border-radius: 4px; background: var(--panel2); cursor: pointer; border: 0; padding: 0; }
+.blq .ill svg { width: 100%; height: 100%; display: block; }
+.blq .ill.none { cursor: default; display: grid; place-items: center; color: var(--muted); font: 700 1.1rem var(--f-display); }
+.blq .nom { font-weight: 700; }
+.blq .dos { font: 500 .82rem var(--f-data); text-align: right; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.blq .como { grid-column: 2 / 4; font-size: .88rem; color: var(--muted); }
+.clase-row { display: flex; gap: 10px; align-items: baseline; font-size: .88rem; color: var(--muted); padding: 2px 2px; }
+.clase-row .hh { font: 500 .78rem var(--f-data); }
+
+/* Ejercicios */
+.filtros { display: flex; gap: 6px; flex-wrap: wrap; }
+.filtros button { border: 1px solid var(--line); background: var(--panel); padding: 5px 11px; border-radius: 20px; font-weight: 600; font-size: .85rem; cursor: pointer; }
+.filtros button.on { background: var(--ink); color: var(--panel); border-color: var(--ink); }
+.ejs { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 290px), 1fr)); gap: 14px; }
+.ej { padding: 14px; display: grid; gap: 10px; align-content: start; scroll-margin-top: 80px; }
+.ej.flash { outline: 2px solid var(--rescue); }
+.ej .fig { background: var(--panel2); border-radius: 4px; }
+.ej .fig svg { width: 100%; height: auto; display: block; }
+.ej h3 { font-size: 1.3rem; text-transform: uppercase; }
+.ej .para { font: 600 .72rem var(--f-body); text-transform: uppercase; letter-spacing: .07em; color: var(--rescue); }
+.ej ul { margin: 0; padding-left: 1.1em; font-size: .9rem; display: grid; gap: 3px; }
+.ej .mal { color: var(--bad); font-size: .85rem; }
+
+/* Registro */
+.reg-top { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+.reg-top select { font: 600 1rem var(--f-body); padding: 7px 10px; border-radius: 4px; border: 1px solid var(--line); background: var(--panel); color: var(--ink); }
+.grupos { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 14px; }
+.grupo { padding: 14px; display: grid; gap: 10px; align-content: start; }
+.grupo h3 { font-size: 1.25rem; text-transform: uppercase; display: flex; justify-content: space-between; align-items: baseline; }
+.campo { display: grid; grid-template-columns: minmax(0, 1fr) 7.5em; gap: 8px; align-items: center; }
+.campo label { font-size: .9rem; }
+.campo label small { display: block; color: var(--muted); font-size: .76rem; }
+.campo input, .campo select { width: 100%; font: 500 .95rem var(--f-data); padding: 6px 8px; border: 1px solid var(--line); border-radius: 4px; background: var(--bg); color: var(--ink); }
+.campo.ok input, .campo.ok select { border-color: var(--ok); }
+.reg-foot { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; position: sticky; bottom: env(safe-area-inset-bottom, 0px); background: var(--bg); padding-block: 10px; }
+.estado-g { font-size: .88rem; color: var(--muted); }
+.protocolo { padding: 14px 16px; display: grid; gap: 6px; }
+.protocolo ol { margin: 0; padding-left: 1.2em; display: grid; gap: 3px; font-size: .92rem; }
+
+/* Progreso */
+.tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; }
+.tile { padding: 12px 14px; display: grid; gap: 2px; }
+.tile b { font: 700 2rem var(--f-display); font-variant-numeric: tabular-nums; }
+.tile span { font-size: .8rem; color: var(--muted); }
+.charts { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 290px), 1fr)); gap: 14px; }
+.chart { padding: 12px 14px 8px; display: grid; gap: 4px; position: relative; }
+.chart h3 { font-size: 1.1rem; }
+.chart .sub { font: 500 .75rem var(--f-data); color: var(--muted); display: flex; justify-content: space-between; gap: 8px; }
+.chart svg { width: 100%; height: auto; display: block; overflow: visible; }
+.chart .grid line { stroke: var(--line); stroke-width: 1; }
+.chart .axis text { fill: var(--muted); font: 500 10px var(--f-data); }
+.chart .meta line { stroke: var(--ok); stroke-width: 1.5; stroke-dasharray: 5 4; }
+.chart .meta text { fill: var(--ok); font: 600 10px var(--f-body); }
+.chart .serie { fill: none; stroke: var(--ice); stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; }
+.chart .pt { fill: var(--ice); stroke: var(--panel); stroke-width: 2; }
+.chart .pt.hi { r: 6; }
+.chart .last { fill: var(--ink); font: 600 11px var(--f-data); }
+.chart .empty { fill: var(--muted); font: 500 12px var(--f-body); }
+.chart .hit { fill: transparent; cursor: crosshair; }
+.chart .cross { stroke: var(--muted); stroke-width: 1; stroke-dasharray: 2 3; }
+.tip { position: absolute; pointer-events: none; background: var(--ink); color: var(--panel); font: 500 .78rem var(--f-data); padding: 5px 8px; border-radius: 4px; white-space: nowrap; transform: translate(-50%, -110%); z-index: 2; }
+.scroll { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-size: .9rem; }
+th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { font: 600 .72rem var(--f-body); text-transform: uppercase; letter-spacing: .07em; color: var(--muted); white-space: nowrap; }
+td.n, th.n { font-family: var(--f-data); font-variant-numeric: tabular-nums; text-align: right; white-space: nowrap; }
+tr:last-child td { border-bottom: 0; }
+.ok-t { color: var(--ok); font-weight: 700; } .no-t { color: var(--bad); font-weight: 700; } .na-t { color: var(--muted); }
+.aviso { background: var(--warn-soft); border-left: 4px solid var(--warn); padding: 10px 14px; border-radius: 4px; font-size: .92rem; }
+dialog { border: 0; border-radius: 8px; padding: 0; max-width: min(560px, calc(100vw - 32px)); background: var(--panel); color: var(--ink); }
+dialog::backdrop { background: rgba(10, 16, 22, .55); }
+.dlg { padding: 16px; display: grid; gap: 10px; }
+.dlg .x { justify-self: end; }
+@media (max-width: 560px) {
+  .blq { grid-template-columns: 56px minmax(0, 1fr); }
+  .blq .ill { width: 56px; height: 48px; }
+  .blq .dos { grid-column: 2; text-align: left; }
+  .blq .como { grid-column: 1 / 3; }
+  .day-h .dd { display: none; }
+  .wk-title h2 { font-size: 1.5rem; }
+}
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
+</style>
+
+<div class="top"><div class="top-in">
+  <div class="brand">Entreno <span>CAEM</span></div>
+  <nav class="tabs" aria-label="Secciones">
+    <a href="#semana" data-v="semana">Semana</a>
+    <a href="#ejercicios" data-v="ejercicios">Ejercicios</a>
+    <a href="#registro" data-v="registro">Registro</a>
+    <a href="#progreso" data-v="progreso">Progreso</a>
+    <a href="#pruebas" data-v="pruebas">Pruebas</a>
+  </nav>
+  <span class="sync" id="sync">Guardado en este navegador</span>
+  <button class="btn" id="bDescargar">Descargar</button>
+</div></div>
+
+<main>
+  <section class="view" id="v-semana"></section>
+  <section class="view" id="v-ejercicios" hidden></section>
+  <section class="view" id="v-registro" hidden></section>
+  <section class="view" id="v-progreso" hidden></section>
+  <section class="view" id="v-pruebas" hidden></section>
+</main>
+
+<dialog id="dlg"><div class="dlg" id="dlg-in"></div></dialog>
+
+<script id="app">
+'use strict';
+// Copia del documento tal como llega, antes de pintar nada: es lo que se descarga como app para Chrome
+const SRC = (() => { const c = document.documentElement.cloneNode(true), s = c.querySelector('#caem-seed'); if (s) s.remove(); return '<!doctype html>\n' + c.outerHTML; })();
+/* ================== utilidades de fecha ================== */
+const pad = n => String(n).padStart(2, '0');
+const ymd = d => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+const addD = (d, n) => { const x = new Date(d); x.setDate(x.getDate() + n); return x; };
+const parseD = s => { const [y, m, d] = s.split('-').map(Number); return new Date(y, m - 1, d); };
+const MES = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'];
+const MESL = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+const DIA = ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'];
+const fCorta = d => `${d.getDate()} ${MES[d.getMonth()]}`;
+const START = new Date(2026, 10, 9), NSEM = 33;
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+
+/* ================== calendario académico (de tu Google Calendar) ================== */
+const EXAMEN = { '2026-12-17': 'Examen DDFF y Garantías', '2027-01-11': 'Examen Teorías Criminológicas II', '2027-01-13': 'Examen Estadística',
+  '2027-01-15': 'Examen Teoría del Delito', '2027-01-18': 'Examen REDI', '2027-01-21': 'Recuperación Sociología Jurídica' };
+const EXTRA = { '2027-01-22': 'Extraordinaria DDFF', '2027-01-23': 'Extraordinaria Teorías II', '2027-01-25': 'Extraordinaria Estadística',
+  '2027-01-26': 'Extraordinaria Teoría del Delito', '2027-01-27': 'Extraordinaria REDI' };
+const EVALUABLE = { '2026-11-18': 'Estadística prueba 2/3 (17:00)', '2026-11-30': 'Estadística prueba 3/3 (o el 2 dic)', '2026-12-02': 'Estadística prueba 3/3 (o el 30 nov)' };
+const FESTIVO = { '2026-12-08': 'Inmaculada', '2026-12-25': 'Navidad', '2027-01-01': 'Año Nuevo', '2027-01-06': 'Reyes' };
+const TESTS = ['2026-11-12', '2026-12-11', '2027-01-29', '2027-02-26', '2027-03-26', '2027-04-23', '2027-05-21', '2027-06-18'];
+const CLASES = { 0: [['15:00–16:50', 'Estadística (teoría)'], ['17:00–18:50', 'Teorías Criminológicas II'], ['19:00–20:50', 'DDFF y Garantías']],
+  1: [['15:00–16:50', 'REDI (teoría)'], ['17:00–18:50', 'Teorías Criminológicas II'], ['19:00–20:50', 'DDFF y Garantías']],
+  2: [['15:00–16:50', 'Estadística prácticas'], ['17:00–18:50', 'REDI prácticas'], ['19:00–20:50', 'Teoría del Delito']],
+  3: [['16:00–17:50', 'Teoría del Delito']] };
+const hayClase = ds => ds >= '2026-11-09' && ds <= '2026-12-18' && !FESTIVO[ds];
+
+/* ================== fases ================== */
+const FASES = [
+  { id: 'base', n: 'Base', c: 'c-base', ini: '2026-11-09', fin: '2026-12-13', obj: 'Crear motor y técnica sin lesionarte.' },
+  { id: 'pre', n: 'Antes del examen', c: 'c-des', ini: '2026-12-14', fin: '2026-12-18', obj: 'Llegar descansado al examen de DDFF.' },
+  { id: 'nav', n: 'Bloque de Navidad', c: 'c-nav', ini: '2026-12-19', fin: '2027-01-06', obj: 'Acumular días de esquí: buena nieve y sin clases.' },
+  { id: 'ene', n: 'Exámenes de enero', c: 'c-ene', ini: '2027-01-07', fin: '2027-01-27', obj: 'Mantener lo ganado con el mínimo de tiempo.' },
+  { id: 'esp', n: 'Específico de invierno', c: 'c-esp', ini: '2027-01-28', fin: '2027-04-04', obj: '1500 m y 12 km con 10 kg al ritmo de la prueba.' },
+  { id: 'afi', n: 'Terreno variado y afinado', c: 'c-afi', ini: '2027-04-05', fin: '2027-06-30', obj: 'Bloque, hierba, resaltes y 6c de primero.' },
+];
+const faseDe = ds => FASES.find(f => ds >= f.ini && ds <= f.fin) || FASES[FASES.length - 1];
+const DESCARGA = new Set([3, 15, 23, 27, 31]);
+const SEMANA_SANTA = 19;
+function semInfo(i) {
+  const lunes = addD(START, i * 7), ds = ymd(lunes), f = faseDe(ymd(addD(lunes, 3)));
+  const k = Math.floor((lunes - parseD(f.ini)) / 6048e5); // semana dentro de la fase
+  const des = DESCARGA.has(i);
+  const kg = { base: [5, 6, 6, 6, 7][Math.min(k, 4)], pre: 6, nav: 8, ene: 6, esp: Math.min(10, 8 + Math.floor(k / 3)), afi: 10 }[f.id];
+  const desniv = { base: [900, 1000, 1100, 800, 1200][Math.min(k, 4)], pre: 800, nav: [1100, 1250, 1400][Math.min(k, 2)], ene: 700,
+    esp: Math.min(1500, 1200 + k * 40), afi: 1500 }[f.id];
+  return { i, lunes, ds, f, k, des, ss: i === SEMANA_SANTA, kg: des ? kg - 1 : kg, desniv: des ? Math.round(desniv * 0.6 / 50) * 50 : desniv };
+}
+
+/* ================== ejercicios: dibujos ==================
+   Cada postura: [cabeza, hombro, cadera, codo1, mano1, codo2, mano2, rodilla1, pie1, rodilla2, pie2] en caja 120×100. 1 = lado cercano. */
+const EJ = {
+  cmj: { n: 'Salto vertical (CMJ)', g: 'fuerza', para: 'Prueba P1 · salto vertical', props: ['floor'],
+    p: [[[58, 40], [56, 48], [46, 64], [48, 57], [40, 64], [47, 58], [39, 65], [60, 72], [52, 92], [59, 73], [51, 92]],
+        [[55, 8], [55, 18], [55, 42], [58, 10], [60, 0], [57, 11], [58, 1], [57, 62], [56, 80], [55, 62], [54, 80]]],
+    tec: ['Pies a la anchura de la cadera.', 'Bajas rápido hasta media sentadilla y subes sin pausa.', 'Brazos de atrás hacia arriba con fuerza.', 'Cae amortiguando sobre la parte delantera del pie.'],
+    mal: 'Pararse abajo o bajar demasiado: se pierde la elasticidad.' },
+  sent: { n: 'Sentadilla goblet / trasera', g: 'fuerza', para: 'Salto y piernas de montaña', props: ['floor', 'kb'],
+    p: [[[55, 14], [55, 24], [55, 50], [60, 32], [61, 28], [59, 33], [60, 29], [56, 71], [55, 92], [54, 71], [53, 92]],
+        [[63, 36], [59, 45], [42, 64], [64, 52], [66, 46], [63, 53], [65, 47], [64, 67], [54, 92], [62, 68], [52, 92]]],
+    tec: ['Pecho alto y peso en todo el pie.', 'Rodillas hacia fuera, en la línea de los pies.', 'Baja hasta que la cadera pase la rodilla.', 'Sube empujando el suelo, sin levantar talones.'],
+    mal: 'Rodillas hacia dentro o espalda redonda abajo.' },
+  dom: { n: 'Dominadas', g: 'fuerza', para: 'Prueba P5 · mínimo 15', props: ['bar10'],
+    p: [[[60, 26], [60, 36], [60, 62], [52, 22], [48, 10], [68, 22], [72, 10], [57, 78], [57, 94], [63, 78], [63, 94]],
+        [[60, 4], [60, 15], [60, 41], [46, 20], [48, 10], [74, 20], [72, 10], [57, 57], [57, 72], [63, 57], [63, 72]]],
+    tec: ['Desde brazos totalmente estirados.', 'Primero baja los hombros (escápulas), luego tira.', 'La barbilla supera la barra en cada repetición.', 'Sin balanceo ni patada.'],
+    mal: 'Medias repeticiones: en la prueba no cuentan.' },
+  neg: { n: 'Dominada negativa', g: 'fuerza', para: 'Si aún no llegas a 5 dominadas', props: ['bar10', 'box'],
+    p: [[[60, 4], [60, 15], [60, 41], [46, 20], [48, 10], [74, 20], [72, 10], [57, 57], [57, 72], [63, 57], [63, 72]],
+        [[60, 26], [60, 36], [60, 62], [52, 22], [48, 10], [68, 22], [72, 10], [57, 78], [57, 94], [63, 78], [63, 94]]],
+    tec: ['Sube con un salto o desde un cajón hasta tener la barbilla sobre la barra.', 'Baja lo más lento posible: 5 segundos.', 'Controla también el último tramo con los brazos casi estirados.'],
+    mal: 'Dejarse caer en la mitad final.' },
+  austr: { n: 'Dominada australiana', g: 'fuerza', para: 'Base para dominadas', props: ['bar50', 'floor'],
+    p: [[[32, 70], [40, 72], [70, 80], [40, 61], [40, 50], [41, 61], [41, 50], [85, 85], [100, 91], [85, 86], [100, 92]],
+        [[34, 53], [42, 56], [70, 70], [52, 60], [42, 50], [53, 61], [43, 50], [85, 80], [100, 91], [85, 81], [100, 92]]],
+    tec: ['Barra a la altura de la cadera.', 'Cuerpo recto como una tabla.', 'Lleva el pecho a la barra juntando escápulas.'],
+    mal: 'Cadera que cae.' },
+  ext: { n: 'Flexiones de suelo', g: 'fuerza', para: 'Prueba P3 · mínimo 50', props: ['floor'],
+    p: [[[27, 54], [36, 58], [68, 70], [37, 72], [37, 90], [38, 72], [38, 90], [84, 80], [100, 90], [84, 81], [100, 90]],
+        [[29, 76], [38, 79], [68, 83], [46, 72], [37, 90], [47, 73], [38, 90], [84, 86], [100, 90], [84, 87], [100, 90]]],
+    tec: ['Manos algo más abiertas que los hombros.', 'Cuerpo recto de cabeza a talones.', 'Baja hasta que el pecho quede a un puño del suelo.', 'Bloquea los brazos arriba en cada repetición.'],
+    mal: 'Cadera arriba o abajo, o no bajar lo suficiente.' },
+  bulg: { n: 'Zancada búlgara', g: 'fuerza', para: 'Subidas largas con mochila', props: ['floor', 'bench', 'dbs'],
+    p: [[[57, 14], [57, 24], [58, 50], [58, 38], [58, 50], [56, 38], [56, 50], [52, 70], [50, 92], [68, 70], [84, 72]],
+        [[58, 28], [58, 38], [60, 64], [59, 50], [59, 62], [57, 50], [57, 62], [44, 66], [46, 92], [66, 86], [84, 72]]],
+    tec: ['Pie de atrás apoyado en un banco.', 'Baja vertical hasta casi tocar con la rodilla de atrás.', 'Empuja con el talón de la pierna de delante.'],
+    mal: 'Rodilla de delante hacia dentro.' },
+  pmr: { n: 'Peso muerto rumano', g: 'fuerza', para: 'Espalda y femoral para la mochila', props: ['floor', 'barbell'],
+    p: [[[55, 14], [55, 24], [55, 50], [56, 37], [57, 50], [54, 37], [55, 50], [56, 71], [55, 92], [54, 71], [53, 92]],
+        [[81, 38], [72, 40], [48, 50], [72, 52], [71, 64], [71, 52], [70, 64], [52, 71], [52, 92], [51, 71], [51, 92]]],
+    tec: ['Rodillas un poco flexionadas y fijas.', 'Lleva la cadera atrás con la espalda recta.', 'La barra baja pegada a las piernas hasta media tibia.'],
+    mal: 'Redondear la espalda para bajar más.' },
+  hollow: { n: 'Hollow (banana)', g: 'core', para: 'Core para cargar y escalar', props: ['floor'],
+    p: [[[20, 84], [28, 86], [56, 88], [14, 86], [4, 86], [15, 87], [5, 87], [74, 88], [92, 88], [74, 89], [92, 89]],
+        [[24, 74], [32, 78], [56, 88], [20, 70], [8, 64], [21, 71], [9, 65], [74, 82], [92, 74], [74, 83], [92, 75]]],
+    tec: ['Zona lumbar pegada al suelo todo el tiempo.', 'Hombros y piernas despegados.', 'Si cuesta, rodillas flexionadas.'],
+    mal: 'Arquear la espalda.' },
+  elev: { n: 'Elevación de rodillas colgado', g: 'core', para: 'Core y agarre', props: ['bar10'],
+    p: [[[64, 26], [60, 32], [60, 58], [60, 20], [60, 10], [61, 20], [61, 10], [60, 75], [60, 92], [61, 75], [61, 92]],
+        [[64, 26], [60, 32], [60, 58], [60, 20], [60, 10], [61, 20], [61, 10], [78, 52], [76, 72], [77, 53], [75, 73]]],
+    tec: ['Hombros activos, sin colgar muerto.', 'Sube las rodillas por encima de la cadera.', 'Baja controlando, sin balanceo.'],
+    mal: 'Usar el impulso.' },
+  rot: { n: 'Rotación externa con goma', g: 'core', para: 'Hombro sano', props: ['floor', 'band'],
+    p: [[[60, 14], [60, 24], [60, 52], [51, 38], [57, 44], [69, 38], [63, 44], [56, 72], [55, 92], [64, 72], [65, 92]],
+        [[60, 14], [60, 24], [60, 52], [51, 38], [38, 40], [69, 38], [82, 40], [56, 72], [55, 92], [64, 72], [65, 92]]],
+    tec: ['Codos pegados al cuerpo a 90°.', 'Abre las manos hacia fuera estirando la goma.', 'Despacio, sin mover los codos.'],
+    mal: 'Separar los codos del cuerpo.' },
+  stepup: { n: 'Step-up con mochila', g: 'monte', para: 'Subir > 500 m/h', props: ['floor', 'box70', 'pack'],
+    p: [[[56, 14], [55, 24], [54, 50], [56, 38], [56, 50], [54, 38], [54, 50], [66, 52], [66, 70], [52, 72], [50, 92]],
+        [[66, 0], [66, 10], [66, 32], [67, 22], [67, 33], [65, 22], [65, 33], [67, 51], [66, 70], [64, 52], [63, 69]]],
+    tec: ['Cajón de 40 cm.', 'Empuja solo con la pierna de arriba; la de abajo no ayuda.', 'Tronco ligeramente adelantado, como en una cuesta.'],
+    mal: 'Impulsarse con el pie de abajo.' },
+  stepdown: { n: 'Step-down lento', g: 'monte', para: 'Bajar > 600 m/h', props: ['floor', 'box70'],
+    p: [[[66, 0], [66, 10], [66, 32], [67, 22], [67, 33], [65, 22], [65, 33], [67, 51], [66, 70], [64, 52], [63, 69]],
+        [[66, 14], [64, 22], [62, 46], [72, 30], [80, 32], [71, 31], [79, 33], [76, 56], [66, 70], [52, 70], [44, 90]]],
+    tec: ['De pie en el cajón.', 'Baja el otro pie al suelo en 3 segundos.', 'La rodilla de apoyo sigue la línea del pie.', 'Solo roza el suelo y vuelve a subir.'],
+    mal: 'Dejarse caer al final.' },
+  gemelo: { n: 'Gemelo excéntrico', g: 'monte', para: 'Tobillo y Aquiles para bajar', props: ['step', 'wall'],
+    p: [[[54, 4], [54, 14], [54, 40], [58, 26], [68, 30], [57, 27], [68, 31], [54, 62], [52, 84], [56, 62], [64, 66]],
+        [[54, -4], [54, 6], [54, 32], [58, 18], [68, 22], [57, 19], [68, 23], [54, 54], [52, 76], [56, 54], [64, 58]]],
+    tec: ['Punta del pie en el borde de un escalón.', 'Sube con las dos piernas y baja con una sola en 3 s.', 'Llega abajo del todo, con el talón por debajo del escalón.'],
+    mal: 'Bajar rápido.' },
+  plancha: { n: 'Plancha lateral', g: 'core', para: 'Estabilidad con mochila', props: ['floor'],
+    p: [[[24, 68], [30, 74], [62, 82], [30, 89], [40, 89], [42, 72], [56, 76], [80, 86], [98, 90], [80, 85], [98, 89]],
+        [[24, 66], [30, 72], [62, 74], [30, 89], [40, 89], [42, 70], [56, 70], [80, 81], [98, 90], [80, 80], [98, 89]]],
+    tec: ['Codo bajo el hombro.', 'Cadera alta: línea recta de cabeza a pies.', 'Respira sin soltar el abdomen.'],
+    mal: 'Cadera caída hacia el suelo.' },
+  pallof: { n: 'Pallof press', g: 'core', para: 'Antirrotación en terreno roto', props: ['floor', 'wallL', 'bandL'],
+    p: [[[58, 16], [58, 26], [58, 52], [62, 40], [66, 36], [61, 41], [65, 37], [56, 72], [54, 92], [62, 72], [64, 92]],
+        [[58, 16], [58, 26], [58, 52], [70, 34], [80, 34], [70, 35], [80, 35], [56, 72], [54, 92], [62, 72], [64, 92]]],
+    tec: ['Goma enganchada a un lado a la altura del pecho.', 'Estira los brazos al frente sin dejar que te gire.', 'Aguanta 2 s y vuelve.'],
+    mal: 'Girar el tronco hacia la goma.' },
+  crol: { n: 'Crol', g: 'agua', para: '50 m en ≤ 48 s', props: ['water'],
+    p: [[[20, 50], [28, 52], [60, 54], [16, 50], [6, 51], [34, 62], [44, 66], [76, 55], [92, 52], [76, 56], [92, 60]],
+        [[20, 50], [28, 52], [60, 54], [32, 62], [42, 66], [26, 40], [14, 44], [76, 56], [92, 60], [76, 55], [92, 52]]],
+    tec: ['Cuerpo horizontal, mirada al fondo.', 'Mano entra delante del hombro y empuja hasta el muslo.', 'Patada desde la cadera, corta y rápida.', 'En 50 m rápidos: respira cada 3 o 4 brazadas.'],
+    mal: 'Levantar la cabeza para respirar: hunde las piernas.' },
+  cinta: { n: 'Cinta al 15 % con mochila', g: 'monte', para: 'Ritmo de subida de la prueba', props: ['tread', 'pack'],
+    p: [[[62, 14], [60, 24], [58, 50], [66, 36], [70, 46], [54, 36], [50, 46], [66, 66], [72, 84], [52, 68], [44, 88]],
+        [[62, 14], [60, 24], [58, 50], [54, 36], [50, 46], [66, 36], [70, 46], [52, 68], [46, 88], [66, 66], [72, 84]]],
+    tec: ['Pendiente al 15 %, sin agarrarte a la barra.', 'Paso corto y apoyo de todo el pie.', 'A 15 %: 3,4 km/h ≈ 500 m/h de desnivel; 4 km/h ≈ 590; 4,5 km/h ≈ 670.'],
+    mal: 'Agarrarse a la cinta: deja de contar como desnivel.' },
+  susp: { n: 'Suspensión en regleta (con pies)', g: 'roca', para: 'Fuerza de dedos para el 6c', props: ['hold'],
+    p: [[[64, 26], [60, 32], [60, 58], [60, 20], [60, 10], [61, 20], [61, 10], [60, 75], [60, 92], [61, 75], [61, 92]],
+        [[64, 26], [60, 32], [60, 58], [60, 20], [60, 10], [61, 20], [61, 10], [62, 74], [58, 90], [63, 74], [59, 90]]],
+    tec: ['Empieza en una regleta grande (30–35 mm) con los pies apoyados en una silla o un cajón: quitas el peso que haga falta.',
+      'Agarre semiarqueo (dedos a 90°, sin cerrar el pulgar encima).', 'Colgado 7 s, descanso 3 s, 6 veces; luego 3 min de pausa.',
+      'Cuando aguantes la serie entera sin apenas pies, quita apoyo; cuando la hagas colgado, pasa a una regleta 5 mm más pequeña.'],
+    mal: 'Hacerlo en frío, saltar de tamaño o seguir con dolor en los dedos.' },
+  roca: { n: 'Escalada de primero', g: 'roca', para: '6a, 6b y 6c de primero', props: ['wallR'],
+    p: [[[72, 30], [68, 38], [66, 62], [70, 30], [77, 20], [68, 48], [77, 44], [76, 70], [79, 82], [72, 52], [79, 60]],
+        [[74, 16], [70, 24], [70, 46], [74, 14], [77, 4], [70, 32], [77, 34], [74, 70], [77, 84], [76, 52], [79, 60]]],
+    tec: ['Sube con las piernas, no con los brazos.', 'Chapa con el brazo estirado y desde una posición cómoda.', 'Lee la vía desde el suelo antes de empezar.', 'Descansa en los reposos sacudiendo los brazos.'],
+    mal: 'Chapar por encima de la cabeza a la desesperada.' },
+  disloc: { n: 'Dislocaciones con goma o palo', g: 'movilidad', para: 'Hombro para alcanzar presas lejanas', props: ['floor', 'band'],
+    p: [[[60, 14], [60, 24], [60, 52], [46, 14], [38, 2], [74, 14], [82, 2], [56, 72], [55, 92], [64, 72], [65, 92]],
+        [[60, 14], [60, 24], [60, 52], [44, 30], [30, 42], [76, 30], [90, 42], [56, 72], [55, 92], [64, 72], [65, 92]]],
+    tec: ['Agarre muy abierto de una goma o un palo.', 'Brazos estirados: pasa de delante a detrás de la cabeza y vuelve.', 'Cierra el agarre poco a poco según ganes movilidad.'],
+    mal: 'Doblar los codos o forzar con dolor.' },
+  hombroPared: { n: 'Hombro en pared', g: 'movilidad', para: 'Flexión de hombro (brazos por encima)', props: ['floor', 'wall92'],
+    p: [[[70, 30], [72, 40], [66, 66], [82, 34], [90, 26], [82, 35], [90, 27], [70, 90], [46, 92], [71, 90], [47, 92]],
+        [[75, 32], [74, 42], [66, 66], [82, 24], [90, 10], [81, 25], [89, 11], [70, 90], [46, 92], [71, 90], [47, 92]]],
+    tec: ['De rodillas frente a la pared, antebrazos apoyados.', 'Lleva el pecho hacia el suelo dejando que los brazos suban.', '30 s respirando hondo, sin arquear la lumbar.'],
+    mal: 'Hundir la zona lumbar en vez de abrir el hombro.' },
+  libro: { n: 'Libro abierto', g: 'movilidad', para: 'Giro de la columna torácica', props: ['floor'],
+    p: [[[20, 80], [28, 84], [56, 86], [38, 78], [48, 74], [38, 80], [48, 76], [70, 74], [84, 88], [70, 76], [84, 90]],
+        [[22, 78], [28, 84], [56, 86], [38, 78], [48, 74], [22, 72], [10, 70], [70, 74], [84, 88], [70, 76], [84, 90]]],
+    tec: ['Tumbado de lado, rodillas dobladas a 90° y juntas.', 'Abre el brazo de arriba hacia el otro lado siguiéndolo con la mirada.', 'Las rodillas no se separan del suelo.'],
+    mal: 'Girar la cadera en vez de la espalda.' },
+  rana: { n: 'Rana', g: 'movilidad', para: 'Abrir la cadera y pegarla a la pared', props: ['floor'],
+    p: [[[34, 68], [42, 72], [66, 64], [42, 84], [30, 90], [43, 85], [31, 90], [70, 90], [86, 90], [68, 89], [84, 89]],
+        [[34, 72], [42, 76], [72, 74], [42, 86], [30, 90], [43, 87], [31, 90], [70, 90], [86, 90], [68, 89], [84, 89]]],
+    tec: ['A cuatro patas con las rodillas muy abiertas y los pies en línea con ellas.', 'Lleva la cadera hacia atrás despacio.', '45 s; cada semana abre un poco más.'],
+    mal: 'Forzar hasta que duela la rodilla.' },
+  c9090: { n: 'Cadera 90-90', g: 'movilidad', para: 'Rotación de cadera para pies de lado', props: ['floor'],
+    p: [[[56, 48], [56, 58], [56, 86], [48, 72], [44, 88], [64, 72], [68, 88], [78, 86], [92, 90], [38, 88], [30, 78]],
+        [[72, 56], [66, 62], [56, 86], [72, 76], [80, 88], [70, 77], [78, 89], [78, 86], [92, 90], [38, 88], [30, 78]]],
+    tec: ['Sentado: una pierna delante y otra al lado, las dos rodillas a 90°.', 'Espalda recta e inclínate sobre la espinilla de delante.', 'Cambia de lado girando las rodillas sin usar las manos.'],
+    mal: 'Redondear la espalda para llegar más lejos.' },
+  pasoAlto: { n: 'Paso alto activo', g: 'movilidad', para: 'Subir el pie alto sin perder la pared', props: ['floor', 'boxHigh'],
+    p: [[[52, 26], [50, 36], [52, 62], [62, 28], [72, 20], [60, 30], [70, 22], [70, 48], [72, 62], [50, 78], [48, 92]],
+        [[70, 20], [66, 30], [64, 56], [76, 18], [84, 8], [75, 19], [83, 9], [76, 50], [72, 62], [54, 76], [46, 92]]],
+    tec: ['Pie en un cajón alto o en una presa a la altura de la cadera.', 'Pasa el peso encima del pie alto llevando la cadera hacia la pared.', 'Sube y baja despacio, 8 veces por pierna.'],
+    mal: 'Tirar con los brazos en vez de empujar con la pierna.' },
+  tobillo: { n: 'Rodilla a la pared', g: 'movilidad', para: 'Tobillo para esquí y bajadas', props: ['floor', 'wall92'],
+    p: [[[60, 34], [58, 44], [56, 70], [72, 46], [90, 46], [71, 47], [89, 47], [86, 72], [78, 92], [52, 90], [36, 92]],
+        [[63, 34], [61, 44], [60, 68], [74, 46], [90, 46], [73, 47], [89, 47], [91, 72], [78, 92], [54, 90], [36, 92]]],
+    tec: ['Medio arrodillado frente a la pared.', 'Lleva la rodilla de delante a tocar la pared sin levantar el talón.', 'Aleja el pie un poco cuando sea fácil.'],
+    mal: 'Levantar el talón.' },
+  antebrazo: { n: 'Estiramiento de antebrazo', g: 'movilidad', para: 'Flexores de los dedos tras escalar', props: ['floor'],
+    p: [[[56, 14], [56, 24], [56, 50], [68, 26], [80, 26], [62, 34], [74, 30], [57, 71], [56, 92], [55, 71], [54, 92]],
+        [[56, 14], [56, 24], [56, 50], [68, 26], [80, 26], [64, 32], [80, 20], [57, 71], [56, 92], [55, 71], [54, 92]]],
+    tec: ['Brazo estirado con la palma hacia arriba.', 'Con la otra mano lleva los dedos suavemente hacia abajo.', '30 s, sin dolor. Con el índice izquierdo, aún más suave.'],
+    mal: 'Tirar fuerte del dedo que molesta.' },
+  esqui: { n: 'Esquí de montaña con mochila', g: 'monte', para: 'Prueba de esquí: 12 km, hasta +1500 m', props: ['ski', 'pack', 'poles'],
+    p: [[[62, 14], [60, 24], [58, 50], [66, 36], [70, 46], [54, 36], [50, 46], [66, 66], [72, 84], [52, 68], [44, 88]],
+        [[62, 14], [60, 24], [58, 50], [54, 36], [50, 46], [66, 36], [70, 46], [52, 68], [46, 88], [66, 66], [72, 84]]],
+    tec: ['Desliza el esquí, no lo levantes.', 'Paso regular que puedas mantener una hora.', 'Mide los m/h de cada subida con el reloj o el móvil.'],
+    mal: 'Salir muy rápido y parar cada 10 minutos.' },
+};
+function fig(id, frame) {
+  const e = EJ[id]; if (!e) return '';
+  const one = (P, ox) => {
+    const [h, s, hp, e1, w1, e2, w2, k1, f1, k2, f2] = P.map(([x, y]) => [x + ox, y]);
+    const L = (a, b, c) => `<polyline points="${a} ${b} ${c}" fill="none" stroke="${c === undefined ? '' : ''}" />`;
+    const pl = (pts, cls) => `<polyline class="${cls}" points="${pts.map(p => p.join(',')).join(' ')}"/>`;
+    return pl([s, e2, w2], 'l2') + pl([hp, k2, f2], 'l2') + pl([s, hp], 'l1') + pl([hp, k1, f1], 'l1') + pl([s, e1, w1], 'l1') +
+      `<circle class="hd" cx="${h[0]}" cy="${h[1]}" r="6.5"/>` + propsHand(e.props, w1, w2, s, hp);
+  };
+  const propsHand = (props, w1, w2, s, hp) => {
+    let o = '';
+    if (props.includes('kb')) o += `<circle class="pr-s" cx="${w1[0] + 2}" cy="${w1[1] + 3}" r="4"/>`;
+    if (props.includes('dbs')) o += `<rect class="pr-s" x="${w1[0] - 5}" y="${w1[1] - 1.5}" width="10" height="3" rx="1"/>`;
+    if (props.includes('barbell')) o += `<line class="pr-l" x1="${w1[0] - 14}" y1="${w1[1]}" x2="${w1[0] + 14}" y2="${w1[1]}"/><circle class="pr-s" cx="${w1[0] - 14}" cy="${w1[1]}" r="6"/>`;
+    if (props.includes('pack')) { const mx = (s[0] + hp[0]) / 2 - 7, my = (s[1] + hp[1]) / 2 - 8; o += `<rect class="pr-pack" x="${mx}" y="${my}" width="8" height="15" rx="2"/>`; }
+    if (props.includes('band')) o += `<line class="pr-band" x1="${w1[0]}" y1="${w1[1]}" x2="${w2[0]}" y2="${w2[1]}"/>`;
+    if (props.includes('bandL')) o += `<line class="pr-band" x1="${6 + (w1[0] > 120 ? 120 : 0)}" y1="36" x2="${w1[0]}" y2="${w1[1]}"/>`;
+    if (props.includes('poles')) o += `<line class="pr-l" x1="${w1[0]}" y1="${w1[1]}" x2="${w1[0] + 6}" y2="${w1[1] + 40}"/>`;
+    return o;
+  };
+  const stage = ox => {
+    const p = e.props; let o = '';
+    if (p.includes('floor')) o += `<line class="pr-l" x1="${ox + 2}" y1="93" x2="${ox + 118}" y2="93"/>`;
+    if (p.includes('bar10')) o += `<line class="pr-bar" x1="${ox + 28}" y1="10" x2="${ox + 92}" y2="10"/>`;
+    if (p.includes('bar50')) o += `<line class="pr-bar" x1="${ox + 24}" y1="50" x2="${ox + 60}" y2="50"/><line class="pr-l" x1="${ox + 2}" y1="93" x2="${ox + 118}" y2="93"/>`;
+    if (p.includes('box')) o += `<rect class="pr-f" x="${ox + 48}" y="80" width="24" height="13"/>`;
+    if (p.includes('bench')) o += `<rect class="pr-f" x="${ox + 78}" y="74" width="30" height="19"/>`;
+    if (p.includes('box70')) o += `<rect class="pr-f" x="${ox + 58}" y="71" width="34" height="22"/>`;
+    if (p.includes('step')) o += `<rect class="pr-f" x="${ox + 54}" y="84" width="40" height="9"/><line class="pr-l" x1="${ox + 2}" y1="93" x2="${ox + 118}" y2="93"/>`;
+    if (p.includes('wall')) o += `<line class="pr-bar" x1="${ox + 70}" y1="-6" x2="${ox + 70}" y2="93"/>`;
+    if (p.includes('wallL')) o += `<line class="pr-bar" x1="${ox + 5}" y1="10" x2="${ox + 5}" y2="93"/>`;
+    if (p.includes('wallR')) o += `<line class="pr-bar" x1="${ox + 80}" y1="-6" x2="${ox + 80}" y2="96"/><circle class="pr-s" cx="${ox + 78}" cy="20" r="2.5"/><circle class="pr-s" cx="${ox + 78}" cy="44" r="2.5"/><circle class="pr-s" cx="${ox + 79}" cy="60" r="2.5"/><circle class="pr-s" cx="${ox + 78}" cy="4" r="2.5"/><circle class="pr-s" cx="${ox + 79}" cy="34" r="2.5"/>`;
+    if (p.includes('water')) o += `<path class="pr-water" d="M${ox + 2} 47 q6 -4 12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0"/>`;
+    if (p.includes('tread')) o += `<line class="pr-bar" x1="${ox + 20}" y1="92" x2="${ox + 104}" y2="79.4"/><line class="pr-l" x1="${ox + 104}" y1="79.4" x2="${ox + 104}" y2="40"/>`;
+    if (p.includes('ski')) o += `<line class="pr-bar" x1="${ox + 6}" y1="95" x2="${ox + 112}" y2="78"/>`;
+    if (p.includes('wall92')) o += `<line class="pr-bar" x1="${ox + 93}" y1="-6" x2="${ox + 93}" y2="93"/>`;
+    if (p.includes('boxHigh')) o += `<rect class="pr-f" x="${ox + 66}" y="63" width="26" height="30"/>`;
+    if (p.includes('hold')) o += `<rect class="pr-f" x="${ox + 44}" y="4" width="32" height="6" rx="1"/>`;
+    return o;
+  };
+  const style = `<style>.l1{stroke:var(--fig);stroke-width:4;stroke-linecap:round;stroke-linejoin:round;fill:none}.l2{stroke:var(--fig2);stroke-width:4;stroke-linecap:round;stroke-linejoin:round;fill:none}.hd{fill:var(--fig)}
+    .pr-l{stroke:var(--prop);stroke-width:2}.pr-bar{stroke:var(--prop);stroke-width:4;stroke-linecap:round}.pr-f{fill:var(--prop)}.pr-s{fill:var(--rescue)}.pr-pack{fill:var(--rescue)}
+    .pr-band{stroke:var(--ok);stroke-width:2;stroke-dasharray:3 2}.pr-water{fill:none;stroke:var(--ice);stroke-width:2}.arr{fill:var(--rescue)}</style>`;
+  if (frame != null) return `<svg viewBox="0 -10 120 110" role="img" aria-label="${esc(e.n)}">${style}${stage(0)}${one(e.p[frame], 0)}</svg>`;
+  return `<svg viewBox="0 -10 250 110" role="img" aria-label="${esc(e.n)}: posición inicial y final">${style}${stage(0)}${one(e.p[0], 0)}
+    <path class="arr" d="M118 40 l8 5 l-8 5 z"/>${stage(130)}${one(e.p[1], 130)}</svg>`;
+}
+
+/* ================== niveles (desde el registro) ================== */
+let REG = {}, HECHOS = {};
+const MESES_REG = ['2026-11', '2026-12', '2027-01', '2027-02', '2027-03', '2027-04', '2027-05', '2027-06'];
+function ultimo(k) { for (let i = MESES_REG.length - 1; i >= 0; i--) { const r = REG[MESES_REG[i]]; if (r && r.v && r.v[k] !== undefined && r.v[k] !== '' && r.v[k] !== null) return +r.v[k]; } return null; }
+// Punto de partida que me diste (9 nov 2026): 5–10 dominadas, 25–40 flexiones, nadas bien, escalas 6a+ de primero; gimnasio, cinta, piscina y rocódromo con cuerda.
+const PARTIDA = { dom: 1, ext: 1 };
+const NUDILLO = 'Nudillo del índice izquierdo: con esa mano, agarre abierto (dedos estirados), sin arquear ni colgarte de regletas pequeñas. Si duele al escalar, baja de grado ese día. Si sigue igual en 2–3 semanas o se hincha, que lo vea un fisio o un médico.';
+const velCinta = w => ({ base: 3.0 + 0.1 * Math.min(w.k, 4), pre: 3.2, nav: 3.6, ene: 3.6, esp: 4.5, afi: 4.2 }[w.f.id]);
+function lvDom() { const v = ultimo('dom'); return v == null ? PARTIDA.dom : v < 5 ? 0 : v <= 10 ? 1 : 2; }
+function lvExt() { const v = ultimo('ext'); return v == null ? PARTIDA.ext : v < 25 ? 0 : v <= 40 ? 1 : 2; }
+
+/* ================== sesiones ================== */
+const S = (id, tipo, t, h, b, nota) => ({ id, tipo, t, h, b, nota });
+const B = (ej, nom, dos, como) => ({ ej, nom, dos, como });
+const HALF = '· descarga: la mitad de series';
+function domA(f, des) {
+  const L = lvDom();
+  const t = [['5 × 3 negativas + 3 × 8 australianas', 'neg', 'Baja en 5 s. Las australianas con el cuerpo recto.'],
+    ['6 × (máx − 2)', 'dom', 'Descanso 2 min. Brazos estirados abajo, barbilla sobre la barra.'],
+    ['5 × 5 lastradas (+3–6 kg)', 'dom', 'Lastre en cinturón o mochila. Descanso 2–3 min.']][L];
+  if (f === 'afi') t[0] = t[0].replace(/^\d/, m => Math.max(3, Math.ceil(+m * 0.6)));
+  return B(t[1], 'Dominadas', t[0] + (des ? ' ' + HALF : ''), t[2]);
+}
+function domB(f, des) {
+  const L = lvDom();
+  const t = [['Escalera 1-2-3-2-1 ×2 (con goma)', 'Más 2 × 20 s colgado activo.'], ['6 × 50 % del máx', 'Rápidas, 90 s de descanso. Cada 2 semanas, 1 serie al máximo.'],
+    ['Escalera 1→5 ×3 + 1 máx', 'Sin lastre, repeticiones limpias.']][L];
+  return B('dom', 'Dominadas', t[0] + (des ? ' ' + HALF : ''), t[1]);
+}
+function extA(des) {
+  const t = [['5 × 60 % del máx', 'Si fallas, termina de rodillas.'], ['Pirámide 5-10-15-20-15-10-5', '45 s entre escalones.'], ['4 × 25 con pausa abajo + 1 máx', '1 s de pausa abajo en cada repetición.']][lvExt()];
+  return B('ext', 'Flexiones de suelo', t[0] + (des ? ' ' + HALF : ''), t[1]);
+}
+function extB(des) {
+  const t = [['EMOM 10 min × 8', 'Cada minuto 8 flexiones; descansas lo que sobre.'], ['EMOM 10 min × 15', 'Si una no sale, baja a 12.'], ['1 × 40 + EMOM 8 × 15', 'Ritmo de prueba, brazos bloqueados arriba.']][lvExt()];
+  return B('ext', 'Flexiones de suelo', t[0] + (des ? ' ' + HALF : ''), t[1]);
+}
+function fuerzaA(w, corta) {
+  const f = w.f.id, d = w.des;
+  const sentD = { base: '4 × 6', pre: '3 × 5 ligera', nav: '3 × 6', esp: '4 × 4 (+2,5 kg/sem)', afi: '3 × 3 pesada' }[f];
+  const cmjD = { base: '5 × 3', pre: '3 × 3', nav: '4 × 3', ene: '4 × 3', esp: '6 × 3 + 3 × 3 al cajón alto', afi: '4 × 3' }[f];
+  const b = [B(null, 'Calentamiento', '10 min', 'Movilidad de cadera y hombro, 2 × 8 dominadas escapulares, 2 × 10 sentadillas sin peso, 3 saltos progresivos.'),
+    B('cmj', 'Salto vertical (CMJ)', cmjD, 'Fresco y al principio. Máxima altura, 2 min de descanso.')];
+  if (!corta && sentD) b.push(B('sent', 'Sentadilla', sentD + (d ? ' ' + HALF : ''), 'Peso que deje 2 repeticiones de sobra. Sube 2,5 kg cuando te sobren 3.'));
+  b.push(domA(f, d), extA(d));
+  if (!corta) b.push(B('bulg', 'Zancada búlgara', (f === 'nav' ? '2 × 8' : '3 × 8') + ' / pierna', 'Mancuernas a los lados. Apunta el peso en Registro.'),
+    B('pmr', 'Peso muerto rumano', f === 'nav' ? '2 × 8' : '3 × 8', 'Espalda neutra, barra pegada a las piernas.'));
+  b.push(B('hollow', 'Hollow', '3 × 30 s', 'Lumbar pegada al suelo.'), B('elev', 'Elevación de rodillas colgado', '3 × 10', 'Sin balanceo.'));
+  if (!corta) b.push(B('rot', 'Rotación externa con goma', '2 × 15', 'Codos pegados.'));
+  return S('fa', 'fuerza', corta ? 'Fuerza A (corta)' : 'Fuerza A', corta ? '45 min' : '75 min', b, d ? 'Semana de descarga: la mitad de series, el mismo peso.' : null);
+}
+function fuerzaB(w) {
+  const f = w.f.id, d = w.des, kg = w.kg;
+  return S('fb', 'fuerza', 'Fuerza B', '45 min', [
+    B(null, 'Calentamiento', '6 min', 'Comba o bici suave, movilidad de hombro y tobillo.'),
+    B('cmj', 'Saltos al cajón', '3 × 5', 'Segundo estímulo de salto en la semana: altura que puedas aterrizar suave. Sube al cajón y baja andando.'),
+    domB(f, d), extB(d),
+    B('stepup', 'Step-up con mochila', `3 × 12 / pierna · ${kg} kg`, 'Cajón de 40 cm.'),
+    B('stepdown', 'Step-down lento', '3 × 10 / pierna', 'Bajar en 3 s.'),
+    B('gemelo', 'Gemelo excéntrico', '3 × 12 / pierna', 'Bajar en 3 s con una pierna.'),
+    B('plancha', 'Plancha lateral', '3 × 30 s / lado', ''), B('pallof', 'Pallof press', '3 × 10 / lado', ''),
+  ], d ? 'Semana de descarga: la mitad de series.' : null);
+}
+function natacion(w, suave) {
+  const f = w.f.id, k = w.k, d = w.des;
+  const drill = ['patada con tabla', 'crol a un brazo', 'respiración cada 3 brazadas', 'brazada con pull-buoy'][k % 4];
+  if (suave) return S('nat', 'agua', 'Natación suave', '30 min', [B('crol', 'Nado continuo', '800–1000 m', 'Ritmo cómodo, técnica limpia. Sirve para soltar.')]);
+  const main = {
+    base: ['8 × 50 m, salida cada 1:30 + 4 × 25 m a tope (salida cada 1:00)', 'El 50 m es casi todo anaeróbico: los 25 m a tope son tan importantes como la serie. Apunta el 50 más rápido.'],
+    pre: ['6 × 50 m cómodos', 'Sin apretar.'],
+    nav: ['8 × 50 m, salida cada 1:30', 'Si la piscina cierra por festivo, pásalo al día siguiente.'],
+    ene: ['6 × 50 m, salida cada 1:30', 'Mantenimiento: ritmo de 50–52 s.'],
+    esp: ['6 × 50 m al 95 %, 3 min de descanso + 4 × 25 m a tope', 'Pocas repeticiones muy rápidas con descanso largo. Objetivo: por debajo de 46 s.'],
+    afi: ['2 × (4 × 50 m a ritmo de prueba), 3 min entre bloques', 'Ritmo de prueba: 45–47 s.'] }[f];
+  const b = [B(null, 'Calentamiento', '200 m', 'Suave, cambiando de estilo.'), B('crol', 'Técnica: ' + drill, '4 × 25 m', 'Despacio, cuidando la posición del cuerpo.'),
+    B('crol', 'Serie principal', main[0] + (d ? ' ' + HALF : ''), main[1])];
+  if (f === 'esp' || f === 'afi') b.push(B('crol', 'Salidas y viraje', '4 × salida + 15 m rápidos', 'Practica la salida que exija la convocatoria (desde el borde o desde el agua).'));
+  b.push(B(null, 'Vuelta a la calma', '100–200 m', 'Muy suave.'));
+  return S('nat', 'agua', 'Natación', '60 min', b);
+}
+function roca(w, suave) {
+  const f = w.f.id, d = w.des;
+  if (suave) return S('roca', 'roca', 'Rocódromo técnico', '60 min', [B('roca', 'Vías fáciles', '6–8 vías de 5/5+', 'Técnica de pies y chapaje, sin cansarte.')], NUDILLO);
+  const plan = {
+    base: [['Travesías', '15 min', 'De lado por la parte baja del muro, sin bajarte.'], ['Vías de primero', '6 vías: 2 de 6a, 3 de 6a+ y 1 de 6b', 'Ya escalas de primero: sube volumen en 6a/6a+ y prueba el 6b. Descansa 4 min entre vías.'], ['Chapaje y aseguramiento', '10 min', 'Chapa rápido y desde posiciones incómodas: en la prueba hay tiempo límite.']],
+    pre: [['Travesías', '10 min', ''], ['Vías', '5 vías cómodas', 'Solo moverse bien.']],
+    nav: [['Travesías', '10 min', ''], ['Vías', '6 vías de 5+ a 6a+', 'Si el rocódromo cierra, cámbialo por fuerza B.']],
+    ene: [['Vías', '6–8 vías de 5+/6a', 'Técnica, sin ir al límite.']],
+    esp: [['Travesías', '10 min', ''], ['Pirámide de primero', '6a+ – 6b – 6b+ – 6c – 6b', 'Descansa 5 min entre vías duras. El 6c, primero en polea si no lo conoces.'], ['6c de primero', '2 intentos', 'Trabaja los pasos clave hasta encadenarlo.'], ['Suspensiones', '3 series de 6 × (7 s colgado / 3 s)', `Regleta de 30–35 mm con los pies apoyados en una silla para quitar peso${w.k >= 5 ? '; si ya aguantas sin apenas pies, pasa a 25 mm' : ''}. 3 min entre series.`]],
+    afi: [['Simulacro', '4 vías: 5+ en polea · 6a, 6b y 6c de primero', 'Con tiempo limitado, como en la prueba. Apunta cuáles encadenas.'], ['Suspensiones', '3 series de 6 × (7 s / 3 s)', 'En la regleta más pequeña que aguantes (25 mm, o 20 mm si ya puedes). Las dos últimas semanas antes de las pruebas, ninguna.']] }[f];
+  const ejOf = n => n === 'Suspensiones' ? 'susp' : 'roca';
+  return S('roca', 'roca', 'Rocódromo', '100 min', [calRoca(),
+    ...plan.map(([n, dd, c]) => B(ejOf(n), n, dd + (d ? ' ' + HALF : ''), c)), movRoca()], NUDILLO);
+}
+const MH = v => Math.round(v * 1000 * 0.15 / Math.sqrt(1 + 0.0225));
+function cinta(w, corta) {
+  const f = w.f.id, k = w.k, kg = w.kg, d = w.des;
+  const vb = velCinta(w), vs = String(vb.toFixed(1)).replace('.', ',');
+  const p = {
+    base: [`${40 + Math.min(k, 3) * 5} min en zona 2 (guía: ${vs} km/h)`, vb, 'Zona 2 = puedes hablar en frases completas. Si a esa velocidad no puedes, baja; la velocidad sube sola al mejorar la base aeróbica.'],
+    pre: ['25 min a 3,2 km/h', 3.2, 'Suave.'],
+    nav: ['40 min a 3,6 km/h', 3.6, 'Solo los días sin esquí.'],
+    ene: ['30 min a 3,6 km/h', 3.6, 'Mantenimiento.'],
+    esp: k % 2 === 0
+      ? [`Resistencia muscular: 45–60 min a la pendiente máxima de la cinta, ${Math.min(13, kg + 2)} kg`, 3.0, 'Lento y con más peso que en la prueba. Cuesta en las piernas, no en el pulso. Semanas alternas con los intervalos.']
+      : [`5 × 6 min a 4,5 km/h + 2 min a 3 km/h`, 4.5, 'Intervalos por encima del ritmo de prueba. Semanas alternas con la sesión de resistencia muscular.'],
+    afi: ['45 min a 4,2 km/h', 4.2, 'Continuo a ritmo de prueba con la mochila completa.'] }[f];
+  const dur = corta ? '30 min' : '60 min';
+  return S('cinta', 'monte', 'Cinta al 15 %', dur, [B(null, 'Calentamiento', '5 min', 'Andando al 5 %.'),
+    B('cinta', 'Subida con mochila', `${p[0]} · ${kg} kg` + (d ? ' ' + HALF : ''), `≈ ${MH(p[1])} m/h de desnivel. ${p[2]}`),
+    B('stepdown', 'Bajada de escaleras', '10 min', 'Bajar rápido y controlado con la mochila: prepara las bajadas de > 600 m/h.')]);
+}
+function monte(w, extra) {
+  const f = w.f.id, kg = w.kg, des = w.desniv;
+  const nieve = f === 'nav' || f === 'ene' || f === 'esp' || (f === 'base' && w.k >= 3);
+  const b = [B(nieve ? 'esqui' : 'stepup', nieve ? 'Esquí de travesía (o a pie si no hay nieve)' : 'Salida a pie por montaña', `+${des} m · mochila ${kg} kg`,
+      'Mira el aviso del vigía del jueves a las 19:00 y el mapa para elegir la ruta. Mide los m/h de la subida más larga.'),
+    B(null, 'Bajada', 'Ritmo constante', f === 'afi' ? 'Baja a pie por canchal y hierba buscando > 600 m/h con seguridad.' : 'Con esquís: bajada técnica, paralelo y viraje fundamental (se evalúan).')];
+  if (f !== 'ene' && f !== 'pre') b.splice(1, 0, B(nieve ? 'esqui' : 'cinta', 'Bloques a ritmo de prueba', f === 'base' ? '2 × 15 min' : f === 'nav' ? '3 × 15 min' : '3 × 20 min',
+    'Dentro de la subida larga: tramos a más de 500 m/h (mira el reloj: 125 m de desnivel cada 15 min). Entre bloques, ritmo cómodo. Tu punto débil ahora es la velocidad, no el desnivel.'));
+  if (f === 'afi') b.splice(1, 0,B('stepup', 'Terreno variado', 'Bloque, hierba y trepada de II', 'Busca tramos de canchal, pendiente de hierba arriba y abajo, y un resalte de roca para trepar y destrepar.'));
+  if (f === 'esp' && w.k % 3 === 2) b[0].dos = `Simulacro: 12 km y +1500 m · ${kg} kg`;
+  return S('monte', 'monte', nieve ? 'Día de esquí / montaña' : 'Día de montaña', 'Todo el día', b,
+    (extra || '') + ' Nunca solo en invierno: ARVA, pala y sonda.');
+}
+const gtg = () => {
+  const d = ultimo('dom'), e = ultimo('ext');
+  const nd = d ? Math.max(2, Math.round(d * 0.45)) : 3, ne = e ? Math.max(8, Math.round(e * 0.45)) : 14;
+  return S('gtg', 'fuerza', 'Series sueltas', '5 min ×5', [B('dom', 'Dominadas y flexiones repartidas en el día', `5 veces: ${nd} dominadas + ${ne} flexiones`,
+    'Alrededor del 45 % de tu máximo, separadas al menos 1 h, siempre frescas y nunca al fallo. Muchas veces a la semana y poco cada vez.')]);
+};
+const z2 = () => S('z2', 'monte', 'Zona 2', '60–90 min', [B('cinta', 'Aeróbico suave sin mochila', '60–90 min', 'Bici, carrera suave o andar en cuesta, hablando en frases completas. La base aeróbica es lo que sube tu ritmo de 300–400 a más de 500 m/h.'),
+  B('roca', 'O, si hay compañeros', 'Roca o cuerda fija', 'Escalada en roca o práctica de cuerda fija con un club. Ese día no hagas zona 2.')]);
+const aux = () =>S('aux', 'aux', 'Primeros auxilios', '20 min', [B(null, 'Manual de primeros auxilios', '1 tema', 'Test de 40 preguntas en la prueba: haz 10 preguntas de repaso al acabar.')]);
+const desc = () => S('mov', 'aux', 'Descanso + movilidad', '25 min', [
+  B('hombroPared', 'Hombro en pared', '3 × 30 s', 'Lo que más se relaciona con el nivel de escalada es la movilidad de hombro.'),
+  B('rot', 'Rotación externa con goma', '2 × 15', 'Rotación externa: clave para presas lejanas y para proteger el hombro.'),
+  B('libro', 'Libro abierto', '2 × 8 / lado', ''),
+  B('rana', 'Rana', '2 × 45 s', 'Para pegar la cadera a la pared en placas y diedros.'),
+  B('c9090', 'Cadera 90-90', '2 × 6 cambios + 30 s / lado', ''),
+  B('pasoAlto', 'Paso alto activo', '2 × 8 / pierna', 'Movilidad con fuerza: es la que se usa escalando.'),
+  B('tobillo', 'Rodilla a la pared', '2 × 10 / lado', 'Tobillo para foquear y bajar a pie.'),
+  B('antebrazo', 'Estiramiento de antebrazo', '2 × 30 s', 'Suave, sobre todo con el índice izquierdo.'),
+  B(null, 'Planifica la semana', '5 min', 'Mira la semana siguiente en la app.')]);
+const calRoca = () => B('disloc', 'Calentamiento de escalada', '10 min', 'Dislocaciones con goma 2 × 10, círculos de cadera, paso alto activo 1 × 8 por pierna, abrir y cerrar las manos 30 veces, y 2 vías muy fáciles.');
+const movRoca = () => B('rana', 'Movilidad al acabar', '10 min', 'Hombro en pared 2 × 30 s, rana 1 × 45 s, paso alto 1 × 8 por pierna, antebrazo suave. En frío, mejor al final que al principio.');
+const suave = (por) => S('suave', 'suave', 'Suave', '30 min', [B('crol', 'Natación suave o paseo', '20–30 min', por)]);
+const test = (w) => S('test', 'test', 'Test mensual', '2–3 h', [
+  B(null, 'Calentamiento', '15 min', 'Igual que en Fuerza A.'),
+  B('cmj', 'Salto vertical', 'Mejor de 3', 'Marca en la pared con tiza o con app de salto.'),
+  B('dom', 'Dominadas máx.', '1 serie', 'Con la técnica de la prueba. Descansa 5 min.'),
+  B('ext', 'Flexiones máx.', '1 serie', 'Sin parar arriba más de 1 s. Descansa 5 min.'),
+  B('crol', 'Natación 50 m', 'Crono', 'Tras 300 m de calentamiento en la piscina.'),
+  B('cinta', 'Cinta al 15 %', '30 min a la máxima velocidad que aguantes', `Con ${w.kg} kg. Apunta la velocidad: la app calcula los m/h.`),
+  B('roca', 'Escalada', 'Grado máx. de primero', 'Si no da tiempo hoy, el miércoles de esta semana.'),
+], 'Anota todo en la pestaña Registro, mes de ' + MESL[w.testMes].toLowerCase() + '.');
+
+function sesionesDia(d) {
+  const ds = ymd(d), wd = (d.getDay() + 6) % 7, wi = Math.floor((d - START) / 6048e5), w = semInfo(wi), f = w.f.id;
+  const manana = ymd(addD(d, 1)), out = [];
+  const clases = hayClase(ds) && CLASES[wd] ? CLASES[wd] : [];
+  if (FESTIVO[ds]) return { ds, wd, w, clases: [], ses: [S('desc', 'desc', 'Festivo: ' + FESTIVO[ds], '', [B(null, 'Descanso', '', 'Si te apetece, paseo suave.')])] };
+  if (EXAMEN[ds]) return { ds, wd, w, clases, ses: [S('ex', 'examen', EXAMEN[ds], '', [B(null, 'Movilidad', '15 min', 'Por la mañana, para despejarte. Nada más.')])] };
+  let ses = [];
+  const esTest = TESTS.includes(ds), testAyer = TESTS.includes(ymd(addD(d, -1)));
+  if (f === 'nav') {
+    ses = [[monte(w)], [fuerzaA(w), natacion(w)], [monte(w)], [cinta(w, true), fuerzaB(w)], [monte(w, 'Día largo.')], [roca(w)], [desc()]][wd];
+  } else if (f === 'ene') {
+    ses = [[fuerzaA(w, true)], [natacion(w), aux()], [roca(w, true)], [cinta(w, true)], [natacion(w, true)], [monte({ ...w, desniv: 600 }, 'Medio día; vuelve a estudiar.')], [desc()]][wd];
+  } else if (f === 'pre') {
+    ses = [[fuerzaA(w, true)], [natacion(w, true)], [roca(w, true)], [], [monte(w)], [roca(w)], [desc()]][wd];
+  } else {
+    ses = [[fuerzaA(w)], [natacion(w), gtg(), aux()], [roca(w)], [cinta(w), fuerzaB(w), aux()], [monte(w)],
+      [z2(), gtg()], [desc()]][wd];
+    if (w.ss && wd < 5) ses = [[monte(w, 'Semana Santa: si tienes vacaciones, día de montaña.')], [natacion(w), fuerzaA(w, true)], [monte(w)], [roca(w)], [monte(w)]][wd];
+  }
+  if (esTest) ses = [test({ ...w, testMes: d.getMonth() })];
+  if (testAyer && wd === 5) ses = [monte(w, 'Ayer fue el test: hoy toca el día de montaña.')];
+  const duro = s => ['fuerza', 'monte', 'roca', 'test'].includes(s.tipo) || s.id === 'cinta';
+  if (EXAMEN[manana] || EXTRA[manana]) ses = ses.map(s => duro(s) ? suave(`Mañana tienes ${(EXAMEN[manana] || EXTRA[manana]).toLowerCase()}${EXTRA[manana] ? ' (si te presentas)' : ''}: nada intenso.`) : s);
+  if (EVALUABLE[ds]) ses.forEach(s => { if (duro(s)) s.nota = (s.nota ? s.nota + ' ' : '') + 'Hoy tienes ' + EVALUABLE[ds] + ': no te vacíes.'; });
+  return { ds, wd, w, clases, ses };
+}
+const horaDe = (s, wd) => ({ fa: '9:00', nat: '8:30', roca: '9:30', cinta: '9:00', fb: wd === 3 ? '18:30' : '11:00', aux: wd === 3 ? '21:15' : '10:00', monte: '7:30', test: '9:00', z2: '10:00', gtg: 'Repartidas' }[s.id] || '');
+
+/* ================== almacenamiento: db privada del Artifact o navegador ================== */
+const store = {
+  db: null, uid: null, col: null, pend: Promise.resolve(),
+  async init(onChange) {
+    try { const c = window.claude; if (c && c.use) {
+      const [db, user] = await Promise.all([c.use('db'), c.use('user')]);
+      const uid = user ? await user.id() : null;
+      if (db && uid) {
+        this.db = db; this.uid = uid; this.col = db.collection('data/users/' + uid);
+        const timer = setTimeout(() => setSync('Sin conexión con tus datos todavía'), 10000);
+        this.col.onSnapshot(snap => {
+          clearTimeout(timer);
+          snap.docs.forEach(doc => { const v = doc.data(); if (doc.id === 'hechos') HECHOS = { ...(v.k || {}) }; else if (doc.id.startsWith('reg-')) REG[doc.id.slice(4)] = v; });
+          setSync(snap.metadata.fromCache ? 'Datos guardados (sin confirmar)' : 'Sincronizado en tu cuenta'); onChange();
+        }, () => { clearTimeout(timer); setSync('No se pudo leer tu cuenta; uso este navegador'); this.db = null; });
+        return;
+      } } } catch (e) {}
+    setSync('Guardado en este navegador');
+  },
+  local() {
+    try { REG = JSON.parse(localStorage.getItem('caem:reg') || '{}'); HECHOS = JSON.parse(localStorage.getItem('caem:hechos') || '{}'); } catch (e) {}
+    const seed = window.CAEM_SEED; // datos que venían dentro de la app descargada
+    if (seed && !Object.keys(REG).length && !Object.keys(HECHOS).length) { const s = limpiar(seed); REG = s.reg; HECHOS = s.hechos;
+      try { localStorage.setItem('caem:reg', JSON.stringify(REG)); localStorage.setItem('caem:hechos', JSON.stringify(HECHOS)); } catch (e) {} }
+  },
+  async saveHechosAhora() {
+    if (this.col) { try { await this.col.doc('hechos').set({ k: { ...HECHOS } }); } catch (e) {} }
+    else try { localStorage.setItem('caem:hechos', JSON.stringify(HECHOS)); } catch (e) {}
+  },
+  async saveReg(mes, body) {
+    REG[mes] = body;
+    if (this.col) { try { await this.col.doc('reg-' + mes).set(body); return true; } catch (e) { setSync('No se pudo guardar en tu cuenta'); } }
+    try { localStorage.setItem('caem:reg', JSON.stringify(REG)); return true; } catch (e) { return false; }
+  },
+  _t: null,
+  saveHechos() {
+    clearTimeout(this._t);
+    this._t = setTimeout(() => {
+      if (this.col) { const body = { k: { ...HECHOS } }; this.pend = this.pend.then(() => this.col.doc('hechos').set(body)).catch(() => setSync('No se pudo guardar en tu cuenta')); }
+      else try { localStorage.setItem('caem:hechos', JSON.stringify(HECHOS)); } catch (e) {}
+    }, 700);
+  },
+};
+function setSync(t) { document.getElementById('sync').textContent = t; }
+
+/* ================== vista: semana ================== */
+let semSel = Math.max(0, Math.min(NSEM - 1, Math.floor((new Date() - START) / 6048e5)));
+try { const s = sessionStorage.getItem('caem:sem'); if (s != null) semSel = +s; } catch (e) {}
+const abiertos = new Set();
+function renderSemana() {
+  const w = semInfo(semSel), hoy = ymd(new Date()), el = document.getElementById('v-semana');
+  const dias = [...Array(7)].map((_, i) => sesionesDia(addD(w.lunes, i)));
+  let tot = 0, hechas = 0; dias.forEach(d => d.ses.forEach(s => { if (s.tipo !== 'desc' && s.tipo !== 'examen') { tot++; if (HECHOS[d.ds + ':' + s.id]) hechas++; } }));
+  const eventos = []; dias.forEach(d => { const dd = parseD(d.ds), t = `${DIA[d.wd]} ${dd.getDate()}`;
+    if (EXAMEN[d.ds]) eventos.push(`<span class="chip c-ex">${t} · ${EXAMEN[d.ds]}</span>`);
+    if (EXTRA[d.ds]) eventos.push(`<span class="chip c-des">${t} · ${EXTRA[d.ds]}</span>`);
+    if (EVALUABLE[d.ds]) eventos.push(`<span class="chip c-ex">${t} · ${EVALUABLE[d.ds]}</span>`);
+    if (FESTIVO[d.ds]) eventos.push(`<span class="chip c-des">${t} · ${FESTIVO[d.ds]}</span>`);
+    if (TESTS.includes(d.ds)) eventos.push(`<span class="chip c-test">${t} · Test mensual</span>`); });
+  if (!abiertos.size) { const i = dias.findIndex(d => d.ds === hoy); abiertos.add(i >= 0 ? dias[i].ds : dias[0].ds); }
+  const fin = addD(w.lunes, 6), velC = +velCinta(w).toFixed(1);
+  el.innerHTML = `
+    <div class="wk-nav">
+      <button class="arrow" id="prev" aria-label="Semana anterior" ${semSel === 0 ? 'disabled' : ''}>‹</button>
+      <div class="wk-title"><span class="chip ${w.f.c}">${w.f.n}${w.des ? ' · descarga' : ''}${w.ss ? ' · Semana Santa' : ''}</span>
+        <h2>Semana ${semSel + 1}</h2><span class="r">${fCorta(w.lunes)} – ${fCorta(fin)} ${fin.getFullYear()} · de ${NSEM}</span></div>
+      <button class="btn" id="hoy">Hoy</button>
+      <button class="arrow" id="next" aria-label="Semana siguiente" ${semSel === NSEM - 1 ? 'disabled' : ''}>›</button>
+    </div>
+    <p class="lead">${w.f.obj}${w.des ? ' Esta semana es de descarga: mitad de volumen para asimilar.' : ''}</p>
+    <div class="wk-sum">
+      <div><b>${hechas}/${tot}</b><span>Sesiones hechas</span></div>
+      <div><b>+${w.desniv} m</b><span>Desnivel del día de montaña</span></div>
+      <div><b>${w.kg} kg</b><span>Mochila</span></div>
+      <div><b>${MH(velC)}</b><span>m/h en la cinta (${String(velC).replace('.', ',')} km/h)</span></div>
+    </div>
+    ${eventos.length ? `<div class="wk-notes">${eventos.join('')}</div>` : ''}
+    ${w.f.id === 'esp' && w.k < 1 ? '<div class="aviso">Empieza el 2.º cuatrimestre: cuando tengas el horario, dime y muevo las sesiones de tarde.</div>' : ''}
+    <div class="days">${dias.map(d => diaHTML(d, hoy)).join('')}</div>`;
+  el.querySelector('#prev').onclick = () => irSem(semSel - 1);
+  el.querySelector('#next').onclick = () => irSem(semSel + 1);
+  el.querySelector('#hoy').onclick = () => { abiertos.clear(); irSem(Math.max(0, Math.min(NSEM - 1, Math.floor((new Date() - START) / 6048e5)))); };
+  el.querySelectorAll('.day-h').forEach(b => b.onclick = () => { const ds = b.dataset.ds; abiertos.has(ds) ? abiertos.delete(ds) : abiertos.add(ds); b.parentElement.classList.toggle('open'); b.setAttribute('aria-expanded', abiertos.has(ds)); });
+  el.querySelectorAll('.check input').forEach(c => c.onchange = () => {
+    if (c.checked) HECHOS[c.dataset.k] = 1; else delete HECHOS[c.dataset.k]; store.saveHechos(); renderSemana(); });
+  el.querySelectorAll('.ill[data-ej]').forEach(b => b.onclick = () => verEj(b.dataset.ej));
+}
+function irSem(i) { semSel = Math.max(0, Math.min(NSEM - 1, i)); abiertos.clear(); try { sessionStorage.setItem('caem:sem', semSel); } catch (e) {} renderSemana(); window.scrollTo({ top: 0 }); }
+function diaHTML(d, hoy) {
+  const dd = parseD(d.ds), open = abiertos.has(d.ds);
+  const pills = d.ses.map(s => `<span class="pill t-${s.tipo}${HECHOS[d.ds + ':' + s.id] ? ' done' : ''}">${esc(s.t)}</span>`).join('');
+  const n = d.ses.filter(s => s.tipo !== 'desc' && s.tipo !== 'examen'), h = n.filter(s => HECHOS[d.ds + ':' + s.id]).length;
+  return `<div class="day${d.ds === hoy ? ' today' : ''}${open ? ' open' : ''}">
+    <button class="day-h" data-ds="${d.ds}" aria-expanded="${open}"><span class="dn">${DIA[d.wd]}</span><span class="dd">${fCorta(dd)}</span>
+      <span class="ses">${pills}</span><span class="prog">${n.length ? h + '/' + n.length : ''}</span><span class="car">›</span></button>
+    <div class="day-b">
+      ${d.clases.length ? `<div>${d.clases.map(([hh, c]) => `<div class="clase-row"><span class="hh">${hh}</span><span>${c}</span></div>`).join('')}</div>` : ''}
+      ${d.ses.map(s => sesHTML(s, d)).join('')}
+    </div></div>`;
+}
+function sesHTML(s, d) {
+  const k = d.ds + ':' + s.id, on = !!HECHOS[k], hh = horaDe(s, d.wd);
+  return `<div class="sesion"><div class="ses-h"><span class="pill t-${s.tipo}">${s.tipo === 'agua' ? 'agua' : s.tipo}</span><h3>${esc(s.t)}</h3>
+    <span class="hh">${[hh, s.h].filter(Boolean).join(' · ')}</span>
+    ${s.tipo !== 'desc' && s.tipo !== 'examen' ? `<label class="check${on ? ' on' : ''}"><input type="checkbox" data-k="${k}" ${on ? 'checked' : ''}>Hecho</label>` : ''}</div>
+    ${s.nota ? `<div class="ses-nota">${esc(s.nota)}</div>` : ''}
+    ${s.b.map(b => `<div class="blq">${b.ej ? `<button class="ill" data-ej="${b.ej}" aria-label="Ver ${esc(EJ[b.ej].n)}">${fig(b.ej, 1)}</button>` : `<span class="ill none">·</span>`}
+      <span class="nom">${esc(b.nom)}</span><span class="dos">${esc(b.dos)}</span><span class="como">${esc(b.como || '')}</span></div>`).join('')}</div>`;
+}
+function verEj(id) {
+  const e = EJ[id], dl = document.getElementById('dlg');
+  document.getElementById('dlg-in').innerHTML = `<button class="btn x" id="dlg-x">Cerrar</button>${ejHTML(id)}`;
+  document.getElementById('dlg-x').onclick = () => dl.close();
+  try { dl.showModal(); } catch (er) { location.hash = '#ejercicios'; }
+}
+
+/* ================== vista: ejercicios ================== */
+const GRUPOS = [['todos', 'Todos'], ['fuerza', 'Fuerza'], ['core', 'Core'], ['monte', 'Montaña'], ['agua', 'Natación'], ['roca', 'Escalada'], ['movilidad', 'Movilidad']];
+let grupoSel = 'todos';
+function ejHTML(id) { const e = EJ[id]; return `<div class="ej" id="ej-${id}"><div class="fig">${fig(id)}</div><span class="para">${esc(e.para)}</span><h3>${esc(e.n)}</h3>
+  <ul>${e.tec.map(t => `<li>${esc(t)}</li>`).join('')}</ul><p class="mal">✗ ${esc(e.mal)}</p></div>`; }
+function renderEjercicios() {
+  const el = document.getElementById('v-ejercicios');
+  el.innerHTML = `<h2>Ejercicios</h2><p class="lead">Cada dibujo muestra la posición inicial y la final. En la semana, toca la miniatura de un ejercicio para verlo aquí.</p>
+    <div class="filtros">${GRUPOS.map(([g, n]) => `<button data-g="${g}" class="${g === grupoSel ? 'on' : ''}">${n}</button>`).join('')}</div>
+    <div class="ejs">${Object.keys(EJ).filter(id => grupoSel === 'todos' || EJ[id].g === grupoSel).map(id => `<div class="panel">${ejHTML(id)}</div>`).join('')}</div>`;
+  el.querySelectorAll('.filtros button').forEach(b => b.onclick = () => { grupoSel = b.dataset.g; renderEjercicios(); });
+}
+
+/* ================== métricas ================== */
+const GRADOS = ['4', '5', '5+', '6a', '6a+', '6b', '6b+', '6c', '6c+', '7a', '7a+'];
+const tParse = s => { if (s === '' || s == null) return ''; s = String(s).trim().replace(',', '.'); if (s.includes(':')) { const [m, x] = s.split(':'); return +m * 60 + +x; } return +s; };
+const tFmt = v => { if (v === '' || v == null || isNaN(v)) return ''; if (v < 60) return String(Math.round(v * 10) / 10).replace('.', ','); const m = Math.floor(v / 60), s = Math.round(v - m * 60); return `${m}:${pad(s)}`; };
+const M = [
+  { g: 'Fuerza', k: 'dom', n: 'Dominadas máx.', u: 'reps', meta: 15, up: true, elim: true },
+  { g: 'Fuerza', k: 'ext', n: 'Flexiones máx.', u: 'reps', meta: 50, up: true, elim: true },
+  { g: 'Fuerza', k: 'sal', n: 'Salto vertical', u: 'cm', meta: 49, up: true, elim: true },
+  { g: 'Fuerza', k: 'domL', n: 'Dominada lastrada (5 reps)', u: 'kg extra', up: true },
+  { g: 'Fuerza', k: 'sent', n: 'Sentadilla (peso de tus series)', u: 'kg', up: true },
+  { g: 'Fuerza', k: 'pmr', n: 'Peso muerto rumano (×8)', u: 'kg', up: true },
+  { g: 'Fuerza', k: 'bulg', n: 'Búlgara (×8, cada mano)', u: 'kg', up: true },
+  { g: 'Fuerza', k: 'peso', n: 'Peso corporal', u: 'kg' },
+  { g: 'Natación', k: 'n50', n: 'Natación 50 m', u: 's', meta: 48, up: false, elim: true, t: 'tiempo' },
+  { g: 'Natación', k: 'n400', n: 'Natación 400 m', u: 'min:s', up: false, t: 'tiempo' },
+  { g: 'Escalada', k: 'gPri', n: 'Grado máx. de primero', u: 'grado', meta: 7, up: true, elim: true, t: 'grado' },
+  { g: 'Escalada', k: 'gPol', n: 'Grado máx. en polea', u: 'grado', up: true, t: 'grado' },
+  { g: 'Escalada', k: 'susp', n: 'Regleta más pequeña que aguantas 7 s sin pies', u: 'mm', up: false },
+  { g: 'Escalada', k: 'vias', n: 'Vías escaladas en el mes', u: 'vías', up: true },
+  { g: 'Cinta y montaña', k: 'cvel', n: 'Cinta 15 %: velocidad 30 min', u: 'km/h', up: true },
+  { g: 'Cinta y montaña', k: 'ckg', n: 'Cinta: peso de la mochila', u: 'kg', up: true },
+  { g: 'Cinta y montaña', k: 'msub', n: 'Subida real (mejor del mes)', u: 'm/h', meta: 500, up: true, elim: true },
+  { g: 'Cinta y montaña', k: 'mbaj', n: 'Bajada real (mejor del mes)', u: 'm/h', meta: 600, up: true, elim: true },
+  { g: 'Cinta y montaña', k: 'mdes', n: 'Mayor desnivel en un día', u: 'm', meta: 1500, up: true },
+];
+const fmtV = (m, v) => v == null || v === '' ? '—' : m.t === 'grado' ? GRADOS[v] || '—' : m.t === 'tiempo' ? tFmt(v) + (v < 60 ? ' s' : '') : String(v).replace('.', ',');
+const pasa = (m, v) => m.meta == null || v == null || v === '' ? null : m.up ? v >= m.meta : v <= m.meta;
+
+/* ================== vista: registro ================== */
+let mesSel = (() => { const n = new Date(), k = `${n.getFullYear()}-${pad(n.getMonth() + 1)}`; return MESES_REG.includes(k) ? k : MESES_REG[0]; })();
+const mesNom = k => { const [y, m] = k.split('-').map(Number); return `${MESL[m - 1]} ${y}`; };
+function renderRegistro() {
+  const el = document.getElementById('v-registro'), r = REG[mesSel] || {}, v = r.v || {}, tdate = TESTS[MESES_REG.indexOf(mesSel)];
+  const grupos = [...new Set(M.map(m => m.g))];
+  el.innerHTML = `<h2>Registro mensual</h2>
+    <p class="lead">Una vez al mes, el día del test, apunta tus marcas y pesos. Lo que dejes vacío no cuenta. Los tiempos van en segundos o en min:s (por ejemplo 7:40).</p>
+    <div class="reg-top"><select id="mes" aria-label="Mes">${MESES_REG.map(k => `<option value="${k}" ${k === mesSel ? 'selected' : ''}>${mesNom(k)}</option>`).join('')}</select>
+      <span class="chip c-test">Test: ${fCorta(parseD(tdate))}</span>${r.ts ? `<span class="estado-g">Guardado el ${new Date(r.ts).toLocaleDateString('es-ES')}</span>` : ''}</div>
+    <div class="grupos">${grupos.map(g => `<div class="panel grupo"><h3>${g}</h3>${M.filter(m => m.g === g).map(m => campoHTML(m, v[m.k])).join('')}</div>`).join('')}</div>
+    <div class="panel protocolo"><h3>Cómo hacer el test</h3><ol>
+      <li>Descansa el día anterior (nada de fuerza ni montaña).</li>
+      <li>Orden: salto → dominadas → flexiones (5 min entre cada una) → piscina → cinta.</li>
+      <li>Técnica de prueba: dominadas desde brazos estirados, flexiones bajando hasta un puño del suelo.</li>
+      <li>Escalada el miércoles de esa semana; los m/h reales, de tu mejor salida del mes.</li>
+      <li>Pesos de fuerza: el que usaste en tus series de la última semana.</li></ol></div>
+    <div class="reg-foot"><button class="btn pri" id="guardar">Guardar ${mesNom(mesSel).toLowerCase()}</button><span class="estado-g" id="reg-est"></span></div>`;
+  el.querySelector('#mes').onchange = e => { mesSel = e.target.value; renderRegistro(); };
+  el.querySelectorAll('.campo input, .campo select').forEach(i => i.oninput = () => {
+    const m = M.find(x => x.k === i.dataset.k), val = leer(m, i.value); i.closest('.campo').classList.toggle('ok', pasa(m, val) === true); });
+  el.querySelector('#guardar').onclick = async () => {
+    const vals = {}; el.querySelectorAll('[data-k]').forEach(i => { const m = M.find(x => x.k === i.dataset.k), val = leer(m, i.value); if (val !== '' && !isNaN(val)) vals[m.k] = val; });
+    const ok = await store.saveReg(mesSel, { mes: mesSel, v: vals, ts: Date.now() });
+    document.getElementById('reg-est').textContent = ok ? `Guardado: ${Object.keys(vals).length} marcas de ${mesNom(mesSel).toLowerCase()}.` : 'No se pudo guardar. Prueba otra vez.';
+  };
+}
+const leer = (m, s) => m.t === 'grado' ? (s === '' ? '' : +s) : m.t === 'tiempo' ? tParse(s) : (s === '' ? '' : +String(s).replace(',', '.'));
+function campoHTML(m, val) {
+  const ok = pasa(m, val) === true ? ' ok' : '';
+  const inp = m.t === 'grado'
+    ? `<select id="f-${m.k}" data-k="${m.k}"><option value="">—</option>${GRADOS.map((g, i) => `<option value="${i}" ${+val === i && val !== '' && val != null ? 'selected' : ''}>${g}</option>`).join('')}</select>`
+    : `<input id="f-${m.k}" data-k="${m.k}" inputmode="decimal" value="${m.t === 'tiempo' ? tFmt(val) : val == null ? '' : String(val).replace('.', ',')}" placeholder="${m.u}">`;
+  return `<div class="campo${ok}"><label for="f-${m.k}">${m.n}<small>${m.meta != null ? `Mínimo: ${fmtV(m, m.meta)} ${m.t ? '' : m.u}` : m.u}</small></label>${inp}</div>`;
+}
+
+/* ================== vista: progreso ================== */
+let tablaVista = false;
+function serie(m) { return MESES_REG.map(k => { const x = REG[k] && REG[k].v ? REG[k].v[m.k] : undefined; return x === undefined || x === '' ? null : +x; }); }
+function serieMH() { return MESES_REG.map(k => { const x = REG[k] && REG[k].v ? REG[k].v.cvel : undefined; return x ? MH(+x) : null; }); }
+function chartSVG(m, ys, metaOverride) {
+  const W = 300, H = 150, L = 34, R = 34, T = 14, Bt = 22, meta = metaOverride != null ? metaOverride : m.meta;
+  const vals = ys.filter(v => v != null); const pts = vals.length;
+  if (!pts) return `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(m.n)}: sin datos"><line x1="${L}" x2="${W - R}" y1="${H - Bt}" y2="${H - Bt}" stroke="var(--line)"/>
+    <text class="empty" x="${(L + W - R) / 2}" y="${H / 2}" text-anchor="middle">Sin datos todavía${meta != null ? ` · mínimo ${m.t === 'grado' ? GRADOS[meta] : m.t === 'tiempo' ? tFmt(meta) : meta}` : ''}</text>
+    <g class="axis">${MESES_REG.map((k, i) => `<text x="${L + i * (W - L - R) / (MESES_REG.length - 1)}" y="${H - 6}" text-anchor="middle">${MES[+k.slice(5) - 1]}</text>`).join('')}</g></svg>`;
+  let lo = Math.min(...vals, meta != null ? meta : Infinity), hi = Math.max(...vals, meta != null ? meta : -Infinity);
+  if (!pts && meta == null) { lo = 0; hi = 1; } if (!pts && meta != null) { lo = meta * 0.7; hi = meta * 1.1; }
+  if (lo === hi) { lo -= 1; hi += 1; } const pd = (hi - lo) * 0.15; lo -= pd; hi += pd;
+  if (m.t === 'grado') { lo = Math.max(0, Math.floor(lo)); hi = Math.min(GRADOS.length - 1, Math.ceil(hi)); }
+  const x = i => L + i * (W - L - R) / (MESES_REG.length - 1), y = v => T + (H - T - Bt) * (1 - (v - lo) / (hi - lo));
+  const ticks = m.t === 'grado' ? [...Array(hi - lo + 1)].map((_, i) => lo + i).filter((_, i, a) => a.length < 6 || i % 2 === 0) : [lo + pd, (lo + hi) / 2, hi - pd];
+  const fmtT = v => m.t === 'grado' ? GRADOS[v] : m.t === 'tiempo' ? tFmt(v) : Math.round(v);
+  let path = ''; ys.forEach((v, i) => { if (v != null) path += (path && ys.slice(0, i).some(z => z != null) ? 'L' : 'M') + x(i).toFixed(1) + ' ' + y(v).toFixed(1); });
+  const lastI = ys.map((v, i) => v != null ? i : -1).filter(i => i >= 0).pop();
+  return `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(m.n)}: evolución por meses">
+    <g class="grid">${ticks.map(t => `<line x1="${L}" x2="${W - R}" y1="${y(t)}" y2="${y(t)}"/>`).join('')}</g>
+    <g class="axis">${ticks.map(t => `<text x="${L - 6}" y="${y(t) + 3}" text-anchor="end">${fmtT(t)}</text>`).join('')}
+      ${MESES_REG.map((k, i) => `<text x="${x(i)}" y="${H - 6}" text-anchor="middle">${MES[+k.slice(5) - 1]}</text>`).join('')}</g>
+    ${meta != null ? `<g class="meta"><line x1="${L}" x2="${W - R}" y1="${y(meta)}" y2="${y(meta)}"/><text x="${W - R + 4}" y="${y(meta) + 3}">${fmtT(meta)}</text></g>` : ''}
+    ${pts ? `<path class="serie" d="${path}"/>${ys.map((v, i) => v != null ? `<circle class="pt" data-i="${i}" cx="${x(i)}" cy="${y(v)}" r="4.5"/>` : '').join('')}
+      <text class="last" x="${x(lastI)}" y="${y(ys[lastI]) - 9}" text-anchor="middle">${fmtT(ys[lastI])}</text>` : `<text class="empty" x="${(L + W - R) / 2}" y="${H / 2}" text-anchor="middle">Sin datos todavía</text>`}
+    <line class="cross" x1="0" x2="0" y1="${T}" y2="${H - Bt}" visibility="hidden"/>
+    ${MESES_REG.map((k, i) => `<rect class="hit" data-i="${i}" x="${x(i) - (W - L - R) / 14}" y="0" width="${(W - L - R) / 7}" height="${H}"/>`).join('')}
+  </svg>`;
+}
+function renderProgreso() {
+  const el = document.getElementById('v-progreso');
+  const elim = M.filter(m => m.elim), ok = elim.filter(m => pasa(m, ultimo(m.k)) === true).length, med = elim.filter(m => ultimo(m.k) != null).length;
+  const hechos = Object.keys(HECHOS).length;
+  const charts = [...M.filter(m => !['ckg', 'peso'].includes(m.k)).map(m => ({ m, ys: serie(m) })),
+    { m: { k: 'cmh', n: 'Cinta 15 %: desnivel por hora', u: 'm/h', up: true, g: 'Cinta y montaña' }, ys: serieMH(), meta: 500 }];
+  el.innerHTML = `<h2>Progreso</h2>
+    <div class="tiles">
+      <div class="panel tile"><b>${ok}/${elim.length}</b><span>Mínimos eliminatorios que ya pasas</span></div>
+      <div class="panel tile"><b>${med}/${elim.length}</b><span>Pruebas medidas</span></div>
+      <div class="panel tile"><b>${hechos}</b><span>Sesiones marcadas como hechas</span></div>
+      <div class="panel tile"><b>${Object.values(REG).filter(r => r && r.v && Object.keys(r.v).length).length}/8</b><span>Meses registrados</span></div>
+    </div>
+    <div class="reg-top"><button class="btn" id="tabla">${tablaVista ? 'Ver gráficas' : 'Ver como tabla'}</button><span class="estado-g">La línea discontinua verde es el mínimo de la prueba.</span></div>
+    ${tablaVista ? tablaHTML(charts) : `<div class="charts">${charts.map(({ m, ys, meta }) => {
+      const last = [...ys].reverse().find(v => v != null), p = pasa({ ...m, meta: meta != null ? meta : m.meta }, last);
+      return `<div class="panel chart" data-k="${m.k}"><h3>${esc(m.n)}</h3><div class="sub"><span>${m.u}</span>${p == null ? '' : p ? '<span class="ok-t">✓ pasa</span>' : '<span class="no-t">aún no</span>'}</div>${chartSVG(m, ys, meta)}</div>`; }).join('')}</div>`}`;
+  el.querySelector('#tabla').onclick = () => { tablaVista = !tablaVista; renderProgreso(); };
+  el.querySelectorAll('.chart').forEach(c => {
+    const svg = c.querySelector('svg'), item = charts.find(x => x.m.k === c.dataset.k), cross = svg.querySelector('.cross');
+    let tip = null;
+    svg.querySelectorAll('.hit').forEach(h => {
+      const show = () => { const i = +h.dataset.i, v = item.ys[i], pt = svg.querySelector(`.pt[data-i="${i}"]`);
+        const vb = svg.viewBox.baseVal, sc = svg.clientWidth / vb.width, cx = (+h.getAttribute('x') + +h.getAttribute('width') / 2);
+        cross.setAttribute('x1', cx); cross.setAttribute('x2', cx); cross.setAttribute('visibility', 'visible');
+        svg.querySelectorAll('.pt').forEach(p => p.classList.toggle('hi', p === pt));
+        if (!tip) { tip = document.createElement('div'); tip.className = 'tip'; c.appendChild(tip); }
+        tip.textContent = `${mesNom(MESES_REG[i])}: ${v == null ? 'sin dato' : fmtV(item.m, v) + (item.m.t ? '' : ' ' + item.m.u)}`;
+        const cy = pt ? +pt.getAttribute('cy') : 40; tip.style.left = (svg.offsetLeft + cx * sc) + 'px'; tip.style.top = (svg.offsetTop + cy * sc - 6) + 'px'; };
+      h.addEventListener('pointerenter', show); h.addEventListener('pointerdown', show);
+    });
+    svg.addEventListener('pointerleave', () => { cross.setAttribute('visibility', 'hidden'); svg.querySelectorAll('.pt').forEach(p => p.classList.remove('hi')); if (tip) { tip.remove(); tip = null; } });
+  });
+}
+function tablaHTML(charts) {
+  return `<div class="panel scroll"><table><thead><tr><th>Marca</th>${MESES_REG.map(k => `<th class="n">${MES[+k.slice(5) - 1]}</th>`).join('')}<th class="n">Mínimo</th></tr></thead><tbody>
+    ${charts.map(({ m, ys, meta }) => `<tr><td>${esc(m.n)}</td>${ys.map(v => `<td class="n">${fmtV(m, v)}</td>`).join('')}<td class="n">${meta != null ? meta : m.meta != null ? fmtV(m, m.meta) : '—'}</td></tr>`).join('')}
+  </tbody></table></div>`;
+}
+
+/* ================== vista: pruebas ================== */
+function renderPruebas() {
+  const el = document.getElementById('v-pruebas');
+  const filas = [
+    ['Natación 50 m', 'Eliminatoria', '≤ 48 s (mujer 52 s)', 'n50'], ['Flexiones de brazos en barra (P5)', 'Eliminatoria', '≥ 15 (mujer 12)', 'dom'],
+    ['Extensiones de brazos (P3)', 'Eliminatoria', '≥ 50 (mujer 38)', 'ext'], ['Salto vertical (P1)', 'Eliminatoria', '≥ 49 cm (mujer 43)', 'sal'],
+    ['Progresión en montaña: subida', 'Eliminatoria · 30 ptos', '> 500 m/h · mochila 7–10 kg · 12 km · hasta +1500 m', 'msub'],
+    ['Progresión en montaña: bajada', 'Eliminatoria', '> 600 m/h · bloque, hierba, trepa y destrepe', 'mbaj'],
+    ['Escalada', 'Eliminatoria · 30 ptos', '5+ en polea; 6a, 6b y 6c de primero', 'gPri'],
+    ['Esquí de montaña', 'No eliminatoria', 'Mochila 7–10 kg · 12 km · hasta +1500 m', null],
+    ['Descenso con esquís', 'No eliminatoria', 'Dos bajadas: paralelo elemental y viraje fundamental; fuera de pista', null],
+    ['Cuerda fija semiestática', 'No eliminatoria', 'Material de espeleo y protocolos', null],
+    ['Progresión subterránea', 'Eliminatoria', 'Paso estrecho con poca o ninguna luz', null],
+    ['Primeros auxilios', 'Eliminatoria y puntúa', 'Test de 40 preguntas (manual de la intranet)', null],
+    ['Psicotécnico y entrevista', 'Eliminatorias', 'La entrevista es la última prueba', null]];
+  el.innerHTML = `<h2>Pruebas del CAEM</h2>
+    <div class="aviso">Hay que ser guardia civil para presentarse. Las marcas son las que publica especialidadesguardiacivil.es; comprueba la convocatoria del BOGC cuando salga. El examen se hace en el cuartel de Jaca.</div>
+    <div class="panel scroll"><table><thead><tr><th>Prueba</th><th>Tipo</th><th>Mínimo</th><th class="n">Tu última marca</th></tr></thead><tbody>
+    ${filas.map(([n, t, min, k]) => { const m = k && M.find(x => x.k === k), v = k ? ultimo(k) : null, p = m ? pasa(m, v) : null;
+      return `<tr><td>${n}</td><td>${t}</td><td>${min}</td><td class="n">${k ? `<span class="${p == null ? 'na-t' : p ? 'ok-t' : 'no-t'}">${fmtV(m, v)}${p ? ' ✓' : ''}</span>` : '—'}</td></tr>`; }).join('')}
+    </tbody></table></div>
+    <p class="lead">Antes de las pruebas: certificado médico, electrocardiograma, espirometría y audiometría. Fuentes:
+      <a href="https://especialidadesguardiacivil.es/servicio-de-montana/especialista-en-montana/" target="_blank" rel="noopener">especialidadesguardiacivil.es</a> ·
+      <a href="https://www.boe.es/eli/es/o/2019/03/20/pci362/con" target="_blank" rel="noopener">Orden PCI/362/2019</a>.</p>
+    <h2>Por qué estos ejercicios</h2>
+    <p class="lead">Lo que dice la investigación sobre cada bloque y cuánto fiarse. «Fuerte» = metaanálisis o varios ensayos; «moderada» = estudios pequeños o en otra población; «débil» = práctica de entrenadores sin ensayos.</p>
+    <div class="panel scroll"><table><thead><tr><th>Bloque</th><th>Qué hace el plan</th><th>Evidencia</th><th>Fuente</th></tr></thead><tbody>
+      ${EVIDENCIA.map(([b, q, n, src]) => `<tr><td><b>${b}</b></td><td>${q}</td><td><span class="chip ${n === 'Fuerte' ? 'c-nav' : n === 'Moderada' ? 'c-ene' : 'c-des'}">${n}</span></td>
+        <td>${src.map(([t, u]) => `<a href="${u}" target="_blank" rel="noopener">${t}</a>`).join('<br>')}</td></tr>`).join('')}
+    </tbody></table></div>`;
+}
+const EVIDENCIA = [
+  ['Salto vertical', 'Saltos (CMJ y cajón) dos días por semana junto a sentadilla pesada.', 'Fuerte',
+    [['Metaanálisis en red, fuerza + pliometría (Front. Physiol. 2024)', 'https://doi.org/10.3389/fphys.2024.1302610'], ['Revisión sistemática 2025', 'https://www.frontiersin.org/journals/physiology/articles/10.3389/fphys.2025.1683281/full']]],
+  ['Subir > 500 m/h', 'Mucha zona 2 (cinta, sábado) como base, y desde febrero resistencia muscular con pendiente máxima y peso, alternando con intervalos.', 'Moderada',
+    [['Uphill Athlete · resistencia muscular', 'https://uphillathlete.com/vertical-beast-mode-what-is-muscular-endurance-why-it-is-important-for-any-alpinist-or-mountaineer-and-how-do-you-train-it/'], ['Uphill Athlete · base aeróbica', 'https://uphillathlete.com/podcast/training-for-mountaineering-base-training/']]],
+  ['Marchas con mochila', 'Mochila en la cinta y el viernes, subiendo de 5 a 10 kg, junto a fuerza y aeróbico.', 'Moderada',
+    [['Knapik: marchas cada 2 semanas bastan dentro de un plan completo', 'https://apps.dtic.mil/sti/pdfs/ADA221239.pdf'], ['HPRC · estrategias de carga', 'https://www.hprc-online.org/physical-fitness/training-performance/load-carriage-strategies']]],
+  ['Bajar > 600 m/h', 'Step-down, gemelo excéntrico y bajadas de escaleras y a pie con mochila.', 'Moderada',
+    [['Efecto de series repetidas en bajada (USQ)', 'https://research.usq.edu.au/download/de2e33a2ad8a6f1346d1b7b0615e7e0cd0b80ef61cd0c19abde7af604308e960/729153/sms.13222.pdf'], ['Bajada andando hacia atrás (Adelaide)', 'https://digital.library.adelaide.edu.au/items/7c551fb3-3cfa-468d-9441-14768284ebbf']]],
+  ['Dominadas', 'Series submáximas lunes y jueves, y series sueltas al 45 % martes y sábado, sin fallo.', 'Débil',
+    [['Mountain Tactical: mini estudio de series sueltas', 'https://mtntactical.com/knowledge/mini-study-grease-the-groove-beats-density-for-push-up-pull-up-improvement/']]],
+  ['Flexiones', 'Pirámides, cada minuto y series sueltas.', 'Débil',
+    [['Military.com · consejos para la prueba', 'https://www.military.com/military-fitness/5-tips-help-you-achieve-your-push-goals']]],
+  ['Natación 50 m', 'Series de 50 m y sprints de 25 m con descanso largo.', 'Moderada',
+    [['Distribución de intensidad en velocistas (2025)', 'https://www.fisiologiadelejercicio.com/wp-content/uploads/2025/11/Training-intensity-distribution-for-sprinter-swimmers.pdf'], ['USRPT (Dovepress)', 'https://www.dovepress.com/ultra-short-race-pace-training-usrpt-in-swimming-current-perspectives-peer-reviewed-article-OAJSM']]],
+  ['Dedos', 'Sin regleta hasta febrero; luego suspensiones intermitentes con pies apoyados.', 'Moderada',
+    [['López-Rivera 2019: intermitentes mejor para resistencia (escaladores avanzados)', 'https://pmc.ncbi.nlm.nih.gov/articles/PMC6458579/'], ['Devise 2022: intensidades de regleta', 'https://www.ncbi.nlm.nih.gov/pmc/articles/PMC9039162/']]],
+  ['Movilidad', 'Domingo 25 min y 10 min tras escalar: sobre todo hombro (flexión y rotación externa), además de cadera y tobillo.', 'Moderada',
+    [['Revisión: flexibilidad de hombro y cadera en escaladores (JSSM 2025)', 'https://www.jssm.org/jssm-24-84.xml-Fulltext'], ['Escaladores de élite: flexibilidad y nivel (IJERPH 2020)', 'https://mdpi-res.com/d_attachment/ijerph/ijerph-17-02512/article_deploy/ijerph-17-02512.pdf']]],
+  ['Orden fuerza / resistencia', 'Si van en la misma sesión, primero fuerza.', 'Fuerte',
+    [['Eddens 2018, metaanálisis (Sports Med)', 'https://pubmed.ncbi.nlm.nih.gov/28917030/']]],
+];
+
+/* ================== descargar app y datos ================== */
+// Solo se aceptan meses del plan, claves de marca conocidas y números; las casillas, solo "fecha:sesión".
+function limpiar(obj) {
+  const reg = {}, hechos = {}, claves = new Set(M.map(m => m.k));
+  const r = obj && typeof obj.reg === 'object' ? obj.reg : {}, h = obj && typeof obj.hechos === 'object' ? obj.hechos : {};
+  MESES_REG.forEach(mes => { const x = r[mes]; if (!x || typeof x.v !== 'object') return; const v = {};
+    Object.keys(x.v).forEach(k => { const n = Number(x.v[k]); if (claves.has(k) && isFinite(n)) v[k] = n; });
+    if (Object.keys(v).length) reg[mes] = { mes, v, ts: Number(x.ts) || Date.now() }; });
+  Object.keys(h).forEach(k => { if (/^\d{4}-\d{2}-\d{2}:[a-z0-9]+$/.test(k)) hechos[k] = 1; });
+  return { reg, hechos };
+}
+const datosJSON = () => JSON.stringify({ app: 'entreno-caem', version: 1, exportado: new Date().toISOString(), reg: REG, hechos: HECHOS }, null, 1);
+async function guardarArchivo(filename, data, tipo) {
+  let dl = null; try { dl = window.claude && window.claude.use ? await window.claude.use('downloads') : null; } catch (e) {}
+  if (dl) { try { await dl.save({ filename, data }); return 'Descargado.'; } catch (e) { return e && e.code === 'declined' ? 'Descarga cancelada.' : 'No se pudo descargar aquí.'; } }
+  const url = URL.createObjectURL(new Blob([data], { type: tipo })), a = document.createElement('a');
+  a.href = url; a.download = filename; document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(url), 2000);
+  return 'Descargado.';
+}
+function abrirDescargas() {
+  const dl = document.getElementById('dlg');
+  document.getElementById('dlg-in').innerHTML = `<button class="btn x" id="dlg-x">Cerrar</button>
+    <h2>Descargar</h2>
+    <div class="panel protocolo"><h3>App para Chrome</h3>
+      <p class="lead">Un archivo .html con toda la app y tus registros de ahora dentro. Ábrelo con Chrome (en el móvil, desde Descargas) y funciona sin abrir Claude. Lo que apuntes en esa copia se guarda en ese Chrome, no aquí.</p>
+      <button class="btn pri" id="dApp">Descargar app (.html)</button></div>
+    <div class="panel protocolo"><h3>Tus datos</h3>
+      <p class="lead">Copia de seguridad de tus marcas y sesiones hechas. Sirve también para pasar los datos de la copia de Chrome a esta app, o al revés.</p>
+      <div class="reg-top"><button class="btn" id="dJson">Descargar datos (.json)</button>
+      <label class="btn" for="dImp">Cargar datos (.json)</label><input type="file" id="dImp" accept=".json,application/json" hidden></div></div>
+    <p class="estado-g" id="dEst" role="status"></p>`;
+  const est = t => document.getElementById('dEst').textContent = t;
+  document.getElementById('dlg-x').onclick = () => dl.close();
+  document.getElementById('dApp').onclick = async () => {
+    const seed = `<script id="caem-seed">window.CAEM_SEED = ${JSON.stringify({ reg: REG, hechos: HECHOS }).replace(/</g, '\\u003c')};<\/script>`;
+    est(await guardarArchivo('entreno-caem.html', SRC.replace('<script id="app">', seed + '<script id="app">'), 'text/html'));
+  };
+  document.getElementById('dJson').onclick = async () => est(await guardarArchivo(`entreno-caem-datos-${ymd(new Date())}.json`, datosJSON(), 'application/json'));
+  document.getElementById('dImp').onchange = async e => {
+    const f = e.target.files && e.target.files[0]; if (!f) return;
+    let s; try { s = limpiar(JSON.parse(await f.text())); } catch (er) { est('Ese archivo no es una copia de Entreno CAEM.'); return; }
+    const meses = Object.keys(s.reg);
+    for (const mes of meses) await store.saveReg(mes, { ...(REG[mes] || {}), ...s.reg[mes], v: { ...((REG[mes] || {}).v || {}), ...s.reg[mes].v } });
+    Object.assign(HECHOS, s.hechos); await store.saveHechosAhora();
+    est(`Cargados ${meses.length} meses de registro y ${Object.keys(s.hechos).length} sesiones hechas.`); ruta();
+  };
+  try { dl.showModal(); } catch (er) {}
+}
+document.getElementById('bDescargar').onclick = abrirDescargas;
+
+/* ================== router ================== */
+const VISTAS = { semana: renderSemana, ejercicios: renderEjercicios, registro: renderRegistro, progreso: renderProgreso, pruebas: renderPruebas };
+function ruta() {
+  const v = VISTAS[location.hash.slice(1)] ? location.hash.slice(1) : 'semana';
+  Object.keys(VISTAS).forEach(k => document.getElementById('v-' + k).hidden = k !== v);
+  document.querySelectorAll('nav.tabs a').forEach(a => a.classList.toggle('on', a.dataset.v === v));
+  VISTAS[v]();
+}
+window.addEventListener('hashchange', ruta);
+store.local();
+ruta();
+store.init(() => { const v = location.hash.slice(1) || 'semana'; if (v !== 'registro') ruta(); });
+</script>
+
+</body></html>
