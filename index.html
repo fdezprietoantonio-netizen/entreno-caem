@@ -238,7 +238,7 @@ const EXTRA = { '2027-01-22': 'Extraordinaria DDFF', '2027-01-23': 'Extraordinar
 const EVALUABLE = { '2026-11-18': 'Estadística prueba 2/3 (17:00)', '2026-11-30': 'Estadística prueba 3/3 (o el 2 dic)', '2026-12-02': 'Estadística prueba 3/3 (o el 30 nov)' };
 const FESTIVO = { '2026-12-08': 'Inmaculada', '2026-12-25': 'Navidad', '2027-01-01': 'Año Nuevo', '2027-01-06': 'Reyes' };
 // Test mensual: el último día de cada mes
-const TESTS = ['2026-11-30', '2026-12-31', '2027-01-31', '2027-02-28', '2027-03-31', '2027-04-30', '2027-05-31', '2027-06-30'];
+const TESTS = []; // sin tests: las marcas se apuntan en el Registro cuando salgan en los entrenos
 // Sin acceso a gimnasio ni rocódromo
 const sinGym = ds => ds >= '2026-12-17' && ds <= '2027-01-07';
 const CLASES = { 0: [['15:00–16:50', 'Estadística (teoría)'], ['17:00–18:50', 'Teorías Criminológicas II'], ['19:00–20:50', 'DDFF y Garantías']],
@@ -911,19 +911,19 @@ const pasa = (m, v) => m.meta == null || v == null || v === '' ? null : m.up ? v
 let mesSel = (() => { const n = new Date(), k = `${n.getFullYear()}-${pad(n.getMonth() + 1)}`; return MESES_REG.includes(k) ? k : MESES_REG[0]; })();
 const mesNom = k => { const [y, m] = k.split('-').map(Number); return `${MESL[m - 1]} ${y}`; };
 function renderRegistro() {
-  const el = document.getElementById('v-registro'), r = REG[mesSel] || {}, v = r.v || {}, tdate = TESTS[MESES_REG.indexOf(mesSel)];
+  const el = document.getElementById('v-registro'), r = REG[mesSel] || {}, v = r.v || {};
   const grupos = [...new Set(M.map(m => m.g))];
   el.innerHTML = `<h2>Registro mensual</h2>
-    <p class="lead">Una vez al mes, el día del test, apunta tus marcas y pesos. Lo que dejes vacío no cuenta. Los tiempos van en segundos o en min:s (por ejemplo 7:40).</p>
+    <p class="lead">Apunta tus marcas y pesos del mes según te salgan en los entrenos; puedes cambiarlas cuando mejores. Lo que dejes vacío no cuenta. Los tiempos van en segundos o en min:s (por ejemplo 7:40).</p>
     <div class="reg-top"><select id="mes" aria-label="Mes">${MESES_REG.map(k => `<option value="${k}" ${k === mesSel ? 'selected' : ''}>${mesNom(k)}</option>`).join('')}</select>
-      <span class="chip c-test">Test: ${fCorta(parseD(tdate))}</span>${r.ts ? `<span class="estado-g">Guardado el ${new Date(r.ts).toLocaleDateString('es-ES')}</span>` : ''}</div>
+      ${r.ts ? `<span class="estado-g">Guardado el ${new Date(r.ts).toLocaleDateString('es-ES')}</span>` : ''}</div>
     <div class="grupos">${grupos.map(g => `<div class="panel grupo"><h3>${g}</h3>${M.filter(m => m.g === g).map(m => campoHTML(m, v[m.k])).join('')}</div>`).join('')}</div>
-    <div class="panel protocolo"><h3>Cómo hacer el test</h3><ol>
-      <li>Descansa el día anterior (nada de fuerza ni montaña).</li>
-      <li>Orden: salto → dominadas → flexiones (5 min entre cada una) → piscina → cinta.</li>
-      <li>Técnica de prueba: dominadas desde brazos estirados, flexiones bajando hasta un puño del suelo.</li>
-      <li>Escalada el miércoles de esa semana; los m/h reales, de tu mejor salida del mes.</li>
-      <li>Pesos de fuerza: el que usaste en tus series de la última semana.</li></ol></div>
+    <div class="panel protocolo"><h3>De dónde sacar cada marca</h3><ol>
+      <li>Pesos de fuerza: el que usas en tus series de la semana.</li>
+      <li>Dominadas y flexiones máximas: cuando hagas una serie hasta donde llegues con la técnica de la prueba, apúntala.</li>
+      <li>Natación 50 m: el 50 más rápido de las series del mes.</li>
+      <li>Escalada: la vía más dura que encadenes de primero ese mes.</li>
+      <li>Cinta y montaña: la velocidad que aguantas en la cinta y los m/h de tu mejor subida del mes.</li></ol></div>
     <div class="reg-foot"><button class="btn pri" id="guardar">Guardar ${mesNom(mesSel).toLowerCase()}</button><span class="estado-g" id="reg-est"></span></div>`;
   el.querySelector('#mes').onchange = e => { mesSel = e.target.value; renderRegistro(); };
   el.querySelectorAll('.campo input, .campo select').forEach(i => i.oninput = () => {
