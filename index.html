@@ -237,7 +237,7 @@ const EXTRA = { '2027-01-22': 'Extraordinaria DDFF', '2027-01-23': 'Extraordinar
   '2027-01-26': 'Extraordinaria Teoría del Delito', '2027-01-27': 'Extraordinaria REDI' };
 const EVALUABLE = { '2026-11-18': 'Estadística prueba 2/3 (17:00)', '2026-11-30': 'Estadística prueba 3/3 (o el 2 dic)', '2026-12-02': 'Estadística prueba 3/3 (o el 30 nov)' };
 const FESTIVO = { '2026-12-08': 'Inmaculada', '2026-12-25': 'Navidad', '2027-01-01': 'Año Nuevo', '2027-01-06': 'Reyes' };
-const TESTS = ['2026-11-12', '2026-12-11', '2027-01-29', '2027-02-26', '2027-03-26', '2027-04-23', '2027-05-21', '2027-06-18'];
+const TESTS = ['2026-11-13', '2026-12-11', '2027-01-29', '2027-02-26', '2027-03-26', '2027-04-23', '2027-05-21', '2027-06-18'];
 const CLASES = { 0: [['15:00–16:50', 'Estadística (teoría)'], ['17:00–18:50', 'Teorías Criminológicas II'], ['19:00–20:50', 'DDFF y Garantías']],
   1: [['15:00–16:50', 'REDI (teoría)'], ['17:00–18:50', 'Teorías Criminológicas II'], ['19:00–20:50', 'DDFF y Garantías']],
   2: [['15:00–16:50', 'Estadística prácticas'], ['17:00–18:50', 'REDI prácticas'], ['19:00–20:50', 'Teoría del Delito']],
@@ -371,6 +371,16 @@ const EJ = {
         [[74, 16], [70, 24], [70, 46], [74, 14], [77, 4], [70, 32], [77, 34], [74, 70], [77, 84], [76, 52], [79, 60]]],
     tec: ['Sube con las piernas, no con los brazos.', 'Chapa con el brazo estirado y desde una posición cómoda.', 'Lee la vía desde el suelo antes de empezar.', 'Descansa en los reposos sacudiendo los brazos.'],
     mal: 'Chapar por encima de la cabeza a la desesperada.' },
+  press: { n: 'Press militar con mancuernas', g: 'fuerza', para: 'Empuje por encima de la cabeza (mochila, trepadas)', props: ['floor', 'dbs2'],
+    p: [[[60, 14], [60, 24], [60, 52], [46, 32], [48, 22], [74, 32], [72, 22], [56, 72], [55, 92], [64, 72], [65, 92]],
+        [[60, 14], [60, 24], [60, 52], [52, 8], [52, -4], [68, 8], [68, -4], [56, 72], [55, 92], [64, 72], [65, 92]]],
+    tec: ['De pie, glúteos y abdomen apretados.', 'Empuja las mancuernas desde los hombros hasta estirar los brazos encima de la cabeza.', 'Baja controlando hasta la altura de las orejas.'],
+    mal: 'Arquear la zona lumbar para subir el peso.' },
+  fondos: { n: 'Fondos en paralelas', g: 'fuerza', para: 'Empuje: ayuda a las 50 flexiones', props: ['dipbar'],
+    p: [[[61, 18], [60, 28], [60, 56], [60, 39], [60, 50], [61, 39], [61, 50], [56, 74], [66, 84], [57, 74], [67, 84]],
+        [[64, 34], [62, 44], [60, 70], [50, 42], [60, 50], [51, 43], [61, 50], [56, 86], [66, 94], [57, 86], [67, 94]]],
+    tec: ['Brazos estirados arriba, hombros lejos de las orejas.', 'Baja inclinado un poco adelante hasta que el codo quede a 90°.', 'Sube hasta bloquear los brazos.'],
+    mal: 'Bajar demasiado con los hombros hacia delante.' },
   disloc: { n: 'Dislocaciones con goma o palo', g: 'movilidad', para: 'Hombro para alcanzar presas lejanas', props: ['floor', 'band'],
     p: [[[60, 14], [60, 24], [60, 52], [46, 14], [38, 2], [74, 14], [82, 2], [56, 72], [55, 92], [64, 72], [65, 92]],
         [[60, 14], [60, 24], [60, 52], [44, 30], [30, 42], [76, 30], [90, 42], [56, 72], [55, 92], [64, 72], [65, 92]]],
@@ -429,6 +439,7 @@ function fig(id, frame) {
   const propsHand = (props, w1, w2, s, hp) => {
     let o = '';
     if (props.includes('kb')) o += `<circle class="pr-s" cx="${w1[0] + 2}" cy="${w1[1] + 3}" r="4"/>`;
+    if (props.includes('dbs2')) o += `<rect class="pr-s" x="${w1[0] - 5}" y="${w1[1] - 1.5}" width="10" height="3" rx="1"/><rect class="pr-s" x="${w2[0] - 5}" y="${w2[1] - 1.5}" width="10" height="3" rx="1"/>`;
     if (props.includes('dbs')) o += `<rect class="pr-s" x="${w1[0] - 5}" y="${w1[1] - 1.5}" width="10" height="3" rx="1"/>`;
     if (props.includes('barbell')) o += `<line class="pr-l" x1="${w1[0] - 14}" y1="${w1[1]}" x2="${w1[0] + 14}" y2="${w1[1]}"/><circle class="pr-s" cx="${w1[0] - 14}" cy="${w1[1]}" r="6"/>`;
     if (props.includes('pack')) { const mx = (s[0] + hp[0]) / 2 - 7, my = (s[1] + hp[1]) / 2 - 8; o += `<rect class="pr-pack" x="${mx}" y="${my}" width="8" height="15" rx="2"/>`; }
@@ -452,6 +463,7 @@ function fig(id, frame) {
     if (p.includes('water')) o += `<path class="pr-water" d="M${ox + 2} 47 q6 -4 12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0"/>`;
     if (p.includes('tread')) o += `<line class="pr-bar" x1="${ox + 20}" y1="92" x2="${ox + 104}" y2="79.4"/><line class="pr-l" x1="${ox + 104}" y1="79.4" x2="${ox + 104}" y2="40"/>`;
     if (p.includes('ski')) o += `<line class="pr-bar" x1="${ox + 6}" y1="95" x2="${ox + 112}" y2="78"/>`;
+    if (p.includes('dipbar')) o += `<line class="pr-bar" x1="${ox + 44}" y1="51" x2="${ox + 78}" y2="51"/><line class="pr-l" x1="${ox + 46}" y1="51" x2="${ox + 46}" y2="96"/><line class="pr-l" x1="${ox + 76}" y1="51" x2="${ox + 76}" y2="96"/>`;
     if (p.includes('wall92')) o += `<line class="pr-bar" x1="${ox + 93}" y1="-6" x2="${ox + 93}" y2="93"/>`;
     if (p.includes('boxHigh')) o += `<rect class="pr-f" x="${ox + 66}" y="63" width="26" height="30"/>`;
     if (p.includes('hold')) o += `<rect class="pr-f" x="${ox + 44}" y="4" width="32" height="6" rx="1"/>`;
@@ -506,31 +518,53 @@ function extB(des) {
   const t = [['EMOM 10 min × 8', 'Cada minuto 8 flexiones; descansas lo que sobre.'], ['EMOM 10 min × 15', 'Si una no sale, baja a 12.'], ['1 × 40 + EMOM 8 × 15', 'Ritmo de prueba, brazos bloqueados arriba.']][lvExt()];
   return B('ext', 'Flexiones de suelo', t[0] + (des ? ' ' + HALF : ''), t[1]);
 }
-function fuerzaA(w, corta) {
-  const f = w.f.id, d = w.des;
-  const sentD = { base: '4 × 6', pre: '3 × 5 ligera', nav: '3 × 6', esp: '4 × 4 (+2,5 kg/sem)', afi: '3 × 3 pesada' }[f];
-  const cmjD = { base: '5 × 3', pre: '3 × 3', nav: '4 × 3', ene: '4 × 3', esp: '6 × 3 + 3 × 3 al cajón alto', afi: '4 × 3' }[f];
-  const b = [B(null, 'Calentamiento', '10 min', 'Movilidad de cadera y hombro, 2 × 8 dominadas escapulares, 2 × 10 sentadillas sin peso, 3 saltos progresivos.'),
-    B('cmj', 'Salto vertical (CMJ)', cmjD, 'Fresco y al principio. Máxima altura, 2 min de descanso.')];
-  if (!corta && sentD) b.push(B('sent', 'Sentadilla', sentD + (d ? ' ' + HALF : ''), 'Peso que deje 2 repeticiones de sobra. Sube 2,5 kg cuando te sobren 3.'));
-  b.push(domA(f, d), extA(d));
-  if (!corta) b.push(B('bulg', 'Zancada búlgara', (f === 'nav' ? '2 × 8' : '3 × 8') + ' / pierna', 'Mancuernas a los lados. Apunta el peso en Registro.'),
-    B('pmr', 'Peso muerto rumano', f === 'nav' ? '2 × 8' : '3 × 8', 'Espalda neutra, barra pegada a las piernas.'));
-  b.push(B('hollow', 'Hollow', '3 × 30 s', 'Lumbar pegada al suelo.'), B('elev', 'Elevación de rodillas colgado', '3 × 10', 'Sin balanceo.'));
-  if (!corta) b.push(B('rot', 'Rotación externa con goma', '2 × 15', 'Codos pegados.'));
-  return S('fa', 'fuerza', corta ? 'Fuerza A (corta)' : 'Fuerza A', corta ? '45 min' : '75 min', b, d ? 'Semana de descarga: la mitad de series, el mismo peso.' : null);
+/* Gym: martes tren superior (más empuje que tirón: el tirón ya lo dan escalar y nadar); miércoles pierna fuerte; viernes pierna ligera (mañana hay montaña). Todos con movilidad. */
+const movIniInf = () => B('tobillo', 'Movilidad de entrada', '8 min', 'Rodilla a la pared 1 × 10 por lado, cadera 90-90 6 cambios, paso alto activo 1 × 8 por pierna y 10 sentadillas sin peso.');
+const movFinInf = () => B('rana', 'Movilidad al acabar', '5 min', 'Rana 45 s, cadera 90-90 30 s por lado y rodilla a la pared 1 × 10.');
+const movIniSup = () => B('disloc', 'Movilidad de entrada', '8 min', 'Dislocaciones con goma 2 × 10, rotación externa con goma 1 × 15, hombro en pared 2 × 30 s y 10 flexiones escapulares.');
+const movFinSup = () => B('libro', 'Movilidad al acabar', '5 min', 'Libro abierto 1 × 8 por lado, hombro en pared 30 s y antebrazo suave.');
+const NDES = 'Semana de descarga: la mitad de series, el mismo peso.';
+function domSup(f, des) {
+  const L = lvDom();
+  const t = [['4 × 3 negativas', 'neg', 'Baja en 5 s.'], ['3 × (máx − 3)', 'dom', 'Técnica de la prueba: brazos estirados abajo y barbilla sobre la barra. Lejos del fallo.'],
+    ['4 × 4 lastradas (+3–6 kg)', 'dom', 'Lejos del fallo. Descanso 2–3 min.']][L];
+  return B(t[1], 'Dominadas (técnica de prueba)', t[0] + (des ? ' ' + HALF : ''), t[2] + ' Poco volumen: el tirón ya lo hacen escalar y nadar.');
 }
-function fuerzaB(w) {
+function gymSup(w, corta) {
+  const f = w.f.id, d = w.des;
+  const pressD = { base: '3 × 8', pre: '2 × 8', nav: '3 × 8', ene: '2 × 8', esp: '4 × 6', afi: '3 × 5' }[f];
+  const b = [movIniSup(), extA(d),
+    B('press', 'Press militar con mancuernas', pressD + (d ? ' ' + HALF : ''), 'De pie, sin arquear la espalda. Peso que deje 2 repeticiones de sobra; apúntalo en Registro.'),
+    B('fondos', 'Fondos en paralelas', (corta ? '2' : '3') + ' × 6–10', 'Hasta que el brazo quede a 90°. Si aún no salen, con goma o press de banca 3 × 8.'),
+    domSup(f, d)];
+  if (!corta) b.push(B('rot', 'Rotación externa con goma', '2 × 15', 'Equilibra el hombro frente a todo el tirón de escalar y nadar.'),
+    B('hollow', 'Hollow', '3 × 30 s', 'Lumbar pegada al suelo.'), B('elev', 'Elevación de rodillas colgado', '3 × 10', 'Core y agarre.'));
+  b.push(movFinSup());
+  return S('gsup', 'fuerza', corta ? 'Gym tren superior (corto)' : 'Gym tren superior', corta ? '45 min' : '70 min', b, d ? NDES : null);
+}
+function gymInf(w, modo) {
   const f = w.f.id, d = w.des, kg = w.kg;
-  return S('fb', 'fuerza', 'Fuerza B', '45 min', [
-    B(null, 'Calentamiento', '6 min', 'Comba o bici suave, movilidad de hombro y tobillo.'),
-    B('cmj', 'Saltos al cajón', '3 × 5', 'Segundo estímulo de salto en la semana: altura que puedas aterrizar suave. Sube al cajón y baja andando.'),
-    domB(f, d), extB(d),
-    B('stepup', 'Step-up con mochila', `3 × 12 / pierna · ${kg} kg`, 'Cajón de 40 cm.'),
-    B('stepdown', 'Step-down lento', '3 × 10 / pierna', 'Bajar en 3 s.'),
+  if (modo === 'corta') return S('ginf', 'fuerza', 'Gym pierna (corto)', '40 min', [movIniInf(),
+    B('cmj', 'Salto vertical (CMJ)', '4 × 3', 'Máxima altura, 2 min de descanso.'),
+    B('stepup', 'Step-up con mochila', `2 × 10 / pierna · ${kg} kg`, 'Sin pierna pesada en exámenes.'),
+    B('plancha', 'Plancha lateral', '2 × 30 s / lado', ''), movFinInf()]);
+  if (modo === 'ligero') return S('ginf', 'fuerza', 'Gym pierna ligera', '50 min', [movIniInf(),
+    B('cmj', 'Saltos al cajón', '4 × 3', 'Potencia con poco volumen: sube al cajón y baja andando.'),
+    B('sent', 'Sentadilla rápida', '3 × 3 al 60 %', 'Sube lo más rápido posible. Nada cerca del fallo.'),
+    B('stepup', 'Step-up con mochila', `2 × 10 / pierna · ${kg} kg`, 'Cajón de 40 cm, empujando solo con la pierna de arriba.'),
+    B('pmr', 'Peso muerto a una pierna', '2 × 8 / pierna ligero', 'Equilibrio y glúteo para terreno roto.'),
+    B('pallof', 'Pallof press', '2 × 10 / lado', ''), movFinInf()],
+    'Mañana hay montaña: sin excéntricos pesados ni series cerca del fallo, para llegar con las piernas frescas. Si mañana no sales, puedes hacer la sesión de pierna fuerte.');
+  const sentD = { base: '4 × 6', pre: '3 × 5 ligera', nav: '3 × 6', ene: '3 × 5 ligera', esp: '4 × 4 (+2,5 kg/sem)', afi: '3 × 3 pesada' }[f];
+  const cmjD = { base: '5 × 3', pre: '3 × 3', nav: '4 × 3', ene: '4 × 3', esp: '6 × 3', afi: '4 × 3' }[f];
+  return S('ginf', 'fuerza', 'Gym pierna fuerte', '75 min', [movIniInf(),
+    B('cmj', 'Salto vertical (CMJ)', cmjD, 'Al principio y fresco: es la prueba P1 (49 cm). 2 min de descanso.'),
+    B('sent', 'Sentadilla', sentD + (d ? ' ' + HALF : ''), 'Peso que deje 2 repeticiones de sobra. Sube 2,5 kg cuando te sobren 3.'),
+    B('pmr', 'Peso muerto rumano', '3 × 6–8', 'Espalda neutra, barra pegada a las piernas.'),
+    B('bulg', 'Zancada búlgara', '3 × 8 / pierna', 'Mancuernas a los lados.'),
+    B('stepdown', 'Step-down lento', '3 × 10 / pierna', 'Bajar en 3 s: prepara las bajadas de más de 600 m/h. Va el miércoles para que el sábado no notes la carga.'),
     B('gemelo', 'Gemelo excéntrico', '3 × 12 / pierna', 'Bajar en 3 s con una pierna.'),
-    B('plancha', 'Plancha lateral', '3 × 30 s / lado', ''), B('pallof', 'Pallof press', '3 × 10 / lado', ''),
-  ], d ? 'Semana de descarga: la mitad de series.' : null);
+    B('plancha', 'Plancha lateral', '3 × 30 s / lado', ''), movFinInf()], d ? NDES : null);
 }
 function natacion(w, suave) {
   const f = w.f.id, k = w.k, d = w.des;
@@ -585,23 +619,17 @@ function monte(w, extra) {
   const f = w.f.id, kg = w.kg, des = w.desniv;
   const nieve = f === 'nav' || f === 'ene' || f === 'esp' || (f === 'base' && w.k >= 3);
   const b = [B(nieve ? 'esqui' : 'stepup', nieve ? 'Esquí de travesía (o a pie si no hay nieve)' : 'Salida a pie por montaña', `+${des} m · mochila ${kg} kg`,
-      'Mira el aviso del vigía del jueves a las 19:00 y el mapa para elegir la ruta. Mide los m/h de la subida más larga.'),
+      'Mira el aviso del vigía del viernes a las 19:00 y el mapa para elegir la ruta. Mide los m/h de la subida más larga.'),
     B(null, 'Bajada', 'Ritmo constante', f === 'afi' ? 'Baja a pie por canchal y hierba buscando > 600 m/h con seguridad.' : 'Con esquís: bajada técnica, paralelo y viraje fundamental (se evalúan).')];
   if (f !== 'ene' && f !== 'pre') b.splice(1, 0, B(nieve ? 'esqui' : 'cinta', 'Bloques a ritmo de prueba', f === 'base' ? '2 × 15 min' : f === 'nav' ? '3 × 15 min' : '3 × 20 min',
     'Dentro de la subida larga: tramos a más de 500 m/h (mira el reloj: 125 m de desnivel cada 15 min). Entre bloques, ritmo cómodo. Tu punto débil ahora es la velocidad, no el desnivel.'));
   if (f === 'afi') b.splice(1, 0,B('stepup', 'Terreno variado', 'Bloque, hierba y trepada de II', 'Busca tramos de canchal, pendiente de hierba arriba y abajo, y un resalte de roca para trepar y destrepar.'));
   if (f === 'esp' && w.k % 3 === 2) b[0].dos = `Simulacro: 12 km y +1500 m · ${kg} kg`;
+  const plan = { base: '75–90 min en zona 2', pre: '45 min en zona 2', nav: '75 min en zona 2', ene: '45 min en zona 2', esp: w.k % 2 === 0 ? '60 min de resistencia muscular a la pendiente máxima' : '75 min en zona 2 con 3 × 10 min a ritmo de prueba', afi: '60 min a ritmo de prueba' }[f];
+  b.push(B('cinta', 'Si no hay salida: cinta al 15 %', `${plan} · ${kg} kg`, 'Si no hay compañeros, hay mal tiempo o riesgo de aludes, se hace en la cinta. Sumas desnivel igual, sin riesgo.'));
   return S('monte', 'monte', nieve ? 'Día de esquí / montaña' : 'Día de montaña', 'Todo el día', b,
     (extra || '') + ' Nunca solo en invierno: ARVA, pala y sonda.');
 }
-const gtg = () => {
-  const d = ultimo('dom'), e = ultimo('ext');
-  const nd = d ? Math.max(2, Math.round(d * 0.45)) : 3, ne = e ? Math.max(8, Math.round(e * 0.45)) : 14;
-  return S('gtg', 'fuerza', 'Series sueltas', '5 min ×5', [B('dom', 'Dominadas y flexiones repartidas en el día', `5 veces: ${nd} dominadas + ${ne} flexiones`,
-    'Alrededor del 45 % de tu máximo, separadas al menos 1 h, siempre frescas y nunca al fallo. Muchas veces a la semana y poco cada vez.')]);
-};
-const z2 = () => S('z2', 'monte', 'Zona 2', '60–90 min', [B('cinta', 'Aeróbico suave sin mochila', '60–90 min', 'Bici, carrera suave o andar en cuesta, hablando en frases completas. La base aeróbica es lo que sube tu ritmo de 300–400 a más de 500 m/h.'),
-  B('roca', 'O, si hay compañeros', 'Roca o cuerda fija', 'Escalada en roca o práctica de cuerda fija con un club. Ese día no hagas zona 2.')]);
 const aux = () =>S('aux', 'aux', 'Primeros auxilios', '20 min', [B(null, 'Manual de primeros auxilios', '1 tema', 'Test de 40 preguntas en la prueba: haz 10 preguntas de repaso al acabar.')]);
 const desc = () => S('mov', 'aux', 'Descanso + movilidad', '25 min', [
   B('hombroPared', 'Hombro en pared', '3 × 30 s', 'Lo que más se relaciona con el nivel de escalada es la movilidad de hombro.'),
@@ -612,18 +640,19 @@ const desc = () => S('mov', 'aux', 'Descanso + movilidad', '25 min', [
   B('pasoAlto', 'Paso alto activo', '2 × 8 / pierna', 'Movilidad con fuerza: es la que se usa escalando.'),
   B('tobillo', 'Rodilla a la pared', '2 × 10 / lado', 'Tobillo para foquear y bajar a pie.'),
   B('antebrazo', 'Estiramiento de antebrazo', '2 × 30 s', 'Suave, sobre todo con el índice izquierdo.'),
+  B(null, 'Primeros auxilios', '20 min', 'Un tema del manual y 10 preguntas de repaso: es una prueba eliminatoria.'),
   B(null, 'Planifica la semana', '5 min', 'Mira la semana siguiente en la app.')]);
 const calRoca = () => B('disloc', 'Calentamiento de escalada', '10 min', 'Dislocaciones con goma 2 × 10, círculos de cadera, paso alto activo 1 × 8 por pierna, abrir y cerrar las manos 30 veces, y 2 vías muy fáciles.');
 const movRoca = () => B('rana', 'Movilidad al acabar', '10 min', 'Hombro en pared 2 × 30 s, rana 1 × 45 s, paso alto 1 × 8 por pierna, antebrazo suave. En frío, mejor al final que al principio.');
 const suave = (por) => S('suave', 'suave', 'Suave', '30 min', [B('crol', 'Natación suave o paseo', '20–30 min', por)]);
 const test = (w) => S('test', 'test', 'Test mensual', '2–3 h', [
-  B(null, 'Calentamiento', '15 min', 'Igual que en Fuerza A.'),
+  B(null, 'Calentamiento', '15 min', 'La movilidad de entrada de pierna y de hombro, y 3 saltos progresivos.'),
   B('cmj', 'Salto vertical', 'Mejor de 3', 'Marca en la pared con tiza o con app de salto.'),
   B('dom', 'Dominadas máx.', '1 serie', 'Con la técnica de la prueba. Descansa 5 min.'),
   B('ext', 'Flexiones máx.', '1 serie', 'Sin parar arriba más de 1 s. Descansa 5 min.'),
   B('crol', 'Natación 50 m', 'Crono', 'Tras 300 m de calentamiento en la piscina.'),
   B('cinta', 'Cinta al 15 %', '30 min a la máxima velocidad que aguantes', `Con ${w.kg} kg. Apunta la velocidad: la app calcula los m/h.`),
-  B('roca', 'Escalada', 'Grado máx. de primero', 'Si no da tiempo hoy, el miércoles de esta semana.'),
+  B('roca', 'Escalada', 'Grado máx. de primero', 'Lo mides en la sesión de escalar del jueves de esta semana.'),
 ], 'Anota todo en la pestaña Registro, mes de ' + MESL[w.testMes].toLowerCase() + '.');
 
 function sesionesDia(d) {
@@ -633,26 +662,25 @@ function sesionesDia(d) {
   if (FESTIVO[ds]) return { ds, wd, w, clases: [], ses: [S('desc', 'desc', 'Festivo: ' + FESTIVO[ds], '', [B(null, 'Descanso', '', 'Si te apetece, paseo suave.')])] };
   if (EXAMEN[ds]) return { ds, wd, w, clases, ses: [S('ex', 'examen', EXAMEN[ds], '', [B(null, 'Movilidad', '15 min', 'Por la mañana, para despejarte. Nada más.')])] };
   let ses = [];
-  const esTest = TESTS.includes(ds), testAyer = TESTS.includes(ymd(addD(d, -1)));
+  const esTest = TESTS.includes(ds);
+  // Lun escalar · Mar gym superior + cinta · Mié gym pierna + nadar · Jue escalar · Vie gym pierna (ligera) + nadar · Sáb montaña (si no, cinta) · Dom descanso con movilidad
   if (f === 'nav') {
-    ses = [[monte(w)], [fuerzaA(w), natacion(w)], [monte(w)], [cinta(w, true), fuerzaB(w)], [monte(w, 'Día largo.')], [roca(w)], [desc()]][wd];
+    ses = [[roca(w)], [gymSup(w), cinta(w, true)], [monte(w, 'Navidad: día extra de esquí en lugar de pierna y piscina.')], [roca(w)], [gymInf(w, 'ligero'), natacion(w)], [monte(w, 'Día largo.')], [desc()]][wd];
   } else if (f === 'ene') {
-    ses = [[fuerzaA(w, true)], [natacion(w), aux()], [roca(w, true)], [cinta(w, true)], [natacion(w, true)], [monte({ ...w, desniv: 600 }, 'Medio día; vuelve a estudiar.')], [desc()]][wd];
+    ses = [[roca(w, true)], [gymSup(w, true), cinta(w, true)], [gymInf(w, 'corta'), natacion(w, true)], [roca(w, true)], [gymInf(w, 'corta'), natacion(w)], [monte({ ...w, desniv: 600 }, 'Medio día; vuelve a estudiar.')], [desc()]][wd];
   } else if (f === 'pre') {
-    ses = [[fuerzaA(w, true)], [natacion(w, true)], [roca(w, true)], [], [monte(w)], [roca(w)], [desc()]][wd];
+    ses = [[roca(w, true)], [gymSup(w, true), cinta(w, true)], [natacion(w, true)], [], [gymInf(w, 'ligero'), natacion(w)], [monte(w)], [desc()]][wd];
   } else {
-    ses = [[fuerzaA(w)], [natacion(w), gtg(), aux()], [roca(w)], [cinta(w), fuerzaB(w), aux()], [monte(w)],
-      [z2(), gtg()], [desc()]][wd];
-    if (w.ss && wd < 5) ses = [[monte(w, 'Semana Santa: si tienes vacaciones, día de montaña.')], [natacion(w), fuerzaA(w, true)], [monte(w)], [roca(w)], [monte(w)]][wd];
+    ses = [[roca(w)], [gymSup(w), cinta(w)], [gymInf(w, 'fuerte'), natacion(w)], [roca(w)], [gymInf(w, 'ligero'), natacion(w)], [monte(w)], [desc()]][wd];
+    if (w.ss && wd === 2) ses = [monte(w, 'Semana Santa: si tienes vacaciones, día extra de montaña en lugar de pierna y piscina.')];
   }
   if (esTest) ses = [test({ ...w, testMes: d.getMonth() })];
-  if (testAyer && wd === 5) ses = [monte(w, 'Ayer fue el test: hoy toca el día de montaña.')];
   const duro = s => ['fuerza', 'monte', 'roca', 'test'].includes(s.tipo) || s.id === 'cinta';
   if (EXAMEN[manana] || EXTRA[manana]) ses = ses.map(s => duro(s) ? suave(`Mañana tienes ${(EXAMEN[manana] || EXTRA[manana]).toLowerCase()}${EXTRA[manana] ? ' (si te presentas)' : ''}: nada intenso.`) : s);
   if (EVALUABLE[ds]) ses.forEach(s => { if (duro(s)) s.nota = (s.nota ? s.nota + ' ' : '') + 'Hoy tienes ' + EVALUABLE[ds] + ': no te vacíes.'; });
   return { ds, wd, w, clases, ses };
 }
-const horaDe = (s, wd) => ({ fa: '9:00', nat: '8:30', roca: '9:30', cinta: '9:00', fb: wd === 3 ? '18:30' : '11:00', aux: wd === 3 ? '21:15' : '10:00', monte: '7:30', test: '9:00', z2: '10:00', gtg: 'Repartidas' }[s.id] || '');
+const horaDe = (s, wd) => ({ roca: '9:30', gsup: '8:30', cinta: '10:00', ginf: wd === 4 ? '9:30' : '8:30', nat: wd === 4 ? '11:00' : '10:15', monte: '7:30', test: '9:00', mov: 'Cuando quieras', suave: '' }[s.id] || '');
 
 /* ================== almacenamiento: db privada del Artifact o navegador ================== */
 const store = {
@@ -1011,17 +1039,21 @@ function renderPruebas() {
     </tbody></table></div>`;
 }
 const EVIDENCIA = [
-  ['Salto vertical', 'Saltos (CMJ y cajón) dos días por semana junto a sentadilla pesada.', 'Fuerte',
+  ['Salto vertical', 'CMJ el miércoles junto a sentadilla pesada y saltos al cajón el viernes.', 'Fuerte',
     [['Metaanálisis en red, fuerza + pliometría (Front. Physiol. 2024)', 'https://doi.org/10.3389/fphys.2024.1302610'], ['Revisión sistemática 2025', 'https://www.frontiersin.org/journals/physiology/articles/10.3389/fphys.2025.1683281/full']]],
-  ['Subir > 500 m/h', 'Mucha zona 2 (cinta, sábado) como base, y desde febrero resistencia muscular con pendiente máxima y peso, alternando con intervalos.', 'Moderada',
+  ['Subir > 500 m/h', 'Mucha zona 2 (cinta del martes y montaña del sábado) como base, y desde febrero resistencia muscular con pendiente máxima y peso, alternando con intervalos.', 'Moderada',
     [['Uphill Athlete · resistencia muscular', 'https://uphillathlete.com/vertical-beast-mode-what-is-muscular-endurance-why-it-is-important-for-any-alpinist-or-mountaineer-and-how-do-you-train-it/'], ['Uphill Athlete · base aeróbica', 'https://uphillathlete.com/podcast/training-for-mountaineering-base-training/']]],
-  ['Marchas con mochila', 'Mochila en la cinta y el viernes, subiendo de 5 a 10 kg, junto a fuerza y aeróbico.', 'Moderada',
+  ['Marchas con mochila', 'Mochila en la cinta del martes y el sábado de montaña, subiendo de 5 a 10 kg, junto a fuerza y aeróbico.', 'Moderada',
     [['Knapik: marchas cada 2 semanas bastan dentro de un plan completo', 'https://apps.dtic.mil/sti/pdfs/ADA221239.pdf'], ['HPRC · estrategias de carga', 'https://www.hprc-online.org/physical-fitness/training-performance/load-carriage-strategies']]],
   ['Bajar > 600 m/h', 'Step-down, gemelo excéntrico y bajadas de escaleras y a pie con mochila.', 'Moderada',
     [['Efecto de series repetidas en bajada (USQ)', 'https://research.usq.edu.au/download/de2e33a2ad8a6f1346d1b7b0615e7e0cd0b80ef61cd0c19abde7af604308e960/729153/sms.13222.pdf'], ['Bajada andando hacia atrás (Adelaide)', 'https://digital.library.adelaide.edu.au/items/7c551fb3-3cfa-468d-9441-14768284ebbf']]],
-  ['Dominadas', 'Series submáximas lunes y jueves, y series sueltas al 45 % martes y sábado, sin fallo.', 'Débil',
+  ['Dominadas', 'Pocas series de técnica de prueba el martes, lejos del fallo; el resto del tirón lo dan escalar (2 días) y nadar (2 días).', 'Débil',
     [['Mountain Tactical: mini estudio de series sueltas', 'https://mtntactical.com/knowledge/mini-study-grease-the-groove-beats-density-for-push-up-pull-up-improvement/']]],
-  ['Flexiones', 'Pirámides, cada minuto y series sueltas.', 'Débil',
+  ['Más empuje que tirón', 'Martes: flexiones, press militar y fondos; solo un bloque corto de dominadas y rotación externa.', 'Moderada',
+    [['Revisión: flexibilidad y rotación externa de hombro en escaladores (JSSM 2025)', 'https://www.jssm.org/jssm-24-84.xml-Fulltext']]],
+  ['Pierna ligera el día antes de montaña', 'Viernes: potencia y unilateral sin excéntricos pesados ni fallo; la carga excéntrica fuerte va el miércoles.', 'Moderada',
+    [['El trabajo excéntrico deja pérdida de fuerza y agujetas varios días (USQ)', 'https://research.usq.edu.au/download/de2e33a2ad8a6f1346d1b7b0615e7e0cd0b80ef61cd0c19abde7af604308e960/729153/sms.13222.pdf']]],
+  ['Flexiones', 'Pirámides el martes, la prueba más específica de empuje.', 'Débil',
     [['Military.com · consejos para la prueba', 'https://www.military.com/military-fitness/5-tips-help-you-achieve-your-push-goals']]],
   ['Natación 50 m', 'Series de 50 m y sprints de 25 m con descanso largo.', 'Moderada',
     [['Distribución de intensidad en velocistas (2025)', 'https://www.fisiologiadelejercicio.com/wp-content/uploads/2025/11/Training-intensity-distribution-for-sprinter-swimmers.pdf'], ['USRPT (Dovepress)', 'https://www.dovepress.com/ultra-short-race-pace-training-usrpt-in-swimming-current-perspectives-peer-reviewed-article-OAJSM']]],
