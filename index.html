@@ -237,7 +237,10 @@ const EXTRA = { '2027-01-22': 'Extraordinaria DDFF', '2027-01-23': 'Extraordinar
   '2027-01-26': 'Extraordinaria Teoría del Delito', '2027-01-27': 'Extraordinaria REDI' };
 const EVALUABLE = { '2026-11-18': 'Estadística prueba 2/3 (17:00)', '2026-11-30': 'Estadística prueba 3/3 (o el 2 dic)', '2026-12-02': 'Estadística prueba 3/3 (o el 30 nov)' };
 const FESTIVO = { '2026-12-08': 'Inmaculada', '2026-12-25': 'Navidad', '2027-01-01': 'Año Nuevo', '2027-01-06': 'Reyes' };
-const TESTS = ['2026-11-13', '2026-12-11', '2027-01-29', '2027-02-26', '2027-03-26', '2027-04-23', '2027-05-21', '2027-06-18'];
+// Test mensual: el último día de cada mes
+const TESTS = ['2026-11-30', '2026-12-31', '2027-01-31', '2027-02-28', '2027-03-31', '2027-04-30', '2027-05-31', '2027-06-30'];
+// Sin acceso a gimnasio ni rocódromo
+const sinGym = ds => ds >= '2026-12-17' && ds <= '2027-01-07';
 const CLASES = { 0: [['15:00–16:50', 'Estadística (teoría)'], ['17:00–18:50', 'Teorías Criminológicas II'], ['19:00–20:50', 'DDFF y Garantías']],
   1: [['15:00–16:50', 'REDI (teoría)'], ['17:00–18:50', 'Teorías Criminológicas II'], ['19:00–20:50', 'DDFF y Garantías']],
   2: [['15:00–16:50', 'Estadística prácticas'], ['17:00–18:50', 'REDI prácticas'], ['19:00–20:50', 'Teoría del Delito']],
@@ -630,6 +633,39 @@ function monte(w, extra) {
   return S('monte', 'monte', nieve ? 'Día de esquí / montaña' : 'Día de montaña', 'Todo el día', b,
     (extra || '') + ' Nunca solo en invierno: ARVA, pala y sonda.');
 }
+/* Del 17 dic al 7 ene: sin gimnasio ni rocódromo → versiones con tu peso y la mochila, cuestas en vez de cinta */
+const NOGYM = 'Sin gimnasio del 17 de diciembre al 7 de enero: versión con tu peso y la mochila cargada.';
+function gymSupCasa(w) {
+  const d = w.des;
+  return S('gsup', 'fuerza', 'Tren superior en casa', '50 min', [movIniSup(), extA(d),
+    B('press', 'Flexiones en pica', '3 × 8', 'Cadera alta y cabeza hacia el suelo: es el empuje vertical sin mancuernas. Pies en una silla para hacerlo más duro.'),
+    B('fondos', 'Fondos entre dos sillas o en un banco', '3 × 10–12', 'Brazo a 90° abajo. Con la mochila en las piernas si salen más de 15.'),
+    domSup(w.f.id, d), B('rot', 'Rotación externa con goma', '2 × 15', ''), B('hollow', 'Hollow', '3 × 30 s', ''), movFinSup()],
+    NOGYM + ' Dominadas en una barra de parque o de puerta.');
+}
+function gymInfCasa(w, modo) {
+  const kg = w.kg + 4;
+  if (modo === 'ligero') return S('ginf', 'fuerza', 'Pierna ligera en casa', '40 min', [movIniInf(),
+    B('cmj', 'Saltos', '4 × 3', 'A un escalón o banco alto, o salto vertical sin carga.'),
+    B('stepup', 'Step-up con mochila', `2 × 10 / pierna · ${kg} kg`, 'En una silla firme o un banco.'),
+    B('pmr', 'Peso muerto a una pierna con mochila', '2 × 8 / pierna', ''), B('plancha', 'Plancha lateral', '2 × 30 s / lado', ''), movFinInf()],
+    NOGYM + ' Mañana hay montaña: nada cerca del fallo.');
+  return S('ginf', 'fuerza', 'Pierna fuerte en casa', '60 min', [movIniInf(),
+    B('cmj', 'Salto vertical (CMJ)', '5 × 3', 'Fresco y al principio.'),
+    B('bulg', 'Zancada búlgara con mochila', `4 × 10–12 / pierna · ${kg} kg`, 'Sin barra, la búlgara cargada es tu ejercicio principal. Lento al bajar.'),
+    B('pmr', 'Peso muerto a una pierna con mochila', '3 × 10 / pierna', ''),
+    B('stepdown', 'Step-down lento en un escalón', '3 × 10 / pierna', 'Bajar en 3 s.'),
+    B('gemelo', 'Gemelo excéntrico en escalón', '3 × 15 / pierna', ''), B('plancha', 'Plancha lateral', '3 × 30 s / lado', ''), movFinInf()], NOGYM);
+}
+const rocaCasa = () => S('roca', 'roca', 'Escalada sin rocódromo', '60 min', [
+  B('roca', 'Si hay compañeros y tiempo seco', 'Escalada en roca', 'Una escuela de deportiva cercana; mismo grado que en el rocódromo, sin apretar con el nudillo.'),
+  B('disloc', 'Si no: hombro y escápulas', '25 min', 'Colgado activo de una barra de parque 4 × 20 s (agarre abierto), dominadas escapulares 3 × 8, rotación externa 2 × 15 y hombro en pared 2 × 30 s. Nada de regleta.'),
+  B('rana', 'Movilidad de escalada', '15 min', 'Rana, cadera 90-90, paso alto activo y antebrazo suave.')], 'Sin rocódromo del 17 de diciembre al 7 de enero.');
+function cuestas(w, corta) {
+  const c = cinta(w, corta); c.t = 'Cuestas o escaleras con mochila';
+  c.b[1] = { ...c.b[1], nom: 'Subida con mochila en cuesta o escaleras', como: 'Sin cinta estos días: busca una cuesta larga o escaleras, ve al ritmo de zona 2 (puedes hablar) y mide el desnivel con el reloj. ' + c.b[1].como.replace(/^≈ \d+ m\/h de desnivel\. /, '') };
+  return c;
+}
 const aux = () =>S('aux', 'aux', 'Primeros auxilios', '20 min', [B(null, 'Manual de primeros auxilios', '1 tema', 'Test de 40 preguntas en la prueba: haz 10 preguntas de repaso al acabar.')]);
 const desc = () => S('mov', 'aux', 'Descanso + movilidad', '25 min', [
   B('hombroPared', 'Hombro en pared', '3 × 30 s', 'Lo que más se relaciona con el nivel de escalada es la movilidad de hombro.'),
@@ -651,9 +687,11 @@ const test = (w) => S('test', 'test', 'Test mensual', '2–3 h', [
   B('dom', 'Dominadas máx.', '1 serie', 'Con la técnica de la prueba. Descansa 5 min.'),
   B('ext', 'Flexiones máx.', '1 serie', 'Sin parar arriba más de 1 s. Descansa 5 min.'),
   B('crol', 'Natación 50 m', 'Crono', 'Tras 300 m de calentamiento en la piscina.'),
-  B('cinta', 'Cinta al 15 %', '30 min a la máxima velocidad que aguantes', `Con ${w.kg} kg. Apunta la velocidad: la app calcula los m/h.`),
-  B('roca', 'Escalada', 'Grado máx. de primero', 'Lo mides en la sesión de escalar del jueves de esta semana.'),
-], 'Anota todo en la pestaña Registro, mes de ' + MESL[w.testMes].toLowerCase() + '.');
+  w.casa ? B('stepup', 'Cuesta con mochila', '30 min al máximo ritmo sostenible', `Con ${w.kg} kg en una cuesta larga. Apunta los m/h del reloj en «Subida real».`)
+    : B('cinta', 'Cinta al 15 %', '30 min a la máxima velocidad que aguantes', `Con ${w.kg} kg. Apunta la velocidad: la app calcula los m/h.`),
+  w.casa ? B('roca', 'Escalada', 'Este mes no se mide', 'Sin rocódromo: deja el grado vacío en el registro.')
+    : B('roca', 'Escalada', 'Grado máx. de primero', 'Si no da tiempo hoy, mídelo en la última sesión de escalar antes del test.'),
+], 'Último día del mes. Anota todo en la pestaña Registro, mes de ' + MESL[w.testMes].toLowerCase() + '.' + (w.casa ? ' Dominadas en una barra de parque; piscina si la tienes abierta.' : ''));
 
 function sesionesDia(d) {
   const ds = ymd(d), wd = (d.getDay() + 6) % 7, wi = Math.floor((d - START) / 6048e5), w = semInfo(wi), f = w.f.id;
@@ -674,7 +712,11 @@ function sesionesDia(d) {
     ses = [[roca(w)], [gymSup(w), cinta(w)], [gymInf(w, 'fuerte'), natacion(w)], [roca(w)], [gymInf(w, 'ligero'), natacion(w)], [monte(w)], [desc()]][wd];
     if (w.ss && wd === 2) ses = [monte(w, 'Semana Santa: si tienes vacaciones, día extra de montaña en lugar de pierna y piscina.')];
   }
-  if (esTest) ses = [test({ ...w, testMes: d.getMonth() })];
+  if (sinGym(ds)) ses = ses.map(s => s.id === 'gsup' ? gymSupCasa(w) : s.id === 'ginf' ? gymInfCasa(w, s.t.includes('ligera') ? 'ligero' : 'fuerte')
+    : s.id === 'roca' ? rocaCasa() : s.id === 'cinta' ? cuestas(w, s.h === '30 min') : s.id === 'monte'
+    ? { ...s, b: s.b.map(x => x.nom.startsWith('Si no hay salida') ? { ...x, nom: 'Si no hay salida: cuestas con mochila', como: 'Sin cinta estos días: cuesta larga o escaleras con la mochila, al mismo tiempo de esfuerzo.' } : x) } : s);
+  if (esTest) ses = [test({ ...w, testMes: d.getMonth(), casa: sinGym(ds) })];
+  else if (TESTS.includes(manana)) ses = [S('pretest', 'desc', 'Descanso antes del test', '', [B('tobillo', 'Movilidad suave', '15 min', 'Mañana es el test mensual: llega fresco para que las marcas sean reales.')])];
   const duro = s => ['fuerza', 'monte', 'roca', 'test'].includes(s.tipo) || s.id === 'cinta';
   if (EXAMEN[manana] || EXTRA[manana]) ses = ses.map(s => duro(s) ? suave(`Mañana tienes ${(EXAMEN[manana] || EXTRA[manana]).toLowerCase()}${EXTRA[manana] ? ' (si te presentas)' : ''}: nada intenso.`) : s);
   if (EVALUABLE[ds]) ses.forEach(s => { if (duro(s)) s.nota = (s.nota ? s.nota + ' ' : '') + 'Hoy tienes ' + EVALUABLE[ds] + ': no te vacíes.'; });
