@@ -1,8 +1,9 @@
 {
+ "id": "./index.html",
  "name": "Entreno CAEM",
  "short_name": "Entreno CAEM",
  "start_url": "./index.html#semana",
- "scope": "./",
+ "scope": "./index.html",
  "display": "standalone",
  "orientation": "portrait",
  "background_color": "#eef2f5",
