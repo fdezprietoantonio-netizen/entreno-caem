@@ -1,0 +1,875 @@
+<!doctype html><html lang="es"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0e2040"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Travesía"><link rel="manifest" href="manifest.json"><link rel="icon" href="icon-192.png"><link rel="apple-touch-icon" href="icon-192.png">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<script>if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost' || location.hostname === '127.0.0.1')) addEventListener('load', () => navigator.serviceWorker.register('sw.js'));</script>
+</head><body>
+<title>Travesía Béjar Gredos Palentina</title>
+<style>
+.maplibregl-map{font:12px/20px Helvetica Neue,Arial,Helvetica,sans-serif;overflow:hidden;position:relative;-webkit-tap-highlight-color:rgb(0 0 0/0)}.maplibregl-canvas{left:0;position:absolute;top:0}.maplibregl-map:fullscreen{height:100%;width:100%}.maplibregl-ctrl-group button.maplibregl-ctrl-compass{touch-action:none}.maplibregl-canvas-container.maplibregl-interactive,.maplibregl-ctrl-group button.maplibregl-ctrl-compass{cursor:grab;-webkit-user-select:none;-moz-user-select:none;user-select:none}.maplibregl-canvas-container.maplibregl-interactive.maplibregl-track-pointer{cursor:pointer}.maplibregl-canvas-container.maplibregl-interactive:active,.maplibregl-ctrl-group button.maplibregl-ctrl-compass:active{cursor:grabbing}.maplibregl-canvas-container.maplibregl-touch-zoom-rotate,.maplibregl-canvas-container.maplibregl-touch-zoom-rotate .maplibregl-canvas{touch-action:pan-x pan-y}.maplibregl-canvas-container.maplibregl-touch-drag-pan,.maplibregl-canvas-container.maplibregl-touch-drag-pan .maplibregl-canvas{touch-action:pinch-zoom}.maplibregl-canvas-container.maplibregl-touch-zoom-rotate.maplibregl-touch-drag-pan,.maplibregl-canvas-container.maplibregl-touch-zoom-rotate.maplibregl-touch-drag-pan .maplibregl-canvas{touch-action:none}.maplibregl-canvas-container.maplibregl-touch-drag-pan.maplibregl-cooperative-gestures,.maplibregl-canvas-container.maplibregl-touch-drag-pan.maplibregl-cooperative-gestures .maplibregl-canvas{touch-action:pan-x pan-y}.maplibregl-ctrl-bottom-left,.maplibregl-ctrl-bottom-right,.maplibregl-ctrl-top-left,.maplibregl-ctrl-top-right{pointer-events:none;position:absolute;z-index:2}.maplibregl-ctrl-top-left{left:0;top:0}.maplibregl-ctrl-top-right{right:0;top:0}.maplibregl-ctrl-bottom-left{bottom:0;left:0}.maplibregl-ctrl-bottom-right{bottom:0;right:0}.maplibregl-ctrl{clear:both;pointer-events:auto;transform:translate(0)}.maplibregl-ctrl-top-left .maplibregl-ctrl{float:left;margin:10px 0 0 10px}.maplibregl-ctrl-top-right .maplibregl-ctrl{float:right;margin:10px 10px 0 0}.maplibregl-ctrl-bottom-left .maplibregl-ctrl{float:left;margin:0 0 10px 10px}.maplibregl-ctrl-bottom-right .maplibregl-ctrl{float:right;margin:0 10px 10px 0}.maplibregl-ctrl-group{background:#fff;border-radius:4px}.maplibregl-ctrl-group:not(:empty){box-shadow:0 0 0 2px rgba(0,0,0,.1)}@media (forced-colors:active){.maplibregl-ctrl-group:not(:empty){box-shadow:0 0 0 2px ButtonText}}.maplibregl-ctrl-group button{background-color:transparent;border:0;box-sizing:border-box;cursor:pointer;display:block;height:29px;outline:none;padding:0;width:29px}.maplibregl-ctrl-group button+button{border-top:1px solid #ddd}.maplibregl-ctrl button .maplibregl-ctrl-icon{background-position:50%;background-repeat:no-repeat;display:block;height:100%;width:100%}@media (forced-colors:active){.maplibregl-ctrl-icon{background-color:transparent}.maplibregl-ctrl-group button+button{border-top:1px solid ButtonText}}.maplibregl-ctrl button::-moz-focus-inner{border:0;padding:0}.maplibregl-ctrl-attrib-button:focus,.maplibregl-ctrl-group button:focus{box-shadow:0 0 2px 2px #0096ff}.maplibregl-ctrl button:disabled{cursor:not-allowed}.maplibregl-ctrl button:disabled .maplibregl-ctrl-icon{opacity:.25}.maplibregl-ctrl button:not(:disabled):hover{background-color:rgb(0 0 0/5%)}.maplibregl-ctrl-group button:focus:focus-visible{box-shadow:0 0 2px 2px #0096ff}.maplibregl-ctrl-group button:focus:not(:focus-visible){box-shadow:none}.maplibregl-ctrl-group button:focus:first-child{border-radius:4px 4px 0 0}.maplibregl-ctrl-group button:focus:last-child{border-radius:0 0 4px 4px}.maplibregl-ctrl-group button:focus:only-child{border-radius:inherit}.maplibregl-ctrl button.maplibregl-ctrl-zoom-out .maplibregl-ctrl-icon{background-image:url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='29' height='29' fill='%23333' viewBox='0 0 29 29'%3E%3Cpath d='M10 13c-.75 0-1.5.75-1.5 1.5S9.25 16 10 16h9c.75 0 1.5-.75 1.5-1.5S19.75 13 19 13z'/%3E%3C/svg%3E")}.maplibregl-ctrl button.maplibregl-ctrl-zoom-in .maplibregl-ctrl-icon{background-image:url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='29' height='29' fill='%23333' viewBox='0 0 29 29'%3E%3Cpath d='M14.5 8.5c-.75 0-1.5.75-1.5 1.5v3h-3c-.75 0-1.5.75-1.5 1.5S9.25 16 10 16h3v3c0 .75.75 1.5 1.5 1.5S16 19.75 16 19v-3h3c.75 0 1.5-.75 1.5-1.5S19.75 13 19 13h-3v-3c0-.75-.75-1.5-1.5-1.5'/%3E%3C/svg%3E")}@media (forced-colors:active){.maplibregl-ctrl button.maplibregl-ctrl-zoom-out .maplibregl-ctrl-icon{background-image:url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='29' height='29' fill='%23fff' viewBox='0 0 29 29'%3E%3Cpath d='M10 13c-.75 0-1.5.75-1.5 1.5S9.25 16 10 16h9c.75 0 1.5-.75 1.5-1.5S19.75 13 19 13z'/%3E%3C/svg%3E")}.maplibregl-ctrl button.maplibregl-ctrl-zoom-in .maplibregl-ctrl-icon{background-image:url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='29' height='29' fill='%23fff' viewBox='0 0 29 29'%3E%3Cpath d='M14.5 8.5c-.75 0-1.5.75-1.5 1.5v3h-3c-.75 0-1.5.75-1.5 1.5S9.25 16 10 16h3v3c0 .75.75 1.5 1.5 1.5S16 19.75 16 19v-3h3c.75 0 1.5-.75 1.5-1.5S19.75 13 19 13h-3v-3c0-.75-.75-1.5-1.5-1.5'/%3E%3C/svg%3E")}}@media (forced-colors:active) and (prefers-color-scheme:light){.maplibregl-ctrl button.maplibregl-ctrl-zoom-out .maplibregl-ctrl-icon{background-image:url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='29' height='29' viewBox='0 0 29 29'%3E%3Cpath d='M10 13c-.75 0-1.5.75-1.5 1.5S9.25 16 10 16h9c.75 0 1.5-.75 1.5-1.5S19.75 13 19 13z'/%3E%3C/svg%3E")}.maplibregl-ctrl button.maplibregl-ctrl-zoom-in .maplibregl-ctrl-icon{background-image:url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='29' height='29' viewBox='0 0 29 29'%3E%3Cpath d='M14.5 8.5c-.75 0-1.5.75-1.5 1.5v3h-3c-.75 0-1.5.75-1.5 1.5S9.25 16 10 16h3v3c0 .75.75 1.5 1.5 1.5S16 19.75 16 19v-3h3c.75 0 1.5-.75 1.5-1.5S19.75 13 19 13h-3v-3c0-.75-.75-1.5-1.5-1.5'/%3E%3C/svg%3E")}}.maplibregl-ctrl button.maplibregl-ctrl-fullscreen .maplibregl-ctrl-icon{background-image:url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='29' height='29' fill='%23333' viewBox='0 0 29 29'%3E%3Cpath d='M24 16v5.5c0 1.75-.75 2.5-2.5 2.5H16v-1l3-1.5-4-5.5 1-1 5.5 4 1.5-3zM6 16l1.5 3 5.5-4 1 1-4 5.5 3 1.5v1H7.5C5.75 24 5 23.25 5 21.5V16zm7-11v1l-3 1.5 4 5.5-1 1-5.5-4L6 13H5V7.5C5 5.75 5.75 5 7.5 5zm11 2.5c0-1.75-.75-2.5-2.5-2.5H16v1l3 1.5-4 5.5 1 1 5.5-4 1.5 3h1z'/%3E%3C/svg%3E")}.maplibregl-ctrl button.maplibregl-ctrl-shrink .maplibregl-ctrl-icon{background-image:url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='29' height='29' viewBox='0 0 29 29'%3E%3Cpath d='M18.5 16c-1.75 0-2.5.75-2.5 2.5V24h1l1.5-3 5.5 4 1-1-4-5.5 3-1.5v-1zM13 18.5c0-1.75-.75-2.5-2.5-2.5H5v1l3 1.5L4 24l1 1 5.5-4 1.5 3h1zm3-8c0 1.75.75 2.5 2.5 2.5H24v-1l-3-1.5L25 5l-1-1-5.5 4L17 5h-1zM10.5 13c1.75 0 2.5-.75 2.5-2.5V5h-1l-1.5 3L5 4 4 5l4 5.5L5 12v1z'/%3E%3C/svg%3E")}@media (forced-colors:active){.maplibregl-ctrl button.maplibregl-ctrl-fullscreen .maplibregl-ctrl-icon{background-image:url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='29' height='29' fill='%23fff' viewBox='0 0 29 29'%3E%3Cpath d='M24 16v5.5c0 1.75-.75 2.5-2.5 2.5H16v-1l3-1.5-4-5.5 1-1 5.5 4 1.5-3zM6 16l1.5 3 5.5-4 1 1-4 5.5 3 1.5v1H7.5C5.75 24 5 23.25 5 21.5V16zm7-11v1l-3 1.5 4 5.5-1 1-5.5-4L6 13H5V7.5C5 5.75 5.75 5 7.5 5zm11 2.5c0-1.75-.75-2.5-2.5-2.5H16v1l3 1.5-4 5.5 1 1 5.5-4 1.5 3h1z'/%3E%3C/svg%3E")}.maplibregl-ctrl button.maplibregl-ctrl-shrink .maplibregl-ctrl-icon{background-image:url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='29' height='29' fill='%23fff' viewBox='0 0 29 29'%3E%3Cpath d='M18.5 16c-1.75 0-2.5.75-2.5 2.5V24h1l1.5-3 5.5 4 1-1-4-5.5 3-1.5v-1zM13 18.5c0-1.75-.75-2.5-2.5-2.5H5v1l3 1.5L4 24l1 1 5.5-4 1.5 3h1zm3-8c0 1.75.75 2.5 2.5 2.5H24v-1l-3-1.5L25 5l-1-1-5.5 4L17 5h-1zM10.5 13c1.75 0 2.5-.75 2.5-2.5V5h-1l-1.5 3L5 4 4 5l4 5.5L5 12v1z'/%3E%3C/svg%3E")}}@media (forced-colors:active) and (prefers-color-scheme:light){.maplibregl-ctrl button.maplibregl-ctrl-fullscreen .maplibregl-ctrl-icon{background-image:url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='29' height='29' viewBox='0 0 29 29'%3E%3Cpath d='M24 16v5.5c0 1.75-.75 2.5-2.5 2.5H16v-1l3-1.5-4-5.5 1-1 5.5 4 1.5-3zM6 16l1.5 3 5.5-4 1 1-4 5.5 3 1.5v1H7.5C5.75 24 5 23.25 5 21.5V16zm7-11v1l-3 1.5 4 5.5-1 1-5.5-4L6 13H5V7.5C5 5.75 5.75 5 7.5 5zm11 2.5c0-1.75-.75-2.5-2.5-2.5H16v1l3 1.5-4 5.5 1 1 5.5-4 1.5 3h1z'/%3E%3C/svg%3E")}.maplibregl-ctrl button.maplibregl-ctrl-shrink .maplibregl-ctrl-icon{background-image:url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='29' height='29' viewBox='0 0 29 29'%3E%3Cpath d='M18.5 16c-1.75 0-2.5.75-2.5 2.5V24h1l1.5-3 5.5 4 1-1-4-5.5 3-1.5v-1zM13 18.5c0-1.75-.75-2.5-2.5-2.5H5v1l3 1.5L4 24l1 1 5.5-4 1.5 3h1zm3-8c0 1.75.75 2.5 2.5 2.5H24v-1l-3-1.5L25 5l-1-1-5.5 4L17 5h-1zM10.5 13c1.75 0 2.5-.75 2.5-2.5V5h-1l-1.5 3L5 4 4 5l4 5.5L5 12v1z'/%3E%3C/svg%3E")}}.maplibregl-ctrl button.maplibregl-ctrl-compass .maplibregl-ctrl-icon{background-image:url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='29' height='29' fill='%23333' viewBox='0 0 29 29'%3E%3Cpath d='m10.5 14 4-8 4 8z'/%3E%3Cpath fill='%23ccc' d='m10.5 16 4 8 4-8z'/%3E%3C/svg%3E")}@media (forced-colors:active){.maplibregl-ctrl button.maplibregl-ctrl-compass .maplibregl-ctrl-icon{background-image:url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='29' height='29' fill='%23fff' viewBox='0 0 29 29'%3E%3Cpath d='m10.5 14 4-8 4 8z'/%3E%3Cpath fill='%23ccc' d='m10.5 16 4 8 4-8z'/%3E%3C/svg%3E")}}@media (forced-colors:active) and (prefers-color-scheme:light){.maplibregl-ctrl button.maplibregl-ctrl-compass .maplibregl-ctrl-icon{background-image:url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='29' height='29' viewBox='0 0 29 29'%3E%3Cpath d='m10.5 14 4-8 4 8z'/%3E%3Cpath fill='%23ccc' d='m10.5 16 4 8 4-8z'/%3E%3C/svg%3E")}}.maplibregl-ctrl button.maplibregl-ctrl-terrain .maplibregl-ctrl-icon{background-image:url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='22' height='22' fill='%23333' viewBox='0 0 22 22'%3E%3Cpath d='m1.754 13.406 4.453-4.851 3.09 3.09 3.281 3.277.969-.969-3.309-3.312 3.844-4.121 6.148 6.886h1.082v-.855l-7.207-8.07-4.84 5.187L6.169 6.57l-5.48 5.965v.871ZM.688 16.844h20.625v1.375H.688Zm0 0'/%3E%3C/svg%3E")}.maplibregl-ctrl button.maplibregl-ctrl-terrain-enabled .maplibregl-ctrl-icon{background-image:url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='22' height='22' fill='%2333b5e5' viewBox='0 0 22 22'%3E%3Cpath d='m1.754 13.406 4.453-4.851 3.09 3.09 3.281 3.277.969-.969-3.309-3.312 3.844-4.121 6.148 6.886h1.082v-.855l-7.207-8.07-4.84 5.187L6.169 6.57l-5.48 5.965v.871ZM.688 16.844h20.625v1.375H.688Zm0 0'/%3E%3C/svg%3E")}.maplibregl-ctrl button.maplibregl-ctrl-geolocate .maplibregl-ctrl-icon{background-image:url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='29' height='29' fill='%23333' viewBox='0 0 20 20'%3E%3Cpath d='M10 4C9 4 9 5 9 5v.1A5 5 0 0 0 5.1 9H5s-1 0-1 1 1 1 1 1h.1A5 5 0 0 0 9 14.9v.1s0 1 1 1 1-1 1-1v-.1a5 5 0 0 0 3.9-3.9h.1s1 0 1-1-1-1-1-1h-.1A5 5 0 0 0 11 5.1V5s0-1-1-1m0 2.5a3.5 3.5 0 1 1 0 7 3.5 3.5 0 1 1 0-7'/%3E%3Ccircle cx='10' cy='10' r='2'/%3E%3C/svg%3E")}.maplibregl-ctrl button.maplibregl-ctrl-geolocate:disabled .maplibregl-ctrl-icon{background-image:url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='29' height='29' fill='%23aaa' viewBox='0 0 20 20'%3E%3Cpath d='M10 4C9 4 9 5 9 5v.1A5 5 0 0 0 5.1 9H5s-1 0-1 1 1 1 1 1h.1A5 5 0 0 0 9 14.9v.1s0 1 1 1 1-1 1-1v-.1a5 5 0 0 0 3.9-3.9h.1s1 0 1-1-1-1-1-1h-.1A5 5 0 0 0 11 5.1V5s0-1-1-1m0 2.5a3.5 3.5 0 1 1 0 7 3.5 3.5 0 1 1 0-7'/%3E%3Ccircle cx='10' cy='10' r='2'/%3E%3Cpath fill='red' d='m14 5 1 1-9 9-1-1z'/%3E%3C/svg%3E")}.maplibregl-ctrl button.maplibregl-ctrl-geolocate.maplibregl-ctrl-geolocate-active .maplibregl-ctrl-icon{background-image:url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='29' height='29' fill='%2333b5e5' viewBox='0 0 20 20'%3E%3Cpath d='M10 4C9 4 9 5 9 5v.1A5 5 0 0 0 5.1 9H5s-1 0-1 1 1 1 1 1h.1A5 5 0 0 0 9 14.9v.1s0 1 1 1 1-1 1-1v-.1a5 5 0 0 0 3.9-3.9h.1s1 0 1-1-1-1-1-1h-.1A5 5 0 0 0 11 5.1V5s0-1-1-1m0 2.5a3.5 3.5 0 1 1 0 7 3.5 3.5 0 1 1 0-7'/%3E%3Ccircle cx='10' cy='10' r='2'/%3E%3C/svg%3E")}.maplibregl-ctrl button.maplibregl-ctrl-geolocate.maplibregl-ctrl-geolocate-active-error .maplibregl-ctrl-icon{background-image:url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='29' height='29' fill='%23e58978' viewBox='0 0 20 20'%3E%3Cpath d='M10 4C9 4 9 5 9 5v.1A5 5 0 0 0 5.1 9H5s-1 0-1 1 1 1 1 1h.1A5 5 0 0 0 9 14.9v.1s0 1 1 1 1-1 1-1v-.1a5 5 0 0 0 3.9-3.9h.1s1 0 1-1-1-1-1-1h-.1A5 5 0 0 0 11 5.1V5s0-1-1-1m0 2.5a3.5 3.5 0 1 1 0 7 3.5 3.5 0 1 1 0-7'/%3E%3Ccircle cx='10' cy='10' r='2'/%3E%3C/svg%3E")}.maplibregl-ctrl button.maplibregl-ctrl-geolocate.maplibregl-ctrl-geolocate-background .maplibregl-ctrl-icon{background-image:url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='29' height='29' fill='%2333b5e5' viewBox='0 0 20 20'%3E%3Cpath d='M10 4C9 4 9 5 9 5v.1A5 5 0 0 0 5.1 9H5s-1 0-1 1 1 1 1 1h.1A5 5 0 0 0 9 14.9v.1s0 1 1 1 1-1 1-1v-.1a5 5 0 0 0 3.9-3.9h.1s1 0 1-1-1-1-1-1h-.1A5 5 0 0 0 11 5.1V5s0-1-1-1m0 2.5a3.5 3.5 0 1 1 0 7 3.5 3.5 0 1 1 0-7'/%3E%3C/svg%3E")}.maplibregl-ctrl button.maplibregl-ctrl-geolocate.maplibregl-ctrl-geolocate-background-error .maplibregl-ctrl-icon{background-image:url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='29' height='29' fill='%23e54e33' viewBox='0 0 20 20'%3E%3Cpath d='M10 4C9 4 9 5 9 5v.1A5 5 0 0 0 5.1 9H5s-1 0-1 1 1 1 1 1h.1A5 5 0 0 0 9 14.9v.1s0 1 1 1 1-1 1-1v-.1a5 5 0 0 0 3.9-3.9h.1s1 0 1-1-1-1-1-1h-.1A5 5 0 0 0 11 5.1V5s0-1-1-1m0 2.5a3.5 3.5 0 1 1 0 7 3.5 3.5 0 1 1 0-7'/%3E%3C/svg%3E")}.maplibregl-ctrl button.maplibregl-ctrl-geolocate.maplibregl-ctrl-geolocate-waiting .maplibregl-ctrl-icon{animation:maplibregl-spin 2s linear infinite}@media (forced-colors:active){.maplibregl-ctrl button.maplibregl-ctrl-geolocate .maplibregl-ctrl-icon{background-image:url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='29' height='29' fill='%23fff' viewBox='0 0 20 20'%3E%3Cpath d='M10 4C9 4 9 5 9 5v.1A5 5 0 0 0 5.1 9H5s-1 0-1 1 1 1 1 1h.1A5 5 0 0 0 9 14.9v.1s0 1 1 1 1-1 1-1v-.1a5 5 0 0 0 3.9-3.9h.1s1 0 1-1-1-1-1-1h-.1A5 5 0 0 0 11 5.1V5s0-1-1-1m0 2.5a3.5 3.5 0 1 1 0 7 3.5 3.5 0 1 1 0-7'/%3E%3Ccircle cx='10' cy='10' r='2'/%3E%3C/svg%3E")}.maplibregl-ctrl button.maplibregl-ctrl-geolocate:disabled .maplibregl-ctrl-icon{background-image:url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='29' height='29' fill='%23999' viewBox='0 0 20 20'%3E%3Cpath d='M10 4C9 4 9 5 9 5v.1A5 5 0 0 0 5.1 9H5s-1 0-1 1 1 1 1 1h.1A5 5 0 0 0 9 14.9v.1s0 1 1 1 1-1 1-1v-.1a5 5 0 0 0 3.9-3.9h.1s1 0 1-1-1-1-1-1h-.1A5 5 0 0 0 11 5.1V5s0-1-1-1m0 2.5a3.5 3.5 0 1 1 0 7 3.5 3.5 0 1 1 0-7'/%3E%3Ccircle cx='10' cy='10' r='2'/%3E%3Cpath fill='red' d='m14 5 1 1-9 9-1-1z'/%3E%3C/svg%3E")}.maplibregl-ctrl button.maplibregl-ctrl-geolocate.maplibregl-ctrl-geolocate-active .maplibregl-ctrl-icon{background-image:url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='29' height='29' fill='%2333b5e5' viewBox='0 0 20 20'%3E%3Cpath d='M10 4C9 4 9 5 9 5v.1A5 5 0 0 0 5.1 9H5s-1 0-1 1 1 1 1 1h.1A5 5 0 0 0 9 14.9v.1s0 1 1 1 1-1 1-1v-.1a5 5 0 0 0 3.9-3.9h.1s1 0 1-1-1-1-1-1h-.1A5 5 0 0 0 11 5.1V5s0-1-1-1m0 2.5a3.5 3.5 0 1 1 0 7 3.5 3.5 0 1 1 0-7'/%3E%3Ccircle cx='10' cy='10' r='2'/%3E%3C/svg%3E")}.maplibregl-ctrl button.maplibregl-ctrl-geolocate.maplibregl-ctrl-geolocate-active-error .maplibregl-ctrl-icon{background-image:url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='29' height='29' fill='%23e58978' viewBox='0 0 20 20'%3E%3Cpath d='M10 4C9 4 9 5 9 5v.1A5 5 0 0 0 5.1 9H5s-1 0-1 1 1 1 1 1h.1A5 5 0 0 0 9 14.9v.1s0 1 1 1 1-1 1-1v-.1a5 5 0 0 0 3.9-3.9h.1s1 0 1-1-1-1-1-1h-.1A5 5 0 0 0 11 5.1V5s0-1-1-1m0 2.5a3.5 3.5 0 1 1 0 7 3.5 3.5 0 1 1 0-7'/%3E%3Ccircle cx='10' cy='10' r='2'/%3E%3C/svg%3E")}.maplibregl-ctrl button.maplibregl-ctrl-geolocate.maplibregl-ctrl-geolocate-background .maplibregl-ctrl-icon{background-image:url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='29' height='29' fill='%2333b5e5' viewBox='0 0 20 20'%3E%3Cpath d='M10 4C9 4 9 5 9 5v.1A5 5 0 0 0 5.1 9H5s-1 0-1 1 1 1 1 1h.1A5 5 0 0 0 9 14.9v.1s0 1 1 1 1-1 1-1v-.1a5 5 0 0 0 3.9-3.9h.1s1 0 1-1-1-1-1-1h-.1A5 5 0 0 0 11 5.1V5s0-1-1-1m0 2.5a3.5 3.5 0 1 1 0 7 3.5 3.5 0 1 1 0-7'/%3E%3C/svg%3E")}.maplibregl-ctrl button.maplibregl-ctrl-geolocate.maplibregl-ctrl-geolocate-background-error .maplibregl-ctrl-icon{background-image:url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='29' height='29' fill='%23e54e33' viewBox='0 0 20 20'%3E%3Cpath d='M10 4C9 4 9 5 9 5v.1A5 5 0 0 0 5.1 9H5s-1 0-1 1 1 1 1 1h.1A5 5 0 0 0 9 14.9v.1s0 1 1 1 1-1 1-1v-.1a5 5 0 0 0 3.9-3.9h.1s1 0 1-1-1-1-1-1h-.1A5 5 0 0 0 11 5.1V5s0-1-1-1m0 2.5a3.5 3.5 0 1 1 0 7 3.5 3.5 0 1 1 0-7'/%3E%3C/svg%3E")}}@media (forced-colors:active) and (prefers-color-scheme:light){.maplibregl-ctrl button.maplibregl-ctrl-geolocate .maplibregl-ctrl-icon{background-image:url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='29' height='29' viewBox='0 0 20 20'%3E%3Cpath d='M10 4C9 4 9 5 9 5v.1A5 5 0 0 0 5.1 9H5s-1 0-1 1 1 1 1 1h.1A5 5 0 0 0 9 14.9v.1s0 1 1 1 1-1 1-1v-.1a5 5 0 0 0 3.9-3.9h.1s1 0 1-1-1-1-1-1h-.1A5 5 0 0 0 11 5.1V5s0-1-1-1m0 2.5a3.5 3.5 0 1 1 0 7 3.5 3.5 0 1 1 0-7'/%3E%3Ccircle cx='10' cy='10' r='2'/%3E%3C/svg%3E")}.maplibregl-ctrl button.maplibregl-ctrl-geolocate:disabled .maplibregl-ctrl-icon{background-image:url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='29' height='29' fill='%23666' viewBox='0 0 20 20'%3E%3Cpath d='M10 4C9 4 9 5 9 5v.1A5 5 0 0 0 5.1 9H5s-1 0-1 1 1 1 1 1h.1A5 5 0 0 0 9 14.9v.1s0 1 1 1 1-1 1-1v-.1a5 5 0 0 0 3.9-3.9h.1s1 0 1-1-1-1-1-1h-.1A5 5 0 0 0 11 5.1V5s0-1-1-1m0 2.5a3.5 3.5 0 1 1 0 7 3.5 3.5 0 1 1 0-7'/%3E%3Ccircle cx='10' cy='10' r='2'/%3E%3Cpath fill='red' d='m14 5 1 1-9 9-1-1z'/%3E%3C/svg%3E")}}@keyframes maplibregl-spin{0%{transform:rotate(0deg)}to{transform:rotate(1turn)}}a.maplibregl-ctrl-logo{background-image:url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='88' height='23' fill='none'%3E%3Cpath fill='%23000' fill-opacity='.4' fill-rule='evenodd' d='M17.408 16.796h-1.827l2.501-12.095h.198l3.324 6.533.988 2.19.988-2.19 3.258-6.533h.181l2.6 12.095h-1.81l-1.218-5.644-.362-1.71-.658 1.71-2.929 5.644h-.098l-2.914-5.644-.757-1.71-.345 1.71zm1.958-3.42-.726 3.663a1.255 1.255 0 0 1-1.232 1.011h-1.827a1.255 1.255 0 0 1-1.229-1.509l2.501-12.095a1.255 1.255 0 0 1 1.23-1.001h.197a1.25 1.25 0 0 1 1.12.685l3.19 6.273 3.125-6.263a1.25 1.25 0 0 1 1.123-.695h.181a1.255 1.255 0 0 1 1.227.991l1.443 6.71a5 5 0 0 1 .314-.787l.009-.016a4.6 4.6 0 0 1 1.777-1.887c.782-.46 1.668-.667 2.611-.667a4.6 4.6 0 0 1 1.7.32l.306.134c.21-.16.474-.256.759-.256h1.694a1.255 1.255 0 0 1 1.212.925 1.255 1.255 0 0 1 1.212-.925h1.711c.284 0 .545.094.755.252.613-.3 1.312-.45 2.075-.45 1.356 0 2.557.445 3.482 1.4q.47.48.763 1.064V4.701a1.255 1.255 0 0 1 1.255-1.255h1.86A1.255 1.255 0 0 1 54.44 4.7v9.194h2.217c.19 0 .37.043.532.118v-4.77c0-.356.147-.678.385-.906a2.42 2.42 0 0 1-.682-1.71c0-.665.267-1.253.735-1.7a2.45 2.45 0 0 1 1.722-.674 2.43 2.43 0 0 1 1.705.675q.318.302.504.683V4.7a1.255 1.255 0 0 1 1.255-1.255h1.744A1.255 1.255 0 0 1 65.812 4.7v3.335a4.8 4.8 0 0 1 1.526-.246c.938 0 1.817.214 2.59.69a4.47 4.47 0 0 1 1.67 1.743v-.98a1.255 1.255 0 0 1 1.256-1.256h1.777c.233 0 .451.064.639.174a3.4 3.4 0 0 1 1.567-.372c.346 0 .861.02 1.285.232a1.25 1.25 0 0 1 .689 1.004 4.7 4.7 0 0 1 .853-.588c.795-.44 1.675-.647 2.61-.647 1.385 0 2.65.39 3.525 1.396.836.938 1.168 2.173 1.168 3.528q-.001.515-.056 1.051a1.255 1.255 0 0 1-.947 1.09l.408.952a1.255 1.255 0 0 1-.477 1.552c-.418.268-.92.463-1.458.612-.613.171-1.304.244-2.049.244-1.06 0-2.043-.207-2.886-.698l-.015-.008c-.798-.48-1.419-1.135-1.818-1.963l-.004-.008a5.8 5.8 0 0 1-.548-2.512q0-.429.053-.843a1.3 1.3 0 0 1-.333-.086l-.166-.004c-.223 0-.426.062-.643.228-.03.024-.142.139-.142.59v3.883a1.255 1.255 0 0 1-1.256 1.256h-1.777a1.255 1.255 0 0 1-1.256-1.256V15.69l-.032.057a4.8 4.8 0 0 1-1.86 1.833 5.04 5.04 0 0 1-2.484.634 4.5 4.5 0 0 1-1.935-.424 1.25 1.25 0 0 1-.764.258h-1.71a1.255 1.255 0 0 1-1.256-1.255V7.687a2.4 2.4 0 0 1-.428.625c.253.23.412.561.412.93v7.553a1.255 1.255 0 0 1-1.256 1.255h-1.843a1.25 1.25 0 0 1-.894-.373c-.228.23-.544.373-.894.373H51.32a1.255 1.255 0 0 1-1.256-1.255v-1.251l-.061.117a4.7 4.7 0 0 1-1.782 1.884 4.77 4.77 0 0 1-2.485.67 5.6 5.6 0 0 1-1.485-.188l.009 2.764a1.255 1.255 0 0 1-1.255 1.259h-1.729a1.255 1.255 0 0 1-1.255-1.255v-3.537a1.255 1.255 0 0 1-1.167.793h-1.679a1.25 1.25 0 0 1-.77-.263 4.5 4.5 0 0 1-1.945.429c-.885 0-1.724-.21-2.495-.632l-.017-.01a5 5 0 0 1-1.081-.836 1.255 1.255 0 0 1-1.254 1.312h-1.81a1.255 1.255 0 0 1-1.228-.99l-.782-3.625-2.044 3.939a1.25 1.25 0 0 1-1.115.676h-.098a1.25 1.25 0 0 1-1.116-.68l-2.061-3.994zM35.92 16.63l.207-.114.223-.15q.493-.356.735-.785l.061-.118.033 1.332h1.678V9.242h-1.694l-.033 1.267q-.133-.329-.526-.658l-.032-.028a3.2 3.2 0 0 0-.668-.428l-.27-.12a3.3 3.3 0 0 0-1.235-.23q-1.136-.001-1.974.493a3.36 3.36 0 0 0-1.3 1.382q-.445.89-.444 2.074 0 1.2.51 2.107a3.8 3.8 0 0 0 1.382 1.381 3.9 3.9 0 0 0 1.893.477q.795 0 1.455-.33zm-2.789-5.38q-.576.675-.575 1.762 0 1.102.559 1.794.576.675 1.645.675a2.25 2.25 0 0 0 .934-.19 2.2 2.2 0 0 0 .468-.29l.178-.161a2.2 2.2 0 0 0 .397-.561q.244-.5.244-1.15v-.115q0-.708-.296-1.267l-.043-.077a2.2 2.2 0 0 0-.633-.709l-.13-.086-.047-.028a2.1 2.1 0 0 0-1.073-.285q-1.052 0-1.629.692zm2.316 2.706c.163-.17.28-.407.28-.83v-.114c0-.292-.06-.508-.15-.68a.96.96 0 0 0-.353-.389.85.85 0 0 0-.464-.127c-.4 0-.56.114-.664.239l-.01.012c-.148.174-.275.45-.275.945 0 .506.122.801.27.99.097.11.266.224.68.224.303 0 .504-.09.687-.269zm7.545 1.705a2.6 2.6 0 0 0 .331.423q.319.33.755.548l.173.074q.65.255 1.49.255 1.02 0 1.844-.493a3.45 3.45 0 0 0 1.316-1.4q.493-.904.493-2.089 0-1.909-.988-2.913-.988-1.02-2.584-1.02-.898 0-1.575.347a3 3 0 0 0-.415.262l-.199.166a3.4 3.4 0 0 0-.64.82V9.242h-1.712v11.553h1.729l-.017-5.134zm.53-1.138q.206.29.48.5l.155.11.053.034q.51.296 1.119.297 1.07 0 1.645-.675.577-.69.576-1.762 0-1.119-.576-1.777-.558-.675-1.645-.675-.435 0-.835.16a2 2 0 0 0-.284.136 2 2 0 0 0-.363.254 2.2 2.2 0 0 0-.46.569l-.082.162a2.6 2.6 0 0 0-.213 1.072v.115q0 .707.296 1.267l.135.211zm.964-.818a1.1 1.1 0 0 0 .367.385.94.94 0 0 0 .476.118c.423 0 .59-.117.687-.23.159-.194.28-.478.28-.95 0-.53-.133-.8-.266-.952l-.021-.025c-.078-.094-.231-.221-.68-.221a1 1 0 0 0-.503.135l-.012.007a.86.86 0 0 0-.335.343c-.073.133-.132.324-.132.614v.115a1.4 1.4 0 0 0 .14.66zm15.7-6.222q.347-.346.346-.856a1.05 1.05 0 0 0-.345-.79 1.18 1.18 0 0 0-.84-.329q-.51 0-.855.33a1.05 1.05 0 0 0-.346.79q0 .51.346.855.345.346.856.346.51 0 .839-.346zm4.337 9.314.033-1.332q.191.403.59.747l.098.081a4 4 0 0 0 .316.224l.223.122a3.2 3.2 0 0 0 1.44.322 3.8 3.8 0 0 0 1.875-.477 3.5 3.5 0 0 0 1.382-1.366q.527-.89.526-2.09 0-1.184-.444-2.073a3.24 3.24 0 0 0-1.283-1.399q-.823-.51-1.942-.51a3.5 3.5 0 0 0-1.527.344l-.086.043-.165.09a3 3 0 0 0-.33.214q-.432.315-.656.707a2 2 0 0 0-.099.198l.082-1.283V4.701h-1.744v12.095zm.473-2.509a2.5 2.5 0 0 0 .566.7q.117.098.245.18l.144.08a2.1 2.1 0 0 0 .975.232q1.07 0 1.645-.675.576-.69.576-1.778 0-1.102-.576-1.777-.56-.691-1.645-.692a2.2 2.2 0 0 0-1.015.235q-.22.113-.415.282l-.15.142a2.1 2.1 0 0 0-.42.594q-.223.479-.223 1.1v.115q0 .705.293 1.26zm2.616-.293c.157-.191.28-.479.28-.967 0-.51-.13-.79-.276-.961l-.021-.026c-.082-.1-.232-.225-.67-.225a.87.87 0 0 0-.681.279l-.012.011c-.154.155-.274.38-.274.807v.115c0 .285.057.499.144.669a1.1 1.1 0 0 0 .367.405c.137.082.28.123.455.123.423 0 .59-.118.686-.23zm8.266-3.013q.345-.13.724-.14l.069-.002q.493 0 .642.099l.247-1.794q-.196-.099-.717-.099a2.3 2.3 0 0 0-.545.063 2 2 0 0 0-.411.148 2.2 2.2 0 0 0-.4.249 2.5 2.5 0 0 0-.485.499 2.7 2.7 0 0 0-.32.581l-.05.137v-1.48h-1.778v7.553h1.777v-3.884q0-.546.159-.943a1.5 1.5 0 0 1 .466-.636 2.5 2.5 0 0 1 .399-.253 2 2 0 0 1 .224-.099zm9.784 2.656.05-.922q0-1.743-.856-2.698-.838-.97-2.584-.97-1.119-.001-2.007.493a3.46 3.46 0 0 0-1.4 1.382q-.493.906-.493 2.106 0 1.07.428 1.975.428.89 1.332 1.432.906.526 2.255.526.973 0 1.668-.185l.044-.012.135-.04q.613-.184.984-.421l-.542-1.267q-.3.162-.642.274l-.297.087q-.51.131-1.3.131-.954 0-1.497-.444a1.6 1.6 0 0 1-.192-.193q-.366-.44-.512-1.234l-.004-.021zm-5.427-1.256-.003.022h3.752v-.138q-.011-.727-.288-1.118a1 1 0 0 0-.156-.176q-.46-.428-1.316-.428-.986 0-1.494.604-.379.45-.494 1.234zm-27.053 2.77V4.7h-1.86v12.095h5.333V15.15zm7.103-5.908v7.553h-1.843V9.242h1.843z'/%3E%3Cpath fill='%23fff' d='m19.63 11.151-.757-1.71-.345 1.71-1.12 5.644h-1.827L18.083 4.7h.197l3.325 6.533.988 2.19.988-2.19L26.839 4.7h.181l2.6 12.095h-1.81l-1.218-5.644-.362-1.71-.658 1.71-2.93 5.644h-.098l-2.913-5.644zm14.836 5.81q-1.02 0-1.893-.478a3.8 3.8 0 0 1-1.381-1.382q-.51-.906-.51-2.106 0-1.185.444-2.074a3.36 3.36 0 0 1 1.3-1.382q.839-.494 1.974-.494a3.3 3.3 0 0 1 1.234.231 3.3 3.3 0 0 1 .97.575q.396.33.527.659l.033-1.267h1.694v7.553H37.18l-.033-1.332q-.279.593-1.02 1.053a3.17 3.17 0 0 1-1.662.444zm.296-1.482q.938 0 1.58-.642.642-.66.642-1.711v-.115q0-.708-.296-1.267a2.2 2.2 0 0 0-.807-.872 2.1 2.1 0 0 0-1.119-.313q-1.053 0-1.629.692-.575.675-.575 1.76 0 1.103.559 1.795.577.675 1.645.675zm6.521-6.237h1.711v1.4q.906-1.597 2.83-1.597 1.596 0 2.584 1.02.988 1.005.988 2.914 0 1.185-.493 2.09a3.46 3.46 0 0 1-1.316 1.399 3.5 3.5 0 0 1-1.844.493q-.954 0-1.662-.329a2.67 2.67 0 0 1-1.086-.97l.017 5.134h-1.728zm4.048 6.22q1.07 0 1.645-.674.577-.69.576-1.762 0-1.119-.576-1.777-.558-.675-1.645-.675-.592 0-1.12.296-.51.28-.822.823-.296.527-.296 1.234v.115q0 .708.296 1.267.313.543.823.855.51.296 1.119.297z'/%3E%3Cpath fill='%23e1e3e9' d='M51.325 4.7h1.86v10.45h3.473v1.646h-5.333zm7.12 4.542h1.843v7.553h-1.843zm.905-1.415a1.16 1.16 0 0 1-.856-.346 1.17 1.17 0 0 1-.346-.856 1.05 1.05 0 0 1 .346-.79q.346-.329.856-.329.494 0 .839.33a1.05 1.05 0 0 1 .345.79 1.16 1.16 0 0 1-.345.855q-.33.346-.84.346zm7.875 9.133a3.17 3.17 0 0 1-1.662-.444q-.723-.46-1.004-1.053l-.033 1.332h-1.71V4.701h1.743v4.657l-.082 1.283q.279-.658 1.086-1.119a3.5 3.5 0 0 1 1.778-.477q1.119 0 1.942.51a3.24 3.24 0 0 1 1.283 1.4q.445.888.444 2.072 0 1.201-.526 2.09a3.5 3.5 0 0 1-1.382 1.366 3.8 3.8 0 0 1-1.876.477zm-.296-1.481q1.069 0 1.645-.675.577-.69.577-1.778 0-1.102-.577-1.776-.56-.691-1.645-.692a2.12 2.12 0 0 0-1.58.659q-.642.641-.642 1.694v.115q0 .71.296 1.267a2.4 2.4 0 0 0 .807.872 2.1 2.1 0 0 0 1.119.313zm5.927-6.237h1.777v1.481q.263-.757.856-1.217a2.14 2.14 0 0 1 1.349-.46q.527 0 .724.098l-.247 1.794q-.149-.099-.642-.099-.774 0-1.416.494-.626.493-.626 1.58v3.883h-1.777V9.242zm9.534 7.718q-1.35 0-2.255-.526-.904-.543-1.332-1.432a4.6 4.6 0 0 1-.428-1.975q0-1.2.493-2.106a3.46 3.46 0 0 1 1.4-1.382q.889-.495 2.007-.494 1.744 0 2.584.97.855.956.856 2.7 0 .444-.05.92h-5.43q.18 1.005.708 1.45.542.443 1.497.443.79 0 1.3-.131a4 4 0 0 0 .938-.362l.542 1.267q-.411.263-1.119.46-.708.198-1.711.197zm1.596-4.558q.016-1.02-.444-1.432-.46-.428-1.316-.428-1.728 0-1.991 1.86z'/%3E%3Cpath d='M5.074 15.948a.484.657 0 0 0-.486.659v1.84a.484.657 0 0 0 .486.659h4.101a.484.657 0 0 0 .486-.659v-1.84a.484.657 0 0 0-.486-.659zm3.56 1.16H5.617v.838h3.017z' style='fill:%23fff;fill-rule:evenodd;stroke-width:1.03600001'/%3E%3Cg style='stroke-width:1.12603545'%3E%3Cpath d='M-9.408-1.416c-3.833-.025-7.056 2.912-7.08 6.615-.02 3.08 1.653 4.832 3.107 6.268.903.892 1.721 1.74 2.32 2.902l-.525-.004c-.543-.003-.992.304-1.24.639a1.87 1.87 0 0 0-.362 1.121l-.011 1.877c-.003.402.104.787.347 1.125.244.338.688.653 1.23.656l4.142.028c.542.003.99-.306 1.238-.641a1.87 1.87 0 0 0 .363-1.121l.012-1.875a1.87 1.87 0 0 0-.348-1.127c-.243-.338-.688-.653-1.23-.656l-.518-.004c.597-1.145 1.425-1.983 2.348-2.87 1.473-1.414 3.18-3.149 3.2-6.226-.016-3.59-2.923-6.684-6.993-6.707m-.006 1.1v.002c3.274.02 5.92 2.532 5.9 5.6-.017 2.706-1.39 4.026-2.863 5.44-1.034.994-2.118 2.033-2.814 3.633-.018.041-.052.055-.075.065q-.013.004-.02.01a.34.34 0 0 1-.226.084.34.34 0 0 1-.224-.086l-.092-.077c-.699-1.615-1.768-2.669-2.781-3.67-1.454-1.435-2.797-2.762-2.78-5.478.02-3.067 2.7-5.545 5.975-5.523m-.02 2.826c-1.62-.01-2.944 1.315-2.955 2.96-.01 1.646 1.295 2.988 2.916 2.999h.002c1.621.01 2.943-1.316 2.953-2.961.011-1.646-1.294-2.988-2.916-2.998m-.005 1.1c1.017.006 1.829.83 1.822 1.89s-.83 1.874-1.848 1.867c-1.018-.006-1.829-.83-1.822-1.89s.83-1.874 1.848-1.868m-2.155 11.857 4.14.025c.271.002.49.305.487.676l-.013 1.875c-.003.37-.224.67-.495.668l-4.14-.025c-.27-.002-.487-.306-.485-.676l.012-1.875c.003-.37.224-.67.494-.668' style='color:%23000;font-style:normal;font-variant:normal;font-weight:400;font-stretch:normal;font-size:medium;line-height:normal;font-family:sans-serif;font-variant-ligatures:normal;font-variant-position:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-alternates:normal;font-feature-settings:normal;text-indent:0;text-align:start;text-decoration:none;text-decoration-line:none;text-decoration-style:solid;text-decoration-color:%23000;letter-spacing:normal;word-spacing:normal;text-transform:none;writing-mode:lr-tb;direction:ltr;text-orientation:mixed;dominant-baseline:auto;baseline-shift:baseline;text-anchor:start;white-space:normal;shape-padding:0;clip-rule:evenodd;display:inline;overflow:visible;visibility:visible;opacity:1;isolation:auto;mix-blend-mode:normal;color-interpolation:sRGB;color-interpolation-filters:linearRGB;solid-color:%23000;solid-opacity:1;vector-effect:none;fill:%23000;fill-opacity:.4;fill-rule:evenodd;stroke:none;stroke-width:2.47727823;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;color-rendering:auto;image-rendering:auto;shape-rendering:auto;text-rendering:auto' transform='translate(15.553 2.85)scale(.88807)'/%3E%3Cpath d='M-9.415-.316C-12.69-.338-15.37 2.14-15.39 5.207c-.017 2.716 1.326 4.041 2.78 5.477 1.013 1 2.081 2.055 2.78 3.67l.092.076a.34.34 0 0 0 .225.086.34.34 0 0 0 .227-.083l.019-.01c.022-.009.057-.024.074-.064.697-1.6 1.78-2.64 2.814-3.634 1.473-1.414 2.847-2.733 2.864-5.44.02-3.067-2.627-5.58-5.901-5.601m-.057 8.784c1.621.011 2.944-1.315 2.955-2.96.01-1.646-1.295-2.988-2.916-2.999-1.622-.01-2.945 1.315-2.955 2.96s1.295 2.989 2.916 3' style='clip-rule:evenodd;fill:%23e1e3e9;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:2.47727823;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:.4' transform='translate(15.553 2.85)scale(.88807)'/%3E%3Cpath d='M-11.594 15.465c-.27-.002-.492.297-.494.668l-.012 1.876c-.003.371.214.673.485.675l4.14.027c.271.002.492-.298.495-.668l.012-1.877c.003-.37-.215-.672-.485-.674z' style='clip-rule:evenodd;fill:%23fff;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:2.47727823;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:.4' transform='translate(15.553 2.85)scale(.88807)'/%3E%3C/g%3E%3C/svg%3E");background-repeat:no-repeat;cursor:pointer;display:block;height:23px;margin:0 0 -4px -4px;overflow:hidden;width:88px}a.maplibregl-ctrl-logo.maplibregl-compact{width:14px}@media (forced-colors:active){a.maplibregl-ctrl-logo{background-color:transparent;background-image:url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='88' height='23' fill='none'%3E%3Cpath fill='%23000' fill-opacity='.4' fill-rule='evenodd' d='M17.408 16.796h-1.827l2.501-12.095h.198l3.324 6.533.988 2.19.988-2.19 3.258-6.533h.181l2.6 12.095h-1.81l-1.218-5.644-.362-1.71-.658 1.71-2.929 5.644h-.098l-2.914-5.644-.757-1.71-.345 1.71zm1.958-3.42-.726 3.663a1.255 1.255 0 0 1-1.232 1.011h-1.827a1.255 1.255 0 0 1-1.229-1.509l2.501-12.095a1.255 1.255 0 0 1 1.23-1.001h.197a1.25 1.25 0 0 1 1.12.685l3.19 6.273 3.125-6.263a1.25 1.25 0 0 1 1.123-.695h.181a1.255 1.255 0 0 1 1.227.991l1.443 6.71a5 5 0 0 1 .314-.787l.009-.016a4.6 4.6 0 0 1 1.777-1.887c.782-.46 1.668-.667 2.611-.667a4.6 4.6 0 0 1 1.7.32l.306.134c.21-.16.474-.256.759-.256h1.694a1.255 1.255 0 0 1 1.212.925 1.255 1.255 0 0 1 1.212-.925h1.711c.284 0 .545.094.755.252.613-.3 1.312-.45 2.075-.45 1.356 0 2.557.445 3.482 1.4q.47.48.763 1.064V4.701a1.255 1.255 0 0 1 1.255-1.255h1.86A1.255 1.255 0 0 1 54.44 4.7v9.194h2.217c.19 0 .37.043.532.118v-4.77c0-.356.147-.678.385-.906a2.42 2.42 0 0 1-.682-1.71c0-.665.267-1.253.735-1.7a2.45 2.45 0 0 1 1.722-.674 2.43 2.43 0 0 1 1.705.675q.318.302.504.683V4.7a1.255 1.255 0 0 1 1.255-1.255h1.744A1.255 1.255 0 0 1 65.812 4.7v3.335a4.8 4.8 0 0 1 1.526-.246c.938 0 1.817.214 2.59.69a4.47 4.47 0 0 1 1.67 1.743v-.98a1.255 1.255 0 0 1 1.256-1.256h1.777c.233 0 .451.064.639.174a3.4 3.4 0 0 1 1.567-.372c.346 0 .861.02 1.285.232a1.25 1.25 0 0 1 .689 1.004 4.7 4.7 0 0 1 .853-.588c.795-.44 1.675-.647 2.61-.647 1.385 0 2.65.39 3.525 1.396.836.938 1.168 2.173 1.168 3.528q-.001.515-.056 1.051a1.255 1.255 0 0 1-.947 1.09l.408.952a1.255 1.255 0 0 1-.477 1.552c-.418.268-.92.463-1.458.612-.613.171-1.304.244-2.049.244-1.06 0-2.043-.207-2.886-.698l-.015-.008c-.798-.48-1.419-1.135-1.818-1.963l-.004-.008a5.8 5.8 0 0 1-.548-2.512q0-.429.053-.843a1.3 1.3 0 0 1-.333-.086l-.166-.004c-.223 0-.426.062-.643.228-.03.024-.142.139-.142.59v3.883a1.255 1.255 0 0 1-1.256 1.256h-1.777a1.255 1.255 0 0 1-1.256-1.256V15.69l-.032.057a4.8 4.8 0 0 1-1.86 1.833 5.04 5.04 0 0 1-2.484.634 4.5 4.5 0 0 1-1.935-.424 1.25 1.25 0 0 1-.764.258h-1.71a1.255 1.255 0 0 1-1.256-1.255V7.687a2.4 2.4 0 0 1-.428.625c.253.23.412.561.412.93v7.553a1.255 1.255 0 0 1-1.256 1.255h-1.843a1.25 1.25 0 0 1-.894-.373c-.228.23-.544.373-.894.373H51.32a1.255 1.255 0 0 1-1.256-1.255v-1.251l-.061.117a4.7 4.7 0 0 1-1.782 1.884 4.77 4.77 0 0 1-2.485.67 5.6 5.6 0 0 1-1.485-.188l.009 2.764a1.255 1.255 0 0 1-1.255 1.259h-1.729a1.255 1.255 0 0 1-1.255-1.255v-3.537a1.255 1.255 0 0 1-1.167.793h-1.679a1.25 1.25 0 0 1-.77-.263 4.5 4.5 0 0 1-1.945.429c-.885 0-1.724-.21-2.495-.632l-.017-.01a5 5 0 0 1-1.081-.836 1.255 1.255 0 0 1-1.254 1.312h-1.81a1.255 1.255 0 0 1-1.228-.99l-.782-3.625-2.044 3.939a1.25 1.25 0 0 1-1.115.676h-.098a1.25 1.25 0 0 1-1.116-.68l-2.061-3.994zM35.92 16.63l.207-.114.223-.15q.493-.356.735-.785l.061-.118.033 1.332h1.678V9.242h-1.694l-.033 1.267q-.133-.329-.526-.658l-.032-.028a3.2 3.2 0 0 0-.668-.428l-.27-.12a3.3 3.3 0 0 0-1.235-.23q-1.136-.001-1.974.493a3.36 3.36 0 0 0-1.3 1.382q-.445.89-.444 2.074 0 1.2.51 2.107a3.8 3.8 0 0 0 1.382 1.381 3.9 3.9 0 0 0 1.893.477q.795 0 1.455-.33zm-2.789-5.38q-.576.675-.575 1.762 0 1.102.559 1.794.576.675 1.645.675a2.25 2.25 0 0 0 .934-.19 2.2 2.2 0 0 0 .468-.29l.178-.161a2.2 2.2 0 0 0 .397-.561q.244-.5.244-1.15v-.115q0-.708-.296-1.267l-.043-.077a2.2 2.2 0 0 0-.633-.709l-.13-.086-.047-.028a2.1 2.1 0 0 0-1.073-.285q-1.052 0-1.629.692zm2.316 2.706c.163-.17.28-.407.28-.83v-.114c0-.292-.06-.508-.15-.68a.96.96 0 0 0-.353-.389.85.85 0 0 0-.464-.127c-.4 0-.56.114-.664.239l-.01.012c-.148.174-.275.45-.275.945 0 .506.122.801.27.99.097.11.266.224.68.224.303 0 .504-.09.687-.269zm7.545 1.705a2.6 2.6 0 0 0 .331.423q.319.33.755.548l.173.074q.65.255 1.49.255 1.02 0 1.844-.493a3.45 3.45 0 0 0 1.316-1.4q.493-.904.493-2.089 0-1.909-.988-2.913-.988-1.02-2.584-1.02-.898 0-1.575.347a3 3 0 0 0-.415.262l-.199.166a3.4 3.4 0 0 0-.64.82V9.242h-1.712v11.553h1.729l-.017-5.134zm.53-1.138q.206.29.48.5l.155.11.053.034q.51.296 1.119.297 1.07 0 1.645-.675.577-.69.576-1.762 0-1.119-.576-1.777-.558-.675-1.645-.675-.435 0-.835.16a2 2 0 0 0-.284.136 2 2 0 0 0-.363.254 2.2 2.2 0 0 0-.46.569l-.082.162a2.6 2.6 0 0 0-.213 1.072v.115q0 .707.296 1.267l.135.211zm.964-.818a1.1 1.1 0 0 0 .367.385.94.94 0 0 0 .476.118c.423 0 .59-.117.687-.23.159-.194.28-.478.28-.95 0-.53-.133-.8-.266-.952l-.021-.025c-.078-.094-.231-.221-.68-.221a1 1 0 0 0-.503.135l-.012.007a.86.86 0 0 0-.335.343c-.073.133-.132.324-.132.614v.115a1.4 1.4 0 0 0 .14.66zm15.7-6.222q.347-.346.346-.856a1.05 1.05 0 0 0-.345-.79 1.18 1.18 0 0 0-.84-.329q-.51 0-.855.33a1.05 1.05 0 0 0-.346.79q0 .51.346.855.345.346.856.346.51 0 .839-.346zm4.337 9.314.033-1.332q.191.403.59.747l.098.081a4 4 0 0 0 .316.224l.223.122a3.2 3.2 0 0 0 1.44.322 3.8 3.8 0 0 0 1.875-.477 3.5 3.5 0 0 0 1.382-1.366q.527-.89.526-2.09 0-1.184-.444-2.073a3.24 3.24 0 0 0-1.283-1.399q-.823-.51-1.942-.51a3.5 3.5 0 0 0-1.527.344l-.086.043-.165.09a3 3 0 0 0-.33.214q-.432.315-.656.707a2 2 0 0 0-.099.198l.082-1.283V4.701h-1.744v12.095zm.473-2.509a2.5 2.5 0 0 0 .566.7q.117.098.245.18l.144.08a2.1 2.1 0 0 0 .975.232q1.07 0 1.645-.675.576-.69.576-1.778 0-1.102-.576-1.777-.56-.691-1.645-.692a2.2 2.2 0 0 0-1.015.235q-.22.113-.415.282l-.15.142a2.1 2.1 0 0 0-.42.594q-.223.479-.223 1.1v.115q0 .705.293 1.26zm2.616-.293c.157-.191.28-.479.28-.967 0-.51-.13-.79-.276-.961l-.021-.026c-.082-.1-.232-.225-.67-.225a.87.87 0 0 0-.681.279l-.012.011c-.154.155-.274.38-.274.807v.115c0 .285.057.499.144.669a1.1 1.1 0 0 0 .367.405c.137.082.28.123.455.123.423 0 .59-.118.686-.23zm8.266-3.013q.345-.13.724-.14l.069-.002q.493 0 .642.099l.247-1.794q-.196-.099-.717-.099a2.3 2.3 0 0 0-.545.063 2 2 0 0 0-.411.148 2.2 2.2 0 0 0-.4.249 2.5 2.5 0 0 0-.485.499 2.7 2.7 0 0 0-.32.581l-.05.137v-1.48h-1.778v7.553h1.777v-3.884q0-.546.159-.943a1.5 1.5 0 0 1 .466-.636 2.5 2.5 0 0 1 .399-.253 2 2 0 0 1 .224-.099zm9.784 2.656.05-.922q0-1.743-.856-2.698-.838-.97-2.584-.97-1.119-.001-2.007.493a3.46 3.46 0 0 0-1.4 1.382q-.493.906-.493 2.106 0 1.07.428 1.975.428.89 1.332 1.432.906.526 2.255.526.973 0 1.668-.185l.044-.012.135-.04q.613-.184.984-.421l-.542-1.267q-.3.162-.642.274l-.297.087q-.51.131-1.3.131-.954 0-1.497-.444a1.6 1.6 0 0 1-.192-.193q-.366-.44-.512-1.234l-.004-.021zm-5.427-1.256-.003.022h3.752v-.138q-.011-.727-.288-1.118a1 1 0 0 0-.156-.176q-.46-.428-1.316-.428-.986 0-1.494.604-.379.45-.494 1.234zm-27.053 2.77V4.7h-1.86v12.095h5.333V15.15zm7.103-5.908v7.553h-1.843V9.242h1.843z'/%3E%3Cpath fill='%23fff' d='m19.63 11.151-.757-1.71-.345 1.71-1.12 5.644h-1.827L18.083 4.7h.197l3.325 6.533.988 2.19.988-2.19L26.839 4.7h.181l2.6 12.095h-1.81l-1.218-5.644-.362-1.71-.658 1.71-2.93 5.644h-.098l-2.913-5.644zm14.836 5.81q-1.02 0-1.893-.478a3.8 3.8 0 0 1-1.381-1.382q-.51-.906-.51-2.106 0-1.185.444-2.074a3.36 3.36 0 0 1 1.3-1.382q.839-.494 1.974-.494a3.3 3.3 0 0 1 1.234.231 3.3 3.3 0 0 1 .97.575q.396.33.527.659l.033-1.267h1.694v7.553H37.18l-.033-1.332q-.279.593-1.02 1.053a3.17 3.17 0 0 1-1.662.444zm.296-1.482q.938 0 1.58-.642.642-.66.642-1.711v-.115q0-.708-.296-1.267a2.2 2.2 0 0 0-.807-.872 2.1 2.1 0 0 0-1.119-.313q-1.053 0-1.629.692-.575.675-.575 1.76 0 1.103.559 1.795.577.675 1.645.675zm6.521-6.237h1.711v1.4q.906-1.597 2.83-1.597 1.596 0 2.584 1.02.988 1.005.988 2.914 0 1.185-.493 2.09a3.46 3.46 0 0 1-1.316 1.399 3.5 3.5 0 0 1-1.844.493q-.954 0-1.662-.329a2.67 2.67 0 0 1-1.086-.97l.017 5.134h-1.728zm4.048 6.22q1.07 0 1.645-.674.577-.69.576-1.762 0-1.119-.576-1.777-.558-.675-1.645-.675-.592 0-1.12.296-.51.28-.822.823-.296.527-.296 1.234v.115q0 .708.296 1.267.313.543.823.855.51.296 1.119.297z'/%3E%3Cpath fill='%23e1e3e9' d='M51.325 4.7h1.86v10.45h3.473v1.646h-5.333zm7.12 4.542h1.843v7.553h-1.843zm.905-1.415a1.16 1.16 0 0 1-.856-.346 1.17 1.17 0 0 1-.346-.856 1.05 1.05 0 0 1 .346-.79q.346-.329.856-.329.494 0 .839.33a1.05 1.05 0 0 1 .345.79 1.16 1.16 0 0 1-.345.855q-.33.346-.84.346zm7.875 9.133a3.17 3.17 0 0 1-1.662-.444q-.723-.46-1.004-1.053l-.033 1.332h-1.71V4.701h1.743v4.657l-.082 1.283q.279-.658 1.086-1.119a3.5 3.5 0 0 1 1.778-.477q1.119 0 1.942.51a3.24 3.24 0 0 1 1.283 1.4q.445.888.444 2.072 0 1.201-.526 2.09a3.5 3.5 0 0 1-1.382 1.366 3.8 3.8 0 0 1-1.876.477zm-.296-1.481q1.069 0 1.645-.675.577-.69.577-1.778 0-1.102-.577-1.776-.56-.691-1.645-.692a2.12 2.12 0 0 0-1.58.659q-.642.641-.642 1.694v.115q0 .71.296 1.267a2.4 2.4 0 0 0 .807.872 2.1 2.1 0 0 0 1.119.313zm5.927-6.237h1.777v1.481q.263-.757.856-1.217a2.14 2.14 0 0 1 1.349-.46q.527 0 .724.098l-.247 1.794q-.149-.099-.642-.099-.774 0-1.416.494-.626.493-.626 1.58v3.883h-1.777V9.242zm9.534 7.718q-1.35 0-2.255-.526-.904-.543-1.332-1.432a4.6 4.6 0 0 1-.428-1.975q0-1.2.493-2.106a3.46 3.46 0 0 1 1.4-1.382q.889-.495 2.007-.494 1.744 0 2.584.97.855.956.856 2.7 0 .444-.05.92h-5.43q.18 1.005.708 1.45.542.443 1.497.443.79 0 1.3-.131a4 4 0 0 0 .938-.362l.542 1.267q-.411.263-1.119.46-.708.198-1.711.197zm1.596-4.558q.016-1.02-.444-1.432-.46-.428-1.316-.428-1.728 0-1.991 1.86z'/%3E%3Cpath d='M5.074 15.948a.484.657 0 0 0-.486.659v1.84a.484.657 0 0 0 .486.659h4.101a.484.657 0 0 0 .486-.659v-1.84a.484.657 0 0 0-.486-.659zm3.56 1.16H5.617v.838h3.017z' style='fill:%23fff;fill-rule:evenodd;stroke-width:1.03600001'/%3E%3Cg style='stroke-width:1.12603545'%3E%3Cpath d='M-9.408-1.416c-3.833-.025-7.056 2.912-7.08 6.615-.02 3.08 1.653 4.832 3.107 6.268.903.892 1.721 1.74 2.32 2.902l-.525-.004c-.543-.003-.992.304-1.24.639a1.87 1.87 0 0 0-.362 1.121l-.011 1.877c-.003.402.104.787.347 1.125.244.338.688.653 1.23.656l4.142.028c.542.003.99-.306 1.238-.641a1.87 1.87 0 0 0 .363-1.121l.012-1.875a1.87 1.87 0 0 0-.348-1.127c-.243-.338-.688-.653-1.23-.656l-.518-.004c.597-1.145 1.425-1.983 2.348-2.87 1.473-1.414 3.18-3.149 3.2-6.226-.016-3.59-2.923-6.684-6.993-6.707m-.006 1.1v.002c3.274.02 5.92 2.532 5.9 5.6-.017 2.706-1.39 4.026-2.863 5.44-1.034.994-2.118 2.033-2.814 3.633-.018.041-.052.055-.075.065q-.013.004-.02.01a.34.34 0 0 1-.226.084.34.34 0 0 1-.224-.086l-.092-.077c-.699-1.615-1.768-2.669-2.781-3.67-1.454-1.435-2.797-2.762-2.78-5.478.02-3.067 2.7-5.545 5.975-5.523m-.02 2.826c-1.62-.01-2.944 1.315-2.955 2.96-.01 1.646 1.295 2.988 2.916 2.999h.002c1.621.01 2.943-1.316 2.953-2.961.011-1.646-1.294-2.988-2.916-2.998m-.005 1.1c1.017.006 1.829.83 1.822 1.89s-.83 1.874-1.848 1.867c-1.018-.006-1.829-.83-1.822-1.89s.83-1.874 1.848-1.868m-2.155 11.857 4.14.025c.271.002.49.305.487.676l-.013 1.875c-.003.37-.224.67-.495.668l-4.14-.025c-.27-.002-.487-.306-.485-.676l.012-1.875c.003-.37.224-.67.494-.668' style='color:%23000;font-style:normal;font-variant:normal;font-weight:400;font-stretch:normal;font-size:medium;line-height:normal;font-family:sans-serif;font-variant-ligatures:normal;font-variant-position:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-alternates:normal;font-feature-settings:normal;text-indent:0;text-align:start;text-decoration:none;text-decoration-line:none;text-decoration-style:solid;text-decoration-color:%23000;letter-spacing:normal;word-spacing:normal;text-transform:none;writing-mode:lr-tb;direction:ltr;text-orientation:mixed;dominant-baseline:auto;baseline-shift:baseline;text-anchor:start;white-space:normal;shape-padding:0;clip-rule:evenodd;display:inline;overflow:visible;visibility:visible;opacity:1;isolation:auto;mix-blend-mode:normal;color-interpolation:sRGB;color-interpolation-filters:linearRGB;solid-color:%23000;solid-opacity:1;vector-effect:none;fill:%23000;fill-opacity:.4;fill-rule:evenodd;stroke:none;stroke-width:2.47727823;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;color-rendering:auto;image-rendering:auto;shape-rendering:auto;text-rendering:auto' transform='translate(15.553 2.85)scale(.88807)'/%3E%3Cpath d='M-9.415-.316C-12.69-.338-15.37 2.14-15.39 5.207c-.017 2.716 1.326 4.041 2.78 5.477 1.013 1 2.081 2.055 2.78 3.67l.092.076a.34.34 0 0 0 .225.086.34.34 0 0 0 .227-.083l.019-.01c.022-.009.057-.024.074-.064.697-1.6 1.78-2.64 2.814-3.634 1.473-1.414 2.847-2.733 2.864-5.44.02-3.067-2.627-5.58-5.901-5.601m-.057 8.784c1.621.011 2.944-1.315 2.955-2.96.01-1.646-1.295-2.988-2.916-2.999-1.622-.01-2.945 1.315-2.955 2.96s1.295 2.989 2.916 3' style='clip-rule:evenodd;fill:%23e1e3e9;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:2.47727823;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:.4' transform='translate(15.553 2.85)scale(.88807)'/%3E%3Cpath d='M-11.594 15.465c-.27-.002-.492.297-.494.668l-.012 1.876c-.003.371.214.673.485.675l4.14.027c.271.002.492-.298.495-.668l.012-1.877c.003-.37-.215-.672-.485-.674z' style='clip-rule:evenodd;fill:%23fff;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:2.47727823;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:.4' transform='translate(15.553 2.85)scale(.88807)'/%3E%3C/g%3E%3C/svg%3E")}}@media (forced-colors:active) and (prefers-color-scheme:light){a.maplibregl-ctrl-logo{background-image:url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='88' height='23' fill='none'%3E%3Cpath fill='%23000' fill-opacity='.4' fill-rule='evenodd' d='M17.408 16.796h-1.827l2.501-12.095h.198l3.324 6.533.988 2.19.988-2.19 3.258-6.533h.181l2.6 12.095h-1.81l-1.218-5.644-.362-1.71-.658 1.71-2.929 5.644h-.098l-2.914-5.644-.757-1.71-.345 1.71zm1.958-3.42-.726 3.663a1.255 1.255 0 0 1-1.232 1.011h-1.827a1.255 1.255 0 0 1-1.229-1.509l2.501-12.095a1.255 1.255 0 0 1 1.23-1.001h.197a1.25 1.25 0 0 1 1.12.685l3.19 6.273 3.125-6.263a1.25 1.25 0 0 1 1.123-.695h.181a1.255 1.255 0 0 1 1.227.991l1.443 6.71a5 5 0 0 1 .314-.787l.009-.016a4.6 4.6 0 0 1 1.777-1.887c.782-.46 1.668-.667 2.611-.667a4.6 4.6 0 0 1 1.7.32l.306.134c.21-.16.474-.256.759-.256h1.694a1.255 1.255 0 0 1 1.212.925 1.255 1.255 0 0 1 1.212-.925h1.711c.284 0 .545.094.755.252.613-.3 1.312-.45 2.075-.45 1.356 0 2.557.445 3.482 1.4q.47.48.763 1.064V4.701a1.255 1.255 0 0 1 1.255-1.255h1.86A1.255 1.255 0 0 1 54.44 4.7v9.194h2.217c.19 0 .37.043.532.118v-4.77c0-.356.147-.678.385-.906a2.42 2.42 0 0 1-.682-1.71c0-.665.267-1.253.735-1.7a2.45 2.45 0 0 1 1.722-.674 2.43 2.43 0 0 1 1.705.675q.318.302.504.683V4.7a1.255 1.255 0 0 1 1.255-1.255h1.744A1.255 1.255 0 0 1 65.812 4.7v3.335a4.8 4.8 0 0 1 1.526-.246c.938 0 1.817.214 2.59.69a4.47 4.47 0 0 1 1.67 1.743v-.98a1.255 1.255 0 0 1 1.256-1.256h1.777c.233 0 .451.064.639.174a3.4 3.4 0 0 1 1.567-.372c.346 0 .861.02 1.285.232a1.25 1.25 0 0 1 .689 1.004 4.7 4.7 0 0 1 .853-.588c.795-.44 1.675-.647 2.61-.647 1.385 0 2.65.39 3.525 1.396.836.938 1.168 2.173 1.168 3.528q-.001.515-.056 1.051a1.255 1.255 0 0 1-.947 1.09l.408.952a1.255 1.255 0 0 1-.477 1.552c-.418.268-.92.463-1.458.612-.613.171-1.304.244-2.049.244-1.06 0-2.043-.207-2.886-.698l-.015-.008c-.798-.48-1.419-1.135-1.818-1.963l-.004-.008a5.8 5.8 0 0 1-.548-2.512q0-.429.053-.843a1.3 1.3 0 0 1-.333-.086l-.166-.004c-.223 0-.426.062-.643.228-.03.024-.142.139-.142.59v3.883a1.255 1.255 0 0 1-1.256 1.256h-1.777a1.255 1.255 0 0 1-1.256-1.256V15.69l-.032.057a4.8 4.8 0 0 1-1.86 1.833 5.04 5.04 0 0 1-2.484.634 4.5 4.5 0 0 1-1.935-.424 1.25 1.25 0 0 1-.764.258h-1.71a1.255 1.255 0 0 1-1.256-1.255V7.687a2.4 2.4 0 0 1-.428.625c.253.23.412.561.412.93v7.553a1.255 1.255 0 0 1-1.256 1.255h-1.843a1.25 1.25 0 0 1-.894-.373c-.228.23-.544.373-.894.373H51.32a1.255 1.255 0 0 1-1.256-1.255v-1.251l-.061.117a4.7 4.7 0 0 1-1.782 1.884 4.77 4.77 0 0 1-2.485.67 5.6 5.6 0 0 1-1.485-.188l.009 2.764a1.255 1.255 0 0 1-1.255 1.259h-1.729a1.255 1.255 0 0 1-1.255-1.255v-3.537a1.255 1.255 0 0 1-1.167.793h-1.679a1.25 1.25 0 0 1-.77-.263 4.5 4.5 0 0 1-1.945.429c-.885 0-1.724-.21-2.495-.632l-.017-.01a5 5 0 0 1-1.081-.836 1.255 1.255 0 0 1-1.254 1.312h-1.81a1.255 1.255 0 0 1-1.228-.99l-.782-3.625-2.044 3.939a1.25 1.25 0 0 1-1.115.676h-.098a1.25 1.25 0 0 1-1.116-.68l-2.061-3.994zM35.92 16.63l.207-.114.223-.15q.493-.356.735-.785l.061-.118.033 1.332h1.678V9.242h-1.694l-.033 1.267q-.133-.329-.526-.658l-.032-.028a3.2 3.2 0 0 0-.668-.428l-.27-.12a3.3 3.3 0 0 0-1.235-.23q-1.136-.001-1.974.493a3.36 3.36 0 0 0-1.3 1.382q-.445.89-.444 2.074 0 1.2.51 2.107a3.8 3.8 0 0 0 1.382 1.381 3.9 3.9 0 0 0 1.893.477q.795 0 1.455-.33zm-2.789-5.38q-.576.675-.575 1.762 0 1.102.559 1.794.576.675 1.645.675a2.25 2.25 0 0 0 .934-.19 2.2 2.2 0 0 0 .468-.29l.178-.161a2.2 2.2 0 0 0 .397-.561q.244-.5.244-1.15v-.115q0-.708-.296-1.267l-.043-.077a2.2 2.2 0 0 0-.633-.709l-.13-.086-.047-.028a2.1 2.1 0 0 0-1.073-.285q-1.052 0-1.629.692zm2.316 2.706c.163-.17.28-.407.28-.83v-.114c0-.292-.06-.508-.15-.68a.96.96 0 0 0-.353-.389.85.85 0 0 0-.464-.127c-.4 0-.56.114-.664.239l-.01.012c-.148.174-.275.45-.275.945 0 .506.122.801.27.99.097.11.266.224.68.224.303 0 .504-.09.687-.269zm7.545 1.705a2.6 2.6 0 0 0 .331.423q.319.33.755.548l.173.074q.65.255 1.49.255 1.02 0 1.844-.493a3.45 3.45 0 0 0 1.316-1.4q.493-.904.493-2.089 0-1.909-.988-2.913-.988-1.02-2.584-1.02-.898 0-1.575.347a3 3 0 0 0-.415.262l-.199.166a3.4 3.4 0 0 0-.64.82V9.242h-1.712v11.553h1.729l-.017-5.134zm.53-1.138q.206.29.48.5l.155.11.053.034q.51.296 1.119.297 1.07 0 1.645-.675.577-.69.576-1.762 0-1.119-.576-1.777-.558-.675-1.645-.675-.435 0-.835.16a2 2 0 0 0-.284.136 2 2 0 0 0-.363.254 2.2 2.2 0 0 0-.46.569l-.082.162a2.6 2.6 0 0 0-.213 1.072v.115q0 .707.296 1.267l.135.211zm.964-.818a1.1 1.1 0 0 0 .367.385.94.94 0 0 0 .476.118c.423 0 .59-.117.687-.23.159-.194.28-.478.28-.95 0-.53-.133-.8-.266-.952l-.021-.025c-.078-.094-.231-.221-.68-.221a1 1 0 0 0-.503.135l-.012.007a.86.86 0 0 0-.335.343c-.073.133-.132.324-.132.614v.115a1.4 1.4 0 0 0 .14.66zm15.7-6.222q.347-.346.346-.856a1.05 1.05 0 0 0-.345-.79 1.18 1.18 0 0 0-.84-.329q-.51 0-.855.33a1.05 1.05 0 0 0-.346.79q0 .51.346.855.345.346.856.346.51 0 .839-.346zm4.337 9.314.033-1.332q.191.403.59.747l.098.081a4 4 0 0 0 .316.224l.223.122a3.2 3.2 0 0 0 1.44.322 3.8 3.8 0 0 0 1.875-.477 3.5 3.5 0 0 0 1.382-1.366q.527-.89.526-2.09 0-1.184-.444-2.073a3.24 3.24 0 0 0-1.283-1.399q-.823-.51-1.942-.51a3.5 3.5 0 0 0-1.527.344l-.086.043-.165.09a3 3 0 0 0-.33.214q-.432.315-.656.707a2 2 0 0 0-.099.198l.082-1.283V4.701h-1.744v12.095zm.473-2.509a2.5 2.5 0 0 0 .566.7q.117.098.245.18l.144.08a2.1 2.1 0 0 0 .975.232q1.07 0 1.645-.675.576-.69.576-1.778 0-1.102-.576-1.777-.56-.691-1.645-.692a2.2 2.2 0 0 0-1.015.235q-.22.113-.415.282l-.15.142a2.1 2.1 0 0 0-.42.594q-.223.479-.223 1.1v.115q0 .705.293 1.26zm2.616-.293c.157-.191.28-.479.28-.967 0-.51-.13-.79-.276-.961l-.021-.026c-.082-.1-.232-.225-.67-.225a.87.87 0 0 0-.681.279l-.012.011c-.154.155-.274.38-.274.807v.115c0 .285.057.499.144.669a1.1 1.1 0 0 0 .367.405c.137.082.28.123.455.123.423 0 .59-.118.686-.23zm8.266-3.013q.345-.13.724-.14l.069-.002q.493 0 .642.099l.247-1.794q-.196-.099-.717-.099a2.3 2.3 0 0 0-.545.063 2 2 0 0 0-.411.148 2.2 2.2 0 0 0-.4.249 2.5 2.5 0 0 0-.485.499 2.7 2.7 0 0 0-.32.581l-.05.137v-1.48h-1.778v7.553h1.777v-3.884q0-.546.159-.943a1.5 1.5 0 0 1 .466-.636 2.5 2.5 0 0 1 .399-.253 2 2 0 0 1 .224-.099zm9.784 2.656.05-.922q0-1.743-.856-2.698-.838-.97-2.584-.97-1.119-.001-2.007.493a3.46 3.46 0 0 0-1.4 1.382q-.493.906-.493 2.106 0 1.07.428 1.975.428.89 1.332 1.432.906.526 2.255.526.973 0 1.668-.185l.044-.012.135-.04q.613-.184.984-.421l-.542-1.267q-.3.162-.642.274l-.297.087q-.51.131-1.3.131-.954 0-1.497-.444a1.6 1.6 0 0 1-.192-.193q-.366-.44-.512-1.234l-.004-.021zm-5.427-1.256-.003.022h3.752v-.138q-.011-.727-.288-1.118a1 1 0 0 0-.156-.176q-.46-.428-1.316-.428-.986 0-1.494.604-.379.45-.494 1.234zm-27.053 2.77V4.7h-1.86v12.095h5.333V15.15zm7.103-5.908v7.553h-1.843V9.242h1.843z'/%3E%3Cpath fill='%23fff' d='m19.63 11.151-.757-1.71-.345 1.71-1.12 5.644h-1.827L18.083 4.7h.197l3.325 6.533.988 2.19.988-2.19L26.839 4.7h.181l2.6 12.095h-1.81l-1.218-5.644-.362-1.71-.658 1.71-2.93 5.644h-.098l-2.913-5.644zm14.836 5.81q-1.02 0-1.893-.478a3.8 3.8 0 0 1-1.381-1.382q-.51-.906-.51-2.106 0-1.185.444-2.074a3.36 3.36 0 0 1 1.3-1.382q.839-.494 1.974-.494a3.3 3.3 0 0 1 1.234.231 3.3 3.3 0 0 1 .97.575q.396.33.527.659l.033-1.267h1.694v7.553H37.18l-.033-1.332q-.279.593-1.02 1.053a3.17 3.17 0 0 1-1.662.444zm.296-1.482q.938 0 1.58-.642.642-.66.642-1.711v-.115q0-.708-.296-1.267a2.2 2.2 0 0 0-.807-.872 2.1 2.1 0 0 0-1.119-.313q-1.053 0-1.629.692-.575.675-.575 1.76 0 1.103.559 1.795.577.675 1.645.675zm6.521-6.237h1.711v1.4q.906-1.597 2.83-1.597 1.596 0 2.584 1.02.988 1.005.988 2.914 0 1.185-.493 2.09a3.46 3.46 0 0 1-1.316 1.399 3.5 3.5 0 0 1-1.844.493q-.954 0-1.662-.329a2.67 2.67 0 0 1-1.086-.97l.017 5.134h-1.728zm4.048 6.22q1.07 0 1.645-.674.577-.69.576-1.762 0-1.119-.576-1.777-.558-.675-1.645-.675-.592 0-1.12.296-.51.28-.822.823-.296.527-.296 1.234v.115q0 .708.296 1.267.313.543.823.855.51.296 1.119.297z'/%3E%3Cpath fill='%23e1e3e9' d='M51.325 4.7h1.86v10.45h3.473v1.646h-5.333zm7.12 4.542h1.843v7.553h-1.843zm.905-1.415a1.16 1.16 0 0 1-.856-.346 1.17 1.17 0 0 1-.346-.856 1.05 1.05 0 0 1 .346-.79q.346-.329.856-.329.494 0 .839.33a1.05 1.05 0 0 1 .345.79 1.16 1.16 0 0 1-.345.855q-.33.346-.84.346zm7.875 9.133a3.17 3.17 0 0 1-1.662-.444q-.723-.46-1.004-1.053l-.033 1.332h-1.71V4.701h1.743v4.657l-.082 1.283q.279-.658 1.086-1.119a3.5 3.5 0 0 1 1.778-.477q1.119 0 1.942.51a3.24 3.24 0 0 1 1.283 1.4q.445.888.444 2.072 0 1.201-.526 2.09a3.5 3.5 0 0 1-1.382 1.366 3.8 3.8 0 0 1-1.876.477zm-.296-1.481q1.069 0 1.645-.675.577-.69.577-1.778 0-1.102-.577-1.776-.56-.691-1.645-.692a2.12 2.12 0 0 0-1.58.659q-.642.641-.642 1.694v.115q0 .71.296 1.267a2.4 2.4 0 0 0 .807.872 2.1 2.1 0 0 0 1.119.313zm5.927-6.237h1.777v1.481q.263-.757.856-1.217a2.14 2.14 0 0 1 1.349-.46q.527 0 .724.098l-.247 1.794q-.149-.099-.642-.099-.774 0-1.416.494-.626.493-.626 1.58v3.883h-1.777V9.242zm9.534 7.718q-1.35 0-2.255-.526-.904-.543-1.332-1.432a4.6 4.6 0 0 1-.428-1.975q0-1.2.493-2.106a3.46 3.46 0 0 1 1.4-1.382q.889-.495 2.007-.494 1.744 0 2.584.97.855.956.856 2.7 0 .444-.05.92h-5.43q.18 1.005.708 1.45.542.443 1.497.443.79 0 1.3-.131a4 4 0 0 0 .938-.362l.542 1.267q-.411.263-1.119.46-.708.198-1.711.197zm1.596-4.558q.016-1.02-.444-1.432-.46-.428-1.316-.428-1.728 0-1.991 1.86z'/%3E%3Cpath d='M5.074 15.948a.484.657 0 0 0-.486.659v1.84a.484.657 0 0 0 .486.659h4.101a.484.657 0 0 0 .486-.659v-1.84a.484.657 0 0 0-.486-.659zm3.56 1.16H5.617v.838h3.017z' style='fill:%23fff;fill-rule:evenodd;stroke-width:1.03600001'/%3E%3Cg style='stroke-width:1.12603545'%3E%3Cpath d='M-9.408-1.416c-3.833-.025-7.056 2.912-7.08 6.615-.02 3.08 1.653 4.832 3.107 6.268.903.892 1.721 1.74 2.32 2.902l-.525-.004c-.543-.003-.992.304-1.24.639a1.87 1.87 0 0 0-.362 1.121l-.011 1.877c-.003.402.104.787.347 1.125.244.338.688.653 1.23.656l4.142.028c.542.003.99-.306 1.238-.641a1.87 1.87 0 0 0 .363-1.121l.012-1.875a1.87 1.87 0 0 0-.348-1.127c-.243-.338-.688-.653-1.23-.656l-.518-.004c.597-1.145 1.425-1.983 2.348-2.87 1.473-1.414 3.18-3.149 3.2-6.226-.016-3.59-2.923-6.684-6.993-6.707m-.006 1.1v.002c3.274.02 5.92 2.532 5.9 5.6-.017 2.706-1.39 4.026-2.863 5.44-1.034.994-2.118 2.033-2.814 3.633-.018.041-.052.055-.075.065q-.013.004-.02.01a.34.34 0 0 1-.226.084.34.34 0 0 1-.224-.086l-.092-.077c-.699-1.615-1.768-2.669-2.781-3.67-1.454-1.435-2.797-2.762-2.78-5.478.02-3.067 2.7-5.545 5.975-5.523m-.02 2.826c-1.62-.01-2.944 1.315-2.955 2.96-.01 1.646 1.295 2.988 2.916 2.999h.002c1.621.01 2.943-1.316 2.953-2.961.011-1.646-1.294-2.988-2.916-2.998m-.005 1.1c1.017.006 1.829.83 1.822 1.89s-.83 1.874-1.848 1.867c-1.018-.006-1.829-.83-1.822-1.89s.83-1.874 1.848-1.868m-2.155 11.857 4.14.025c.271.002.49.305.487.676l-.013 1.875c-.003.37-.224.67-.495.668l-4.14-.025c-.27-.002-.487-.306-.485-.676l.012-1.875c.003-.37.224-.67.494-.668' style='color:%23000;font-style:normal;font-variant:normal;font-weight:400;font-stretch:normal;font-size:medium;line-height:normal;font-family:sans-serif;font-variant-ligatures:normal;font-variant-position:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-alternates:normal;font-feature-settings:normal;text-indent:0;text-align:start;text-decoration:none;text-decoration-line:none;text-decoration-style:solid;text-decoration-color:%23000;letter-spacing:normal;word-spacing:normal;text-transform:none;writing-mode:lr-tb;direction:ltr;text-orientation:mixed;dominant-baseline:auto;baseline-shift:baseline;text-anchor:start;white-space:normal;shape-padding:0;clip-rule:evenodd;display:inline;overflow:visible;visibility:visible;opacity:1;isolation:auto;mix-blend-mode:normal;color-interpolation:sRGB;color-interpolation-filters:linearRGB;solid-color:%23000;solid-opacity:1;vector-effect:none;fill:%23000;fill-opacity:.4;fill-rule:evenodd;stroke:none;stroke-width:2.47727823;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;color-rendering:auto;image-rendering:auto;shape-rendering:auto;text-rendering:auto' transform='translate(15.553 2.85)scale(.88807)'/%3E%3Cpath d='M-9.415-.316C-12.69-.338-15.37 2.14-15.39 5.207c-.017 2.716 1.326 4.041 2.78 5.477 1.013 1 2.081 2.055 2.78 3.67l.092.076a.34.34 0 0 0 .225.086.34.34 0 0 0 .227-.083l.019-.01c.022-.009.057-.024.074-.064.697-1.6 1.78-2.64 2.814-3.634 1.473-1.414 2.847-2.733 2.864-5.44.02-3.067-2.627-5.58-5.901-5.601m-.057 8.784c1.621.011 2.944-1.315 2.955-2.96.01-1.646-1.295-2.988-2.916-2.999-1.622-.01-2.945 1.315-2.955 2.96s1.295 2.989 2.916 3' style='clip-rule:evenodd;fill:%23e1e3e9;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:2.47727823;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:.4' transform='translate(15.553 2.85)scale(.88807)'/%3E%3Cpath d='M-11.594 15.465c-.27-.002-.492.297-.494.668l-.012 1.876c-.003.371.214.673.485.675l4.14.027c.271.002.492-.298.495-.668l.012-1.877c.003-.37-.215-.672-.485-.674z' style='clip-rule:evenodd;fill:%23fff;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:2.47727823;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:.4' transform='translate(15.553 2.85)scale(.88807)'/%3E%3C/g%3E%3C/svg%3E")}}.maplibregl-ctrl.maplibregl-ctrl-attrib{background-color:hsla(0,0%,100%,.5);margin:0;padding:0 5px}@media screen{.maplibregl-ctrl-attrib.maplibregl-compact{background-color:#fff;border-radius:12px;box-sizing:content-box;color:#000;margin:10px;min-height:20px;padding:2px 24px 2px 0;position:relative}.maplibregl-ctrl-attrib.maplibregl-compact-show{padding:2px 28px 2px 8px;visibility:visible}.maplibregl-ctrl-bottom-left>.maplibregl-ctrl-attrib.maplibregl-compact-show,.maplibregl-ctrl-top-left>.maplibregl-ctrl-attrib.maplibregl-compact-show{border-radius:12px;padding:2px 8px 2px 28px}.maplibregl-ctrl-attrib.maplibregl-compact .maplibregl-ctrl-attrib-inner{display:none}.maplibregl-ctrl-attrib-button{background-color:hsla(0,0%,100%,.5);background-image:url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' fill-rule='evenodd' viewBox='0 0 20 20'%3E%3Cpath d='M4 10a6 6 0 1 0 12 0 6 6 0 1 0-12 0m5-3a1 1 0 1 0 2 0 1 1 0 1 0-2 0m0 3a1 1 0 1 1 2 0v3a1 1 0 1 1-2 0'/%3E%3C/svg%3E");border:0;border-radius:12px;box-sizing:border-box;cursor:pointer;display:none;height:24px;outline:none;position:absolute;right:0;top:0;width:24px}.maplibregl-ctrl-attrib summary.maplibregl-ctrl-attrib-button{-webkit-appearance:none;-moz-appearance:none;appearance:none;list-style:none}.maplibregl-ctrl-attrib summary.maplibregl-ctrl-attrib-button::-webkit-details-marker{display:none}.maplibregl-ctrl-bottom-left .maplibregl-ctrl-attrib-button,.maplibregl-ctrl-top-left .maplibregl-ctrl-attrib-button{left:0}.maplibregl-ctrl-attrib.maplibregl-compact .maplibregl-ctrl-attrib-button,.maplibregl-ctrl-attrib.maplibregl-compact-show .maplibregl-ctrl-attrib-inner{display:block}.maplibregl-ctrl-attrib.maplibregl-compact-show .maplibregl-ctrl-attrib-button{background-color:rgb(0 0 0/5%)}.maplibregl-ctrl-bottom-right>.maplibregl-ctrl-attrib.maplibregl-compact:after{bottom:0;right:0}.maplibregl-ctrl-top-right>.maplibregl-ctrl-attrib.maplibregl-compact:after{right:0;top:0}.maplibregl-ctrl-top-left>.maplibregl-ctrl-attrib.maplibregl-compact:after{left:0;top:0}.maplibregl-ctrl-bottom-left>.maplibregl-ctrl-attrib.maplibregl-compact:after{bottom:0;left:0}}@media screen and (forced-colors:active){.maplibregl-ctrl-attrib.maplibregl-compact:after{background-image:url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' fill='%23fff' fill-rule='evenodd' viewBox='0 0 20 20'%3E%3Cpath d='M4 10a6 6 0 1 0 12 0 6 6 0 1 0-12 0m5-3a1 1 0 1 0 2 0 1 1 0 1 0-2 0m0 3a1 1 0 1 1 2 0v3a1 1 0 1 1-2 0'/%3E%3C/svg%3E")}}@media screen and (forced-colors:active) and (prefers-color-scheme:light){.maplibregl-ctrl-attrib.maplibregl-compact:after{background-image:url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' fill-rule='evenodd' viewBox='0 0 20 20'%3E%3Cpath d='M4 10a6 6 0 1 0 12 0 6 6 0 1 0-12 0m5-3a1 1 0 1 0 2 0 1 1 0 1 0-2 0m0 3a1 1 0 1 1 2 0v3a1 1 0 1 1-2 0'/%3E%3C/svg%3E")}}.maplibregl-ctrl-attrib a{color:rgba(0,0,0,.75);text-decoration:none}.maplibregl-ctrl-attrib a:hover{color:inherit;text-decoration:underline}.maplibregl-attrib-empty{display:none}.maplibregl-ctrl-scale{background-color:hsla(0,0%,100%,.75);border:2px solid #333;border-top:#333;box-sizing:border-box;color:#333;font-size:10px;padding:0 5px}.maplibregl-popup{display:flex;left:0;pointer-events:none;position:absolute;top:0;will-change:transform}.maplibregl-popup-anchor-top,.maplibregl-popup-anchor-top-left,.maplibregl-popup-anchor-top-right{flex-direction:column}.maplibregl-popup-anchor-bottom,.maplibregl-popup-anchor-bottom-left,.maplibregl-popup-anchor-bottom-right{flex-direction:column-reverse}.maplibregl-popup-anchor-left{flex-direction:row}.maplibregl-popup-anchor-right{flex-direction:row-reverse}.maplibregl-popup-tip{border:10px solid transparent;height:0;width:0;z-index:1}.maplibregl-popup-anchor-top .maplibregl-popup-tip{align-self:center;border-bottom-color:#fff;border-top:none}.maplibregl-popup-anchor-top-left .maplibregl-popup-tip{align-self:flex-start;border-bottom-color:#fff;border-left:none;border-top:none}.maplibregl-popup-anchor-top-right .maplibregl-popup-tip{align-self:flex-end;border-bottom-color:#fff;border-right:none;border-top:none}.maplibregl-popup-anchor-bottom .maplibregl-popup-tip{align-self:center;border-bottom:none;border-top-color:#fff}.maplibregl-popup-anchor-bottom-left .maplibregl-popup-tip{align-self:flex-start;border-bottom:none;border-left:none;border-top-color:#fff}.maplibregl-popup-anchor-bottom-right .maplibregl-popup-tip{align-self:flex-end;border-bottom:none;border-right:none;border-top-color:#fff}.maplibregl-popup-anchor-left .maplibregl-popup-tip{align-self:center;border-left:none;border-right-color:#fff}.maplibregl-popup-anchor-right .maplibregl-popup-tip{align-self:center;border-left-color:#fff;border-right:none}.maplibregl-popup-close-button{background-color:transparent;border:0;border-radius:0 3px 0 0;cursor:pointer;position:absolute;right:0;top:0}.maplibregl-popup-close-button:hover{background-color:rgb(0 0 0/5%)}.maplibregl-popup-content{background:#fff;border-radius:3px;box-shadow:0 1px 2px rgba(0,0,0,.1);padding:15px 10px;pointer-events:auto;position:relative}.maplibregl-popup-anchor-top-left .maplibregl-popup-content{border-top-left-radius:0}.maplibregl-popup-anchor-top-right .maplibregl-popup-content{border-top-right-radius:0}.maplibregl-popup-anchor-bottom-left .maplibregl-popup-content{border-bottom-left-radius:0}.maplibregl-popup-anchor-bottom-right .maplibregl-popup-content{border-bottom-right-radius:0}.maplibregl-popup-track-pointer{display:none}.maplibregl-popup-track-pointer *{pointer-events:none;-webkit-user-select:none;-moz-user-select:none;user-select:none}.maplibregl-map:hover .maplibregl-popup-track-pointer{display:flex}.maplibregl-map:active .maplibregl-popup-track-pointer{display:none}.maplibregl-marker{left:0;position:absolute;top:0;transition:opacity .2s;will-change:transform}.maplibregl-user-location-dot,.maplibregl-user-location-dot:before{background-color:#1da1f2;border-radius:50%;height:15px;width:15px}.maplibregl-user-location-dot:before{animation:maplibregl-user-location-dot-pulse 2s infinite;content:"";position:absolute}.maplibregl-user-location-dot:after{border:2px solid #fff;border-radius:50%;box-shadow:0 0 3px rgba(0,0,0,.35);box-sizing:border-box;content:"";height:19px;left:-2px;position:absolute;top:-2px;width:19px}@keyframes maplibregl-user-location-dot-pulse{0%{opacity:1;transform:scale(1)}70%{opacity:0;transform:scale(3)}to{opacity:0;transform:scale(1)}}.maplibregl-user-location-dot-stale{background-color:#aaa}.maplibregl-user-location-dot-stale:after{display:none}.maplibregl-user-location-accuracy-circle{background-color:#1da1f233;border-radius:100%;height:1px;width:1px}.maplibregl-crosshair,.maplibregl-crosshair .maplibregl-interactive,.maplibregl-crosshair .maplibregl-interactive:active{cursor:crosshair}.maplibregl-boxzoom{background:#fff;border:2px dotted #202020;height:0;left:0;opacity:.5;position:absolute;top:0;width:0}.maplibregl-cooperative-gesture-screen{align-items:center;background:rgba(0,0,0,.4);color:#fff;display:flex;font-size:1.4em;inset:0;justify-content:center;line-height:1.2;opacity:0;padding:1rem;pointer-events:none;position:absolute;transition:opacity 1s ease 1s;z-index:99999}.maplibregl-cooperative-gesture-screen.maplibregl-show{opacity:1;transition:opacity .05s}.maplibregl-cooperative-gesture-screen .maplibregl-mobile-message{display:none}@media (hover:none),(width <= 480px){.maplibregl-cooperative-gesture-screen .maplibregl-desktop-message{display:none}.maplibregl-cooperative-gesture-screen .maplibregl-mobile-message{display:block}}.maplibregl-pseudo-fullscreen{height:100%!important;left:0!important;position:fixed!important;top:0!important;width:100%!important;z-index:99999}
+</style>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0d1520; --panel:rgba(14,22,34,.92); --panel2:#162232; --line:rgba(255,255,255,.09);
+  --tx:#e9eef5; --tx2:#9fb0c3; --acc:#5cc8ff;
+  --azul:#1f6fff; --roja:#e8343a; --negra:#0b0b0b; --subida:#2fd27a; --verde:#2fbf4f;
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:var(--bg);color:var(--tx);font:14px/1.45 Inter,system-ui,sans-serif;overflow:hidden}
+#map{position:absolute;inset:0}
+h1,h2,h3,.cond{font-family:"Barlow Condensed",Inter,sans-serif;letter-spacing:.02em}
+button{font:inherit;color:inherit;cursor:pointer}
+
+/* ---------- Panel lateral ---------- */
+#side{position:absolute;top:12px;left:12px;bottom:12px;width:340px;background:var(--panel);backdrop-filter:blur(10px);
+  border:1px solid var(--line);border-radius:16px;display:flex;flex-direction:column;overflow:hidden;z-index:5;box-shadow:0 10px 40px rgba(0,0,0,.45)}
+#side header{padding:14px 16px 10px;border-bottom:1px solid var(--line)}
+#side h1{margin:0;font-size:26px;font-weight:800;text-transform:uppercase;line-height:1}
+#side h1 span{color:var(--acc)}
+.sub{color:var(--tx2);font-size:12px;margin-top:4px}
+.tabs{display:flex;gap:6px;margin-top:12px}
+.tab{flex:1;padding:8px 4px;border-radius:10px;border:1px solid var(--line);background:transparent;font-family:"Barlow Condensed";font-weight:700;font-size:15px;text-transform:uppercase}
+.tab.on{background:var(--acc);color:#04121d;border-color:var(--acc)}
+.scroll{overflow:auto;flex:1;padding:10px 12px 16px}
+.card{background:var(--panel2);border:1px solid var(--line);border-radius:12px;padding:10px 12px;margin-bottom:10px}
+.card h3{margin:0 0 6px;font-size:15px;text-transform:uppercase;color:var(--tx2);font-weight:700}
+.meteo{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;text-align:center}
+.meteo div{background:rgba(255,255,255,.04);border-radius:8px;padding:6px 2px}
+.meteo b{display:block;font-family:"Barlow Condensed";font-size:20px}
+.meteo small{color:var(--tx2);font-size:11px}
+.meteo a.wxlink{display:block;background:rgba(255,255,255,.04);border-radius:8px;padding:6px 2px;color:var(--tx);text-decoration:none}
+.meteo a.wxlink b{font-size:16px} .meteo a.wxlink:hover{background:rgba(92,200,255,.12)}
+.meteo a.wxlink:focus-visible,.btn:focus-visible,.tab:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
+:root{color-scheme:dark}
+body{background:var(--bg)}
+.acceso{font-size:12px;color:var(--tx2);margin-top:8px}
+.ruta{display:flex;align-items:center;gap:10px;padding:7px 8px;border-radius:9px;cursor:pointer;border:1px solid transparent}
+.ruta:hover{background:rgba(255,255,255,.05)} .ruta.sel{border-color:var(--acc);background:rgba(92,200,255,.08)}
+.ruta .nm{flex:1;font-size:13px;line-height:1.25}
+.ruta .meta{font-size:11px;color:var(--tx2)}
+.chip{flex:none;width:30px;height:22px;border-radius:6px;display:grid;place-items:center;font:700 12px "Barlow Condensed";color:#fff;border:2px solid #fff}
+.chip.azul{background:var(--azul)} .chip.roja{background:var(--roja)} .chip.negra{background:var(--negra)}
+.chip.subida{background:transparent;border:2px dashed var(--subida);color:var(--subida)}
+.grp{font:700 12px "Barlow Condensed";text-transform:uppercase;color:var(--tx2);margin:10px 4px 4px;letter-spacing:.08em}
+.tog{display:flex;align-items:center;justify-content:space-between;padding:4px 2px;font-size:13px}
+.tog input{accent-color:var(--acc);width:16px;height:16px}
+.row{display:flex;gap:6px;flex-wrap:wrap}
+.btn{padding:7px 10px;border-radius:9px;border:1px solid var(--line);background:rgba(255,255,255,.05);font-size:12px;font-weight:600}
+.btn:hover{background:rgba(255,255,255,.1)} .btn.on{background:var(--acc);color:#04121d;border-color:var(--acc)}
+input[type=range]{width:100%;accent-color:var(--acc)}
+.legend{display:grid;grid-template-columns:auto 1fr;gap:6px 10px;align-items:center;font-size:12px}
+.safety{font-size:11px;color:#ffcf6b;background:rgba(255,190,60,.08);border:1px solid rgba(255,190,60,.25);border-radius:10px;padding:8px 10px}
+.fuentes{font-size:11px;color:var(--tx2)}
+.fuentes a{color:var(--acc)}
+select{background:var(--panel2);color:var(--tx);border:1px solid var(--line);border-radius:8px;padding:5px 8px;font:inherit;font-size:12px}
+.sw{width:22px;height:14px;border-radius:4px;display:inline-block}
+.kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;text-align:center}
+.kpis div{background:rgba(255,255,255,.04);border-radius:8px;padding:6px 2px}
+.kpis b{display:block;font:700 20px "Barlow Condensed"} .kpis small{color:var(--tx2);font-size:10.5px}
+.bar{display:flex;height:12px;border-radius:6px;overflow:hidden;margin:4px 0 2px;background:rgba(255,255,255,.06)}
+.bar span{display:block;height:100%}
+.ski{color:#9fe2ff;font-weight:600}
+.warn{color:#ffcf6b}
+.mini{display:inline-block;margin:3px 4px 0 0;padding:3px 8px;border-radius:999px;border:1px solid var(--line);background:rgba(255,255,255,.05);font-size:12px;cursor:pointer}
+.mini:hover{background:rgba(92,200,255,.15)}
+.pl{display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid var(--line);font-size:12.5px}
+.pl .nm{flex:1;cursor:pointer} .pl button{background:none;border:0;color:var(--tx2);font-size:16px}
+.info2{display:grid;grid-template-columns:auto 1fr;gap:4px 10px;font-size:12.5px;margin:8px 0}
+.info2 span:nth-child(odd){color:var(--tx2)}
+
+/* ---------- Ficha de ruta ---------- */
+#ficha{position:absolute;right:12px;top:12px;width:380px;max-height:calc(100% - 24px);overflow:auto;background:var(--panel);backdrop-filter:blur(10px);
+  border:1px solid var(--line);border-radius:16px;padding:14px 16px;z-index:5;display:none;box-shadow:0 10px 40px rgba(0,0,0,.45)}
+#ficha.show{display:block}
+#ficha .top{display:flex;gap:10px;align-items:flex-start}
+#ficha h2{margin:0;font-size:22px;line-height:1.05;font-weight:700;flex:1}
+#ficha .x{background:none;border:0;font-size:22px;color:var(--tx2);line-height:1}
+.badge{display:inline-block;padding:2px 9px;border-radius:999px;font:700 12px "Barlow Condensed";text-transform:uppercase;letter-spacing:.05em;margin-top:6px;border:2px solid #fff}
+.badge.azul{background:var(--azul)} .badge.roja{background:var(--roja)} .badge.negra{background:#000} .badge.subida{background:transparent;color:var(--subida);border:2px dashed var(--subida)}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:12px 0}
+.stats div{background:var(--panel2);border-radius:9px;padding:7px 4px;text-align:center}
+.stats b{display:block;font:700 19px "Barlow Condensed"}
+.stats small{color:var(--tx2);font-size:10.5px;text-transform:uppercase;letter-spacing:.04em}
+#perfil{width:100%;height:140px;display:block;background:var(--panel2);border-radius:10px;cursor:crosshair}
+.desc{font-size:13px;color:#cfd9e4;margin:10px 0}
+.note{font-size:11px;color:var(--tx2)}
+
+/* ---------- Marcadores tipo plano de estación ---------- */
+.mk{transform:translateY(-2px);pointer-events:auto;cursor:pointer;user-select:none}
+.mk-cima{display:flex;flex-direction:column;align-items:center}
+.mk-cima .tri{width:0;height:0;border-left:8px solid transparent;border-right:8px solid transparent;border-bottom:13px solid #fff;filter:drop-shadow(0 1px 2px rgba(0,0,0,.7))}
+.mk-cima .lb{margin-top:2px;background:rgba(10,16,26,.82);padding:1px 6px;border-radius:5px;font:700 12px "Barlow Condensed";white-space:nowrap;letter-spacing:.02em}
+.mk-cima .lb small{color:#9fd8ff;font-weight:600;margin-left:3px}
+.mk-ico{display:flex;align-items:center;gap:4px}
+.mk-ico .i{width:22px;height:22px;border-radius:6px;display:grid;place-items:center;font:800 13px Inter;color:#fff;border:2px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,.6)}
+.mk-ico .i.parking{background:#1f5fd6} .mk-ico .i.refugio{background:#b5651d} .mk-ico .i.laguna{background:#1aa3c7;border-radius:50%} .mk-ico .i.collado{background:#6b5bd6}
+.mk-ico .lb{background:rgba(10,16,26,.78);padding:1px 5px;border-radius:5px;font:600 11px Inter;white-space:nowrap}
+.mk-num{width:24px;height:24px;border-radius:50%;display:grid;place-items:center;font:800 12px "Barlow Condensed";color:#fff;border:2px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,.6)}
+.mk-num.azul{background:var(--azul)} .mk-num.roja{background:var(--roja)} .mk-num.negra{background:#000} .mk-num.subida{background:#0f3d26;color:var(--subida);border-color:var(--subida)}
+body.nolabels .mk .lb{display:none}
+.hidden{display:none!important}
+
+.maplibregl-popup-content{background:var(--panel);color:var(--tx);border:1px solid var(--line);border-radius:12px;padding:10px 12px;font:13px Inter;min-width:220px}
+.maplibregl-popup-tip{border-top-color:var(--panel)!important;border-bottom-color:var(--panel)!important}
+.maplibregl-popup-close-button{color:var(--tx2);font-size:18px}
+.wx h4{margin:0 0 4px;font:700 18px "Barlow Condensed"}
+.wx table{width:100%;border-collapse:collapse;font-size:12px;margin-top:6px}
+.wx td,.wx th{padding:3px 4px;text-align:center;border-bottom:1px solid var(--line)}
+.wx th{color:var(--tx2);font-weight:500}
+.maplibregl-ctrl-attrib{font-size:10px}
+
+#menu{display:none;position:absolute;top:12px;left:12px;z-index:6;padding:10px 14px;border-radius:12px;background:var(--panel);border:1px solid var(--line);font:700 15px "Barlow Condensed";text-transform:uppercase}
+#flyStop{position:absolute;left:50%;bottom:28px;transform:translateX(-50%);z-index:7;display:none;padding:10px 18px;border-radius:999px;background:#e8343a;border:0;font-weight:700;color:#fff;box-shadow:0 6px 20px rgba(0,0,0,.5)}
+
+@media (max-width:760px){
+  #side{top:auto;left:0;right:0;bottom:0;width:auto;height:58%;border-radius:16px 16px 0 0;transform:translateY(0);transition:transform .25s}
+  #side.closed{transform:translateY(calc(100% - 0px))}
+  #menu{display:block}
+  #ficha{left:0;right:0;top:auto;bottom:0;width:auto;max-height:62%;border-radius:16px 16px 0 0;z-index:8}
+}
+</style>
+
+<div id="map"></div>
+<button id="menu">☰ Panel</button>
+<button id="flyStop">■ Parar vuelo</button>
+
+<aside id="side">
+  <header>
+    <h1>Mapa de <span>travesía</span></h1>
+    <div class="sub">Béjar · Gredos · Montaña Palentina — subidas, bajadas y accesos</div>
+    <div class="tabs" id="tabs"></div>
+  </header>
+  <div class="scroll">
+    <div class="card" id="zonaCard">
+      <h3 id="zonaNombre">—</h3>
+      <div class="meteo" id="zonaMeteo"><div><b>…</b><small>cargando</small></div></div>
+      <div class="acceso" id="zonaAcceso"></div>
+    </div>
+
+    <div class="card" id="resumen"></div>
+
+    <div class="card">
+      <h3>❄ Cota de nieve</h3>
+      <div class="tog">Nieve esquiable desde <b><span id="cotaVal">1600</span> m</b></div>
+      <input type="range" id="cota" min="1000" max="2400" step="50" value="1600" aria-label="Cota de nieve en metros">
+      <p class="note">Pon la cota que dé el parte (Covatilla, Alto Campoo, AEMET). Cada bajada muestra los km que puedes esquiar con esa nieve y cuánto tendrías que portear.</p>
+    </div>
+
+    <div class="card" id="plan">
+      <h3>🎒 Mi día</h3>
+      <div id="planBody"></div>
+      <div class="row" style="margin-top:8px">
+        <button class="btn" id="bSugerir">✨ Día con más km de esquí</button>
+        <button class="btn" id="bVaciar">Vaciar</button>
+      </div>
+    </div>
+
+    <div class="row" style="align-items:center;margin:10px 4px 0">
+      <span class="note">Ordenar:</span>
+      <select id="orden" aria-label="Ordenar rutas">
+        <option value="dif">Dificultad</option><option value="km">Km esquiables</option>
+        <option value="des">Desnivel</option><option value="ori">Orientación (N primero)</option>
+      </select>
+    </div>
+    <div id="lista"></div>
+
+    <div class="card" style="margin-top:10px">
+      <h3>Capas</h3>
+      <label class="tog">Subidas (foqueo)<input type="checkbox" data-layer="subida" checked></label>
+      <label class="tog">Bajadas azules<input type="checkbox" data-layer="azul" checked></label>
+      <label class="tog">Bajadas rojas<input type="checkbox" data-layer="roja" checked></label>
+      <label class="tog">Bajadas negras<input type="checkbox" data-layer="negra" checked></label>
+      <label class="tog">Pistas estación (Covatilla)<input type="checkbox" id="tPistas" checked></label>
+      <label class="tog">Cimas<input type="checkbox" data-poi="cima" checked></label>
+      <label class="tog">Parkings<input type="checkbox" data-poi="parking" checked></label>
+      <label class="tog">Refugios<input type="checkbox" data-poi="refugio" checked></label>
+      <label class="tog">Lagunas y collados<input type="checkbox" data-poi="laguna" checked></label>
+      <label class="tog">Nombres<input type="checkbox" id="tLabels" checked></label>
+    </div>
+
+    <div class="card">
+      <h3>Vista</h3>
+      <div class="row" style="margin-bottom:8px">
+        <button class="btn on" data-base="suave">Sombreado suave</button>
+        <button class="btn" data-base="fuerte">Fuerte</button>
+        <button class="btn" data-base="sat" data-online hidden>Satélite</button>
+        <button class="btn" data-base="topo" data-online hidden>Topo</button>
+        <button class="btn" id="bRotar">⟳ Rotar</button>
+      </div>
+      <div class="tog">Relieve ×<span id="exVal">1.5</span></div>
+      <input type="range" id="ex" min="1" max="3" step="0.1" value="1.5">
+    </div>
+
+    <div class="card">
+      <h3>Análisis del terreno</h3>
+      <div class="row">
+        <button class="btn on" data-ana="">Nada</button>
+        <button class="btn" data-ana="p">Pendiente</button>
+        <button class="btn" data-ana="o">Orientación</button>
+        <button class="btn" data-ana="n">Nieve</button>
+      </div>
+      <div id="anaLeyenda" class="legend" style="margin-top:8px"></div>
+    </div>
+
+    <div class="card">
+      <h3>Leyenda</h3>
+      <div class="legend">
+        <span class="chip subida">S</span><span>Subida / foqueo (sendero o itinerario habitual)</span>
+        <span class="chip azul">1</span><span>Azul · pendiente sostenida &lt; 25°</span>
+        <span class="chip roja">1</span><span>Roja · 25–33°</span>
+        <span class="chip negra">1</span><span>Negra · &gt; 33°, canales o terreno alpino</span>
+      </div>
+      <p class="note">Pendiente calculada sobre el relieve (tramos de 200 m, MDT ~15 m) y corregida con reseñas en las canales conocidas.</p>
+    </div>
+
+    <div class="safety">⚠️ Trazados <b>orientativos</b> para planificar, no para navegar a ciegas. Consulta el boletín de aludes y la predicción, lleva ARVA-pala-sonda y decide sobre el terreno.</div>
+
+    <p class="fuentes">Datos: © <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a> (cimas, parkings, refugios, pistas), trazado por senderos con <a href="https://brouter.de" target="_blank">BRouter</a>, relieve AWS Terrain Tiles (Mapzen), pendientes calculadas con ese mismo relieve. Rutas a partir de reseñas de clubes y guías (Wikiloc, Montaña Pegaso, USAL Deportes…). <span id="gen"></span></p>
+  </div>
+</aside>
+
+<section id="ficha"></section>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/maplibre-gl/4.7.1/maplibre-gl.js"></script>
+<script src="datos_rutas.js"></script>
+<script>
+// Si el mapa no puede arrancar, dilo en pantalla en vez de dejar el hueco vacío
+window.addEventListener('error', e => {
+  const m = document.getElementById('map');
+  if (m && !m.querySelector('canvas')) m.innerHTML = `<div style="padding:90px 20px;color:#ffcf6b;font:14px Inter,sans-serif">No se pudo cargar el mapa 3D (${e.message}). Las rutas siguen en el panel.</div>`;
+});
+setTimeout(() => { try { buildTabs(); setZona(zonaActual, false); } catch (e) {} }, 0);
+const D = window.DATOS;
+const COLORS = { azul:'#1f6fff', roja:'#e8343a', negra:'#0b0b0b', subida:'#2fd27a', verde:'#2fbf4f' };
+const ZONAS = D.zonas;
+let zonaActual = 'gredos', selId = null, rotating = false, flying = null;
+
+// Numeración tipo estación por zona
+const porZona = {};
+D.rutas.features.forEach(f => {
+  const p = f.properties; (porZona[p.zona] ||= { s:0, b:0 });
+  p.num = p.tipo === 'subida' ? 'S' + (++porZona[p.zona].s) : String(++porZona[p.zona].b);
+});
+document.getElementById('gen').textContent = 'Datos generados: ' + new Date(D.generado).toLocaleDateString('es-ES');
+
+// ---------- Estilo base ----------
+// Relieve empaquetado junto a la página (la página no puede pedir teselas a otros servidores).
+// Cada paquete se descarga solo cuando el mapa necesita una tesela de su zona.
+const PAQUETES = {
+  bejar: [-6.05, 40.10, -5.40, 40.55], gredos: [-5.70, 40.05, -4.95, 40.48],
+  palentina: [-5.05, 42.75, -4.45, 43.20], branosera: [-4.55, 42.80, -4.15, 43.10],
+  gredosoc: [-5.64, 40.19, -5.46, 40.29], palnorte: [-4.86, 42.995, -4.60, 43.095],
+  pernia: [-4.60, 42.975, -4.52, 43.025],
+};
+const cargados = {};
+function paquete(z) { return cargados[z] ||= Promise.resolve({}); }
+function b64(s) { const bin = atob(s), u = new Uint8Array(bin.length); for (let i = 0; i < bin.length; i++) u[i] = bin.charCodeAt(i); return u.buffer; }
+async function buscar(z, x, y) {
+  const n = 2 ** z, lon = (x + 0.5) / n * 360 - 180, lat = Math.atan(Math.sinh(Math.PI * (1 - 2 * (y + 0.5) / n))) * 180 / Math.PI;
+  for (const [k, [w, s, e, nn]] of Object.entries(PAQUETES)) {
+    if (lon < w || lon > e || lat < s || lat > nn) continue;
+    const d = (await paquete(k))[`${z}/${x}/${y}`];
+    if (d) return d;
+  }
+  return null;
+}
+const lienzo = () => { const c = new OffscreenCanvas(256, 256), g = c.getContext('2d'); g.imageSmoothingEnabled = false; return [c, g]; };
+let llano = null;
+async function teselaLlana() { // terreno a ~800 m (meseta) para el horizonte fuera de las sierras
+  if (!llano) { const [c, g] = lienzo(); g.fillStyle = 'rgb(131,32,0)'; g.fillRect(0, 0, 256, 256); llano = await (await c.convertToBlob({ type: 'image/png' })).arrayBuffer(); }
+  return llano.slice(0);
+}
+async function demPng(z, x, y) {
+  try { const r = await fetch(`https://s3.amazonaws.com/elevation-tiles-prod/terrarium/${z}/${x}/${y}.png`); if (r.ok) return await r.arrayBuffer(); } catch (e) {}
+  const d = await buscar(z, x, y);
+  if (d) return b64(d);
+  // Sin tesela a este zoom: amplía la del zoom inferior más cercano (vecino más próximo, sin mezclar cotas)
+  for (let dz = 1; dz <= 5 && z - dz >= 8; dz++) {
+    const f = 2 ** dz, a = await buscar(z - dz, Math.floor(x / f), Math.floor(y / f));
+    if (!a) continue;
+    const bmp = await createImageBitmap(new Blob([b64(a)], { type: 'image/png' })), t = 256 / f, [c, g] = lienzo();
+    g.drawImage(bmp, (x % f) * t, (y % f) * t, t, t, 0, 0, 256, 256);
+    return await (await c.convertToBlob({ type: 'image/png' })).arrayBuffer();
+  }
+  return await teselaLlana();
+}
+maplibregl.addProtocol('pack', async (params) => {
+  const [z, x, y] = params.url.replace('pack://dem/', '').split('/').map(Number);
+  return { data: await demPng(z, x, y) };
+});
+
+// ---------- Capas de análisis calculadas en el móvil a partir del relieve ----------
+// pendiente (terreno de aludes), orientación (dónde hay polvo / transformada) y cota de nieve
+const PEND_COL = [[27, [245, 230, 99]], [30, [245, 161, 66]], [35, [232, 52, 58]], [40, [161, 43, 214]], [45, [40, 30, 70]]];
+const ORI_COL = [[43, 107, 255], [54, 182, 230], [255, 211, 77], [255, 159, 64], [255, 79, 79], [224, 91, 194], [124, 214, 91], [63, 194, 163]];
+maplibregl.addProtocol('ana', async (params) => {
+  const [modo, zs, xs, ys] = params.url.replace('ana://', '').split('/'), z = +zs, x = +xs, y = +ys;
+  const bmp = await createImageBitmap(new Blob([await demPng(z, x, y)], { type: 'image/png' }));
+  const [c, g] = lienzo(); g.drawImage(bmp, 0, 0);
+  const src = g.getImageData(0, 0, 256, 256).data, h = new Float32Array(65536);
+  for (let i = 0; i < 65536; i++) h[i] = src[i * 4] * 256 + src[i * 4 + 1] + src[i * 4 + 2] / 256 - 32768;
+  const out = g.createImageData(256, 256), o = out.data;
+  const lat = Math.atan(Math.sinh(Math.PI * (1 - 2 * (y + 0.5) / 2 ** z))), cel = 156543.03 * Math.cos(lat) / 2 ** z;
+  const cota = modo[0] === 'n' ? +modo.slice(1) : 0;
+  const H = (i, j) => h[Math.min(255, Math.max(0, j)) * 256 + Math.min(255, Math.max(0, i))];
+  for (let j = 0; j < 256; j++) for (let i = 0; i < 256; i++) {
+    const k = (j * 256 + i) * 4;
+    if (cota) { // nieve por encima de la cota (franja de transición de 100 m)
+      const e = H(i, j); if (e < cota - 100) continue;
+      const a = e >= cota ? 150 : 150 * (e - cota + 100) / 100;
+      o[k] = 255; o[k + 1] = 255; o[k + 2] = 255; o[k + 3] = a; continue;
+    }
+    const dzdx = ((H(i + 1, j - 1) + 2 * H(i + 1, j) + H(i + 1, j + 1)) - (H(i - 1, j - 1) + 2 * H(i - 1, j) + H(i - 1, j + 1))) / (8 * cel);
+    const dzdy = ((H(i - 1, j + 1) + 2 * H(i, j + 1) + H(i + 1, j + 1)) - (H(i - 1, j - 1) + 2 * H(i, j - 1) + H(i + 1, j - 1))) / (8 * cel);
+    const s = Math.atan(Math.hypot(dzdx, dzdy)) * 180 / Math.PI;
+    if (modo === 'p') {
+      let col = null; for (const [lim, cc] of PEND_COL) if (s >= lim) col = cc;
+      if (!col) continue;
+      o[k] = col[0]; o[k + 1] = col[1]; o[k + 2] = col[2]; o[k + 3] = 165;
+    } else { // orientación de la ladera (hacia donde cae), solo si hay pendiente esquiable
+      if (s < 15) continue;
+      const asp = (Math.atan2(-dzdx, dzdy) * 180 / Math.PI + 360) % 360; // 0 = N
+      const col = ORI_COL[Math.round(asp / 45) % 8];
+      o[k] = col[0]; o[k + 1] = col[1]; o[k + 2] = col[2]; o[k + 3] = 140;
+    }
+  }
+  g.putImageData(out, 0, 0);
+  return { data: await (await c.convertToBlob({ type: 'image/png' })).arrayBuffer() };
+});
+const style = {
+  version: 8,
+  sources: {
+    dem: { type:'raster-dem', tiles:['pack://dem/{z}/{x}/{y}'], encoding:'terrarium', tileSize:256, maxzoom:13,
+      attribution:'Relieve: AWS Terrain Tiles / Mapzen' },
+  },
+  layers: [
+    { id:'bg', type:'background', paint:{ 'background-color':'#f3f6fa' } },
+    { id:'hs', type:'hillshade', source:'dem', paint:{ 'hillshade-exaggeration':0.75, 'hillshade-illumination-direction':315, 'hillshade-shadow-color':'#41557a', 'hillshade-highlight-color':'#ffffff', 'hillshade-accent-color':'#7d8fae' } },
+  ],
+};
+
+const map = new maplibregl.Map({
+  container:'map', style, center: ZONAS[zonaActual].center, zoom: 11.6, pitch: 50, bearing: ZONAS[zonaActual].bearing,
+  maxPitch: 75, attributionControl: { compact:true }, antialias: false, fadeDuration: 0,
+  pixelRatio: Math.min(window.devicePixelRatio || 1, window.innerWidth <= 760 ? 1.5 : 2),
+});
+new ResizeObserver(() => map.resize()).observe(document.getElementById('map'));
+map.addControl(new maplibregl.NavigationControl({ visualizePitch:true }), 'bottom-right');
+map.addControl(new maplibregl.ScaleControl({ unit:'metric' }), 'bottom-left');
+
+let iniciado = false;
+map.on('style.load', () => {
+  if (iniciado) return; iniciado = true;
+  map.setTerrain({ source:'dem', exaggeration:1.5 });
+  map.setSky({ 'sky-color':'#7fb3e6', 'horizon-color':'#dbe9f7', 'fog-color':'#e8f0f8', 'sky-horizon-blend':0.5, 'horizon-fog-blend':0.6, 'fog-ground-blend':0.15, 'atmosphere-blend':['interpolate',['linear'],['zoom'],10,1,14,0.4] });
+
+  map.addSource('rutas', { type:'geojson', data: D.rutas });
+  map.addSource('pistas', { type:'geojson', data: D.pistas });
+
+  // Pistas de estación (finas, colores oficiales)
+  map.addLayer({ id:'pistas-case', type:'line', source:'pistas', paint:{ 'line-color':'#fff', 'line-width':['interpolate',['linear'],['zoom'],11,1.5,15,5], 'line-opacity':.8 }, layout:{ 'line-cap':'round','line-join':'round' } });
+  map.addLayer({ id:'pistas', type:'line', source:'pistas', paint:{ 'line-color':['match',['get','dificultad'],'verde',COLORS.verde,'azul',COLORS.azul,'roja',COLORS.roja,'#111'], 'line-width':['interpolate',['linear'],['zoom'],11,0.8,15,3], 'line-opacity':.85 }, layout:{ 'line-cap':'round','line-join':'round' } });
+
+  // Bajadas: halo blanco + color
+  const bajadas = ['==',['get','tipo'],'bajada'];
+  map.addLayer({ id:'bajadas-glow', type:'line', source:'rutas', filter:bajadas, paint:{ 'line-color':'#fff', 'line-width':['interpolate',['linear'],['zoom'],10,4,15,13], 'line-opacity':.9, 'line-blur':.5 }, layout:{ 'line-cap':'round','line-join':'round' } });
+  map.addLayer({ id:'bajadas', type:'line', source:'rutas', filter:bajadas,
+    paint:{ 'line-color':['match',['get','dificultad'],'azul',COLORS.azul,'roja',COLORS.roja,COLORS.negra], 'line-width':['interpolate',['linear'],['zoom'],10,2.5,15,8] }, layout:{ 'line-cap':'round','line-join':'round' } });
+  // Subidas: verde discontinuo con borde oscuro
+  const subidas = ['==',['get','tipo'],'subida'];
+  map.addLayer({ id:'subidas-case', type:'line', source:'rutas', filter:subidas, paint:{ 'line-color':'#0a2a18', 'line-width':['interpolate',['linear'],['zoom'],10,3.5,15,8], 'line-opacity':.7 }, layout:{ 'line-cap':'round','line-join':'round' } });
+  map.addLayer({ id:'subidas', type:'line', source:'rutas', filter:subidas, paint:{ 'line-color':COLORS.subida, 'line-width':['interpolate',['linear'],['zoom'],10,2,15,5], 'line-dasharray':[1.6,1.2] }, layout:{ 'line-cap':'round','line-join':'round' } });
+  // Selección
+  map.addLayer({ id:'sel', type:'line', source:'rutas', filter:['==',['get','id'],''], paint:{ 'line-color':'#5cc8ff', 'line-width':['interpolate',['linear'],['zoom'],10,8,15,18], 'line-opacity':.45, 'line-blur':2 }, layout:{ 'line-cap':'round','line-join':'round' } }, 'bajadas-glow');
+  // Rutas de «Mi día»
+  map.addLayer({ id:'plan', type:'line', source:'rutas', filter:['in',['get','id'],['literal',plan]], paint:{ 'line-color':'#ffb020', 'line-width':['interpolate',['linear'],['zoom'],10,7,15,16], 'line-opacity':.55, 'line-blur':1.5 }, layout:{ 'line-cap':'round','line-join':'round' } }, 'bajadas-glow');
+  // Zona de clic ancha (invisible)
+  map.addLayer({ id:'hit', type:'line', source:'rutas', paint:{ 'line-color':'#000', 'line-width':18, 'line-opacity':0.001 } });
+
+  map.on('click','hit', e => selectRuta(e.features[0].properties.id, true));
+  map.on('mouseenter','hit', () => map.getCanvas().style.cursor='pointer');
+  map.on('mouseleave','hit', () => map.getCanvas().style.cursor='');
+
+  document.fonts.ready.then(() => { addSimbolos(); aplicarFiltros(); });
+  setTimeout(() => flyZona(zonaActual), 200);
+});
+
+// ---------- Rótulos dibujados dentro del mapa (WebGL): mucho más fluido que marcadores HTML ----------
+const PR = 2;
+function rRect(g, x, y, w, h, r) { g.beginPath(); g.roundRect(x, y, w, h, r); }
+function imagen(dibujar, w, h) {
+  const c = document.createElement('canvas'); c.width = w * PR; c.height = h * PR;
+  const g = c.getContext('2d'); g.scale(PR, PR); dibujar(g);
+  return g.getImageData(0, 0, c.width, c.height);
+}
+const FILL = { parking:'#1f5fd6', refugio:'#b5651d', laguna:'#1aa3c7', collado:'#6b5bd6' };
+const ICON = { parking:'P', refugio:'⌂', laguna:'', collado:'⋀' };
+function imgPoi(p, conNombre) {
+  const etiqueta = p.tipo === 'cima' ? p.nombre : p.nombre + (p.ele ? ' · ' + p.ele + ' m' : '');
+  const fuente = p.tipo === 'cima' ? '700 12px "Barlow Condensed", sans-serif' : '600 11px Inter, sans-serif';
+  const mc = document.createElement('canvas').getContext('2d'); mc.font = fuente;
+  const tw = conNombre ? mc.measureText(etiqueta).width + (p.tipo === 'cima' ? mc.measureText(' ' + p.ele).width + 4 : 0) : 0;
+  if (p.tipo === 'cima') {
+    const w = Math.max(18, tw + 14), h = conNombre ? 34 : 16;
+    return imagen(g => {
+      g.fillStyle = '#fff'; g.strokeStyle = 'rgba(0,0,0,.55)'; g.lineWidth = 1;
+      g.beginPath(); g.moveTo(w / 2, 1); g.lineTo(w / 2 + 8, 14); g.lineTo(w / 2 - 8, 14); g.closePath(); g.fill(); g.stroke();
+      if (!conNombre) return;
+      rRect(g, 0, 16, w, 17, 5); g.fillStyle = 'rgba(10,16,26,.85)'; g.fill();
+      g.font = fuente; g.textBaseline = 'middle'; g.fillStyle = '#fff'; g.fillText(p.nombre, 7, 25);
+      g.fillStyle = '#9fd8ff'; g.font = '600 11px "Barlow Condensed", sans-serif'; g.fillText(String(p.ele), 7 + mc.measureText(p.nombre + ' ').width, 25.5);
+    }, w, h);
+  }
+  const w = 24 + (conNombre ? tw + 14 : 0), h = 24;
+  return imagen(g => {
+    g.fillStyle = FILL[p.tipo]; g.strokeStyle = '#fff'; g.lineWidth = 2;
+    if (p.tipo === 'laguna') { g.beginPath(); g.arc(12, 12, 10, 0, Math.PI * 2); } else rRect(g, 2, 2, 20, 20, 5);
+    g.fill(); g.stroke();
+    g.fillStyle = '#fff'; g.font = '800 12px Inter, sans-serif'; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText(ICON[p.tipo], 12, 12.5);
+    if (!conNombre) return;
+    rRect(g, 26, 3, tw + 10, 18, 5); g.fillStyle = 'rgba(10,16,26,.8)'; g.fill();
+    g.fillStyle = '#fff'; g.font = fuente; g.textAlign = 'left'; g.fillText(etiqueta, 31, 12.5);
+  }, w, h);
+}
+const NUMCOL = { azul:['#1f6fff', '#fff', '#fff'], roja:['#e8343a', '#fff', '#fff'], negra:['#000', '#fff', '#fff'], subida:['#0f3d26', '#2fd27a', '#2fd27a'] };
+function imgNum(p) {
+  const [bg, borde, tx] = NUMCOL[p.dificultad];
+  return imagen(g => {
+    g.beginPath(); g.arc(13, 13, 11, 0, Math.PI * 2); g.fillStyle = bg; g.fill(); g.lineWidth = 2; g.strokeStyle = borde; g.stroke();
+    g.fillStyle = tx; g.font = '800 12px "Barlow Condensed", sans-serif'; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText(p.num, 13, 13.5);
+  }, 26, 26);
+}
+function addSimbolos() {
+  const pois = { type:'FeatureCollection', features: D.pois.features.map((f, i) => {
+    const p = f.properties, id = 'poi' + i;
+    map.addImage(id, imgPoi(p, true), { pixelRatio: PR }); map.addImage(id + 's', imgPoi(p, false), { pixelRatio: PR });
+    return { type:'Feature', geometry: f.geometry, properties: { ...p, img: id, grupo: p.tipo === 'collado' ? 'laguna' : p.tipo, orden: p.tipo === 'parking' ? 0 : p.tipo === 'cima' ? 1 + (3000 - (p.ele || 0)) / 10000 : 2 } };
+  }) };
+  const nums = { type:'FeatureCollection', features: D.rutas.features.map(f => {
+    const p = f.properties, c = f.geometry.coordinates, pos = c[Math.floor(c.length * (p.tipo === 'subida' ? 0.35 : 0.3))];
+    const id = 'num-' + p.id; map.addImage(id, imgNum(p), { pixelRatio: PR });
+    return { type:'Feature', geometry: { type:'Point', coordinates: [pos[0], pos[1]] }, properties: { id: p.id, img: id, dificultad: p.dificultad } };
+  }) };
+  map.addSource('pois', { type:'geojson', data: pois });
+  map.addSource('nums', { type:'geojson', data: nums });
+  map.addLayer({ id:'pois', type:'symbol', source:'pois', layout: {
+    'icon-image': ['get', 'img'], 'icon-anchor': ['case', ['==', ['get', 'tipo'], 'cima'], 'top', 'left'],
+    'icon-offset': ['case', ['==', ['get', 'tipo'], 'cima'], ['literal', [0, -7]], ['literal', [-12, 0]]],
+    'symbol-sort-key': ['get', 'orden'], 'icon-allow-overlap': false, 'icon-padding': 1 } });
+  map.addLayer({ id:'nums', type:'symbol', source:'nums', layout: { 'icon-image': ['get', 'img'], 'icon-allow-overlap': true, 'icon-ignore-placement': true } });
+  const abrirPoi = e => { const f = e.features[0]; popupTiempo({ geometry: f.geometry, properties: f.properties }); };
+  map.on('click', 'pois', abrirPoi);
+  map.on('click', 'nums', e => selectRuta(e.features[0].properties.id, true));
+  ['pois', 'nums'].forEach(l => { map.on('mouseenter', l, () => map.getCanvas().style.cursor = 'pointer'); map.on('mouseleave', l, () => map.getCanvas().style.cursor = ''); });
+}
+
+// ---------- Zonas ----------
+function buildTabs() {
+  const t = document.getElementById('tabs');
+  t.innerHTML = Object.entries(ZONAS).map(([k, z]) => `<button class="tab" data-z="${k}">${z.nombre.replace('Sierra de ','').replace('Montaña ','')}</button>`).join('');
+  t.querySelectorAll('.tab').forEach(b => b.onclick = () => { setZona(b.dataset.z, true); });
+}
+function flyZona(k) {
+  const z = ZONAS[k], b = new maplibregl.LngLatBounds();
+  // Encuadra el núcleo de la zona (las rutas lejanas, p. ej. Brañosera o la Covacha, se ven al seleccionarlas)
+  D.rutas.features.filter(f => f.properties.zona === k && haversine(ini(f), z.center) < 9000).forEach(f => f.geometry.coordinates.forEach(c => b.extend([c[0], c[1]])));
+  const wide = window.innerWidth > 760;
+  const pad = wide ? { top: 40, bottom: 40, left: 360, right: 40 } : { top: 40, bottom: Math.round(window.innerHeight * 0.45), left: 10, right: 10 };
+  const cam = map.cameraForBounds(b, { padding: 50, bearing: z.bearing });
+  const ancho = wide ? (window.innerWidth - 400) / window.innerWidth : 1;
+  map.flyTo({ center: b.getCenter(), padding: pad, bearing: z.bearing, pitch: z.pitch, zoom: cam.zoom + Math.log2(ancho) + 0.45, duration: 3500, essential: true });
+  recentrar(b.getCenter(), pad);
+}
+// Con relieve, el centro de cámara queda a cota 0: corrige al terminar el vuelo para que el punto quede centrado
+function recentrar(ll, pad) {
+  map.once('moveend', () => {
+    const p = map.project(ll), W = map.getCanvas().clientWidth, H = map.getCanvas().clientHeight;
+    const tx = pad.left + (W - pad.left - pad.right) / 2, ty = pad.top + (H - pad.top - pad.bottom) / 2;
+    if (Math.hypot(p.x - tx, p.y - ty) > 20) map.panBy([p.x - tx, p.y - ty], { duration: 700 });
+  });
+}
+function setZona(k, fly) {
+  zonaActual = k;
+  document.querySelectorAll('.tab').forEach(b => b.classList.toggle('on', b.dataset.z === k));
+  document.getElementById('zonaNombre').textContent = ZONAS[k].nombre;
+  document.getElementById('zonaAcceso').textContent = '🚗 ' + ZONAS[k].acceso;
+  renderLista();
+  meteoZona(k);
+  cerrarFicha();
+  if (fly && iniciado) flyZona(k);
+}
+function renderLista() {
+  const fs = D.rutas.features.filter(f => f.properties.zona === zonaActual);
+  const item = f => { const p = f.properties, kn = kmNieve(f), port = +(p.distancia_km - kn).toFixed(1);
+    const nieve = p.tipo === 'bajada'
+      ? ` · <span class="ski">${kn} km esquí</span>${port >= 0.1 ? ` <span class="warn">· portear ${port}</span>` : ''}`
+      : (port >= 0.1 ? ` · <span class="warn">${port} km a pie</span>` : '');
+    return `<div class="ruta ${p.id === selId ? 'sel' : ''}" data-id="${p.id}">
+      <span class="chip ${p.dificultad}">${p.num}</span>
+      <div class="nm">${p.nombre}<div class="meta">${p.distancia_km} km · ${p.tipo === 'subida' ? '+' + p.desnivel_pos : '−' + p.desnivel_neg} m · ${p.pendiente_max}° · ${p.orientacion}${nieve}</div></div></div>`; };
+  const ord = document.getElementById('orden').value, rank = { azul:1, roja:2, negra:3, subida:0 };
+  const ORI = ['N', 'NE', 'NO', 'E', 'O', 'SE', 'SO', 'S'];
+  const cmp = { dif: (a, b) => rank[a.properties.dificultad] - rank[b.properties.dificultad],
+    km: (a, b) => kmNieve(b) - kmNieve(a),
+    des: (a, b) => (b.properties.desnivel_neg + b.properties.desnivel_pos) - (a.properties.desnivel_neg + a.properties.desnivel_pos),
+    ori: (a, b) => ORI.indexOf(a.properties.orientacion) - ORI.indexOf(b.properties.orientacion) }[ord];
+  document.getElementById('lista').innerHTML =
+    `<div class="grp">⬇ Bajadas</div>` + fs.filter(f => f.properties.tipo === 'bajada').sort(cmp).map(item).join('') +
+    `<div class="grp">⬆ Subidas</div>` + fs.filter(f => f.properties.tipo === 'subida').sort(ord === 'dif' ? () => 0 : cmp).map(item).join('');
+  document.querySelectorAll('.ruta').forEach(r => r.onclick = () => selectRuta(r.dataset.id, true));
+  renderResumen();
+}
+
+// ---------- Nieve, kilómetros esquiables, enlaces y plan del día ----------
+let cota = 1600;
+try { cota = +localStorage.getItem('cota') || 1600; } catch (e) {}
+function acum(f) {
+  if (!f._cum) { const c = f.geometry.coordinates, a = [0]; for (let i = 1; i < c.length; i++) a.push(a[i - 1] + haversine(c[i - 1], c[i])); f._cum = a; }
+  return f._cum;
+}
+const memoNieve = new Map();
+function kmNieve(f) { // km de la ruta que quedan por encima de la cota de nieve
+  const k = f.properties.id + '@' + cota; if (memoNieve.has(k)) return memoNieve.get(k);
+  const c = f.geometry.coordinates, a = acum(f); let m = 0;
+  for (let i = 1; i < c.length; i++) if ((c[i][2] + c[i - 1][2]) / 2 >= cota) m += a[i] - a[i - 1];
+  const r = +(m / 1000).toFixed(1); memoNieve.set(k, r); return r;
+}
+const ini = f => f.geometry.coordinates[0], fin = f => f.geometry.coordinates[f.geometry.coordinates.length - 1];
+const horasDe = p => p.horas ?? +(p.tipo === 'subida' ? p.distancia_km / 4 + p.desnivel_pos / 350 : p.distancia_km / 12 + p.desnivel_neg / 2500).toFixed(1);
+function enlaces(f) {
+  const sig = [], ant = [];
+  D.rutas.features.forEach(g => { if (g === f) return;
+    if (haversine(fin(f), ini(g)) < 600) sig.push(g);
+    if (haversine(fin(g), ini(f)) < 600) ant.push(g); });
+  return { sig, ant };
+}
+const HORA = { N:'Polvo que aguanta días tras la nevada; en primavera transforma tarde o nunca', NE:'Transformada pronto: 9–11 h', E:'Transformada pronto: 9–11 h',
+  SE:'Transformada 10–12 h', S:'Transformada 10:30–12:30 h; si no heló de noche, costra o nieve podrida', SO:'Transformada 12–14 h', O:'Transformada 12–14 h',
+  NO:'Polvo o costra de viento; en primavera transforma a media tarde' };
+function terreno(p) {
+  const m = p.m_mas30 ?? 0;
+  if (p.dificultad === 'negra' || m > 300) return ['Complejo', 'canales o pendientes >30° largas: solo con peligro 1–2 y nieve asentada'];
+  if (m > 40 || p.pendiente_max >= 27) return ['Exigente', 'hay tramos >30°: con peligro 3, elige la línea y pasa de uno en uno'];
+  return ['Sencillo', 'poco terreno de aludes; opción para días de peligro alto (mira lo que tienes encima)'];
+}
+function barraPend(p) {
+  const b = p.bandas_m; if (!b) return '';
+  const t = b.reduce((x, y) => x + y, 0) || 1, cols = ['#7fd1ff', COLORS.azul, COLORS.roja, '#a12bd6', '#000'], nm = ['<20°', '20–25°', '25–30°', '30–35°', '>35°'];
+  return `<div class="bar">${b.map((v, i) => `<span style="width:${v / t * 100}%;background:${cols[i]}" title="${nm[i]}: ${Math.round(v)} m"></span>`).join('')}</div>
+    <div class="note">${b.map((v, i) => v > 20 ? `<span style="color:${i === 4 ? '#ccc' : cols[i]}">■</span> ${nm[i]} ${(v / 1000).toFixed(1)} km` : '').filter(Boolean).join(' · ')}</div>`;
+}
+
+// Resumen de la zona: kilómetros de esquí, colores y orientaciones (rosa de los vientos)
+function renderResumen() {
+  const fs = D.rutas.features.filter(f => f.properties.zona === zonaActual && f.properties.tipo === 'bajada');
+  const n = { azul:0, roja:0, negra:0 }; let km = 0, kmN = 0, des = 0; const rosa = { N:0, NE:0, E:0, SE:0, S:0, SO:0, O:0, NO:0 };
+  fs.forEach(f => { const p = f.properties, k = kmNieve(f); n[p.dificultad]++; km += p.distancia_km; kmN += k; des += p.desnivel_neg; rosa[p.orientacion] += k; });
+  const max = Math.max(1, ...Object.values(rosa)), dirs = Object.keys(rosa);
+  const pet = dirs.map((d, i) => { const a = (i * 45 - 90 - 20) * Math.PI / 180, b = (i * 45 - 90 + 20) * Math.PI / 180, r = 6 + 34 * rosa[d] / max;
+    return `<path d="M50,50 L${50 + r * Math.cos(a)},${50 + r * Math.sin(a)} A${r},${r} 0 0 1 ${50 + r * Math.cos(b)},${50 + r * Math.sin(b)} Z" fill="${['N', 'NE', 'NO'].includes(d) ? '#5cc8ff' : ['S', 'SE', 'SO'].includes(d) ? '#ff8a5c' : '#ffd34d'}" opacity=".85"/>
+      <text x="${50 + 46 * Math.cos((i * 45 - 90) * Math.PI / 180)}" y="${53 + 46 * Math.sin((i * 45 - 90) * Math.PI / 180)}" fill="#9fb0c3" font-size="8" text-anchor="middle">${d}</text>`; }).join('');
+  document.getElementById('resumen').innerHTML = `<h3>Esquí en ${ZONAS[zonaActual].nombre.replace('Sierra de ', '')}</h3>
+    <div class="kpis"><div><b class="ski">${kmN.toFixed(1)}</b><small>km esquiables<br>con nieve ≥${cota} m</small></div>
+      <div><b>${km.toFixed(1)}</b><small>km de bajadas<br>dibujadas</small></div><div><b>${(des / 1000).toFixed(1)} k</b><small>m de desnivel<br>de bajada</small></div></div>
+    <div style="display:flex;gap:10px;align-items:center;margin-top:8px">
+      <svg viewBox="0 0 100 106" width="96" height="100" aria-label="Kilómetros esquiables por orientación">${pet}</svg>
+      <div style="font-size:12px;line-height:1.6"><span class="chip azul" style="display:inline-grid;width:24px;height:18px">${n.azul}</span> azules
+        <span class="chip roja" style="display:inline-grid;width:24px;height:18px">${n.roja}</span> rojas
+        <span class="chip negra" style="display:inline-grid;width:24px;height:18px">${n.negra}</span> negras<br>
+        <span class="note">Rosa: km esquiables por orientación. <span style="color:#5cc8ff">Norte</span> = polvo, <span style="color:#ff8a5c">sur</span> = transformada.</span></div></div>`;
+}
+
+// Plan del día
+let plan = [];
+try { plan = JSON.parse(localStorage.getItem('plan') || '[]').filter(id => getRuta(id)); } catch (e) {}
+function guardarPlan() {
+  try { localStorage.setItem('plan', JSON.stringify(plan)); } catch (e) {}
+  if (map.getLayer('plan')) map.setFilter('plan', ['in', ['get', 'id'], ['literal', plan]]);
+  renderPlan();
+}
+function alPlan(id) { if (!plan.includes(id)) plan.push(id); guardarPlan(); const b = document.getElementById('bPlan'); if (b) b.textContent = '✓ En mi día'; }
+function quitarPlan(i) { plan.splice(i, 1); guardarPlan(); }
+function renderPlan() {
+  const el = document.getElementById('planBody');
+  if (!plan.length) { el.innerHTML = '<p class="note">Añade subidas y bajadas desde su ficha («＋ Mi día») o pulsa el botón: te propone el encadenado con más km de esquí de la zona (≤ 8 h, con la cota de nieve actual y solo con los colores marcados en «Capas»).</p>'; return; }
+  let html = '', km = 0, kmS = 0, up = 0, h = 0;
+  plan.forEach((id, i) => { const f = getRuta(id), p = f.properties;
+    if (i) { const gap = haversine(fin(getRuta(plan[i - 1])), ini(f)); if (gap > 600) html += `<div class="pl warn">⚠ Salto de ${(gap / 1000).toFixed(1)} km hasta el inicio (coche o a pie)</div>`; }
+    km += p.distancia_km; up += p.desnivel_pos; h += horasDe(p); if (p.tipo === 'bajada') kmS += kmNieve(f);
+    html += `<div class="pl"><span class="chip ${p.dificultad}">${p.num}</span><span class="nm" data-id="${id}">${p.nombre}</span><button aria-label="Quitar" data-i="${i}">×</button></div>`; });
+  el.innerHTML = `<div class="kpis" style="margin-bottom:6px"><div><b class="ski">${kmS.toFixed(1)}</b><small>km esquí</small></div><div><b>+${up}</b><small>m subida</small></div><div><b>~${h.toFixed(1)} h</b><small>${km.toFixed(1)} km total</small></div></div>${html}`;
+  el.querySelectorAll('.nm').forEach(s => s.onclick = () => selectRuta(s.dataset.id, true));
+  el.querySelectorAll('button[data-i]').forEach(b => b.onclick = () => quitarPlan(+b.dataset.i));
+}
+// Busca el encadenado (desde un parking y de vuelta a un parking) con más km esquiables, en ≤ 8 h
+function sugerirDia() {
+  // Solo usa los colores visibles (desmarca «Bajadas negras» para un día sin canales)
+  const fs = D.rutas.features.filter(f => f.properties.zona === zonaActual && visDif[f.properties.dificultad]);
+  const pk = D.pois.features.filter(p => p.properties.zona === zonaActual && p.properties.tipo === 'parking').map(p => p.geometry.coordinates);
+  const cercaPk = pt => pk.some(q => haversine(pt, q) < 1500);
+  let best = null;
+  const dfs = (cad, h, km) => {
+    const ult = cad[cad.length - 1];
+    // vale si acaba en un parking; se prefiere volver al mismo coche (circular) a igualdad práctica de km
+    const circ = haversine(fin(ult), ini(cad[0])) < 1500, score = km + (circ ? 1.5 : 0);
+    if (ult.properties.tipo === 'bajada' && cercaPk(fin(ult)) && (!best || score > best.score + 0.05 || (Math.abs(score - best.score) <= 0.05 && h < best.h))) best = { ids: cad.map(f => f.properties.id), km, h, score };
+    if (cad.length >= 7) return;
+    for (const g of fs) {
+      if (cad.includes(g) || haversine(fin(ult), ini(g)) > 600) continue;
+      const hh = h + horasDe(g.properties); if (hh > 8) continue;
+      dfs([...cad, g], hh, km + (g.properties.tipo === 'bajada' ? kmNieve(g) : 0));
+    }
+  };
+  fs.filter(f => f.properties.tipo === 'subida' && cercaPk(ini(f))).forEach(s => dfs([s], horasDe(s.properties), 0));
+  if (!best || best.km < 0.3) { document.getElementById('planBody').innerHTML = `<p class="note warn">Con la nieve desde ${cota} m no hay un encadenado esquiable en esta zona. Baja la cota o prueba otra zona.</p>`; return; }
+  plan = best.ids; guardarPlan();
+  const b = new maplibregl.LngLatBounds(); plan.forEach(id => getRuta(id).geometry.coordinates.forEach(c => b.extend([c[0], c[1]])));
+  const wide = window.innerWidth > 760;
+  map.fitBounds(b, { padding: wide ? { top: 60, bottom: 60, left: 380, right: 60 } : { top: 40, bottom: Math.round(window.innerHeight * 0.6), left: 20, right: 20 }, pitch: 55, duration: 2000 });
+}
+
+// Tiempo de la zona (cima principal) — Open-Meteo en directo
+const CIMA_ZONA = { bejar:[-5.72894,40.30453,2427,'La Ceja'], gredos:[-5.26850,40.24980,2389,'Morezón'], palentina:[-4.67396,42.97637,2524,'Curavacas'] };
+// La página no puede consultar servicios externos: enlaza a la previsión en otra pestaña
+const windy = (lat, lon) => `https://www.windy.com/${lat.toFixed(3)}/${lon.toFixed(3)}?${lat.toFixed(3)},${lon.toFixed(3)},13`;
+function meteoZona(k) {
+  const [lon, lat, ele, nm] = CIMA_ZONA[k], box = document.getElementById('zonaMeteo');
+  box.innerHTML = `<a class="wxlink" href="${windy(lat, lon)}" target="_blank" rel="noopener"><b>${nm}</b><small>Previsión en Windy ↗</small></a>
+    <a class="wxlink" href="https://www.aemet.es/es/eltiempo/prediccion/montana" target="_blank" rel="noopener"><b>AEMET</b><small>Predicción de montaña ↗</small></a>
+    <a class="wxlink" href="https://www.aemet.es/es/eltiempo/prediccion/montana/boletin_peligro_aludes" target="_blank" rel="noopener"><b>Aludes</b><small>Boletín AEMET ↗</small></a>`;
+}
+
+// Ficha de punto (cima, parking…) con enlace a su previsión
+function popupTiempo(f) {
+  const [lon, lat] = f.geometry.coordinates, p = f.properties;
+  new maplibregl.Popup({ offset: 14, maxWidth: '280px' }).setLngLat([lon, lat])
+    .setHTML(`<div class="wx"><h4>${p.nombre}</h4>${p.ele ? p.ele + ' m · ' : ''}${p.tipo}<br>
+      <small style="color:var(--tx2)">${lat.toFixed(5)}, ${lon.toFixed(5)}</small><br>
+      <a href="${windy(lat, lon)}" target="_blank" rel="noopener" style="color:var(--acc)">Previsión del tiempo aquí (Windy) ↗</a></div>`).addTo(map);
+}
+
+// ---------- Ficha de ruta ----------
+const ficha = document.getElementById('ficha');
+function getRuta(id) { return D.rutas.features.find(f => f.properties.id === id); }
+function selectRuta(id, fit) {
+  const f = getRuta(id); if (!f) return;
+  if (f.properties.zona !== zonaActual) { zonaActual = f.properties.zona; setZona(zonaActual, false); }
+  selId = id;
+  map.setFilter('sel', ['==', ['get', 'id'], id]);
+  document.querySelectorAll('.ruta').forEach(r => r.classList.toggle('sel', r.dataset.id === id));
+  const p = f.properties, nombreDif = { azul:'Bajada azul', roja:'Bajada roja', negra:'Bajada negra', subida:'Subida / foqueo' }[p.dificultad];
+  ficha.innerHTML = `<div class="top"><span class="chip ${p.dificultad}" style="width:36px;height:28px;font-size:15px">${p.num}</span><h2>${p.nombre}</h2><button class="x" onclick="cerrarFicha()">×</button></div>
+    <span class="badge ${p.dificultad}">${nombreDif}</span>
+    <div class="stats">
+      <div><b>${p.distancia_km}</b><small>km</small></div>
+      <div><b>+${p.desnivel_pos}</b><small>m subida</small></div>
+      <div><b>−${p.desnivel_neg}</b><small>m bajada</small></div>
+      <div><b>${p.cota_max}</b><small>cota máx</small></div>
+      <div><b>${p.pendiente_max}°</b><small>pend. sostenida</small></div>
+      <div><b>${p.orientacion}</b><small>orientación</small></div>
+    </div>
+    ${(() => { const kn = kmNieve(f), port = +(p.distancia_km - kn).toFixed(1), ter = terreno(p), { sig, ant } = enlaces(f);
+      const chips = l => l.map(g => `<span class="mini" data-id="${g.properties.id}"><span class="chip ${g.properties.dificultad}" style="display:inline-grid;width:22px;height:16px;font-size:10px;border-width:1px">${g.properties.num}</span> ${g.properties.nombre}</span>`).join('');
+      return `<div class="info2">
+        <span>Nieve ≥${cota} m</span><span class="ski">${kn} de ${p.distancia_km} km ${p.tipo === 'bajada' ? 'esquiables' : 'con pieles'}${port >= 0.1 ? ` <span class="warn">· ${port} km a pie</span>` : ''}</span>
+        <span>Tiempo</span><span>~${horasDe(p)} h ${p.tipo === 'subida' ? 'foqueando' : 'de bajada con paradas'}</span>
+        <span>Terreno</span><span><b>${ter[0]}</b>: ${ter[1]}</span>
+        ${p.tipo === 'bajada' ? `<span>La nieve</span><span>${HORA[p.orientacion]}</span>` : ''}
+        ${p.m_mas30 != null ? `<span>&gt;30°</span><span>${p.m_mas30} m de recorrido en pendientes de aludes</span>` : ''}
+      </div>${barraPend(p)}
+      ${sig.length ? `<div class="note" style="margin-top:8px">Desde el final puedes seguir por:</div>${chips(sig)}` : ''}
+      ${ant.length ? `<div class="note" style="margin-top:6px">Para llegar al inicio:</div>${chips(ant)}` : ''}`; })()}
+    <svg id="perfil" viewBox="0 0 360 140" preserveAspectRatio="none" style="margin-top:10px"></svg>
+    <p class="note">Perfil coloreado por pendiente (azul &lt;25°, roja 25–33°, negra &gt;33°); línea discontinua = cota de nieve. Pasa el dedo para verlo en el mapa.</p>
+    <p class="desc">${p.desc}${p.aprox ? ' <span class="warn">Trazado aproximado: confírmalo con una reseña reciente.</span>' : ''}</p>
+    <div class="row">
+      <button class="btn" id="bPlan" onclick="alPlan('${p.id}')">${plan.includes(p.id) ? '✓ En mi día' : '＋ Mi día'}</button>
+      <button class="btn" onclick="volar('${p.id}')">🚁 Volar por la ruta</button>
+      <button class="btn" onclick="encuadrar('${p.id}')">⌖ Encuadrar</button>
+      <button class="btn" id="bGpx" onclick="gpx('${p.id}')">⧉ Copiar GPX</button>
+    </div>
+    <textarea id="gpxTxt" hidden readonly style="width:100%;height:80px;margin-top:8px;background:var(--panel2);color:var(--tx);border:1px solid var(--line);border-radius:8px;font:11px monospace"></textarea>
+    <p class="note">Pega el GPX copiado en un archivo .gpx o en tu app de mapas (Wikiloc, Komoot, OruxMaps…).</p>
+    <p class="note" style="margin-top:10px">Trazado ${p.tipo === 'subida' ? 'por senderos (BRouter) entre puntos de paso de las reseñas' : 'aproximado de la línea de descenso, sobre el relieve'}. Pendiente media ${p.pendiente_media}°, cota mín ${p.cota_min} m.</p>`;
+  ficha.classList.add('show');
+  ficha.querySelectorAll('.mini').forEach(m => m.onclick = () => selectRuta(m.dataset.id, true));
+  dibujarPerfil(f);
+  if (window.innerWidth <= 760) document.getElementById('side').classList.add('closed');
+  if (fit) encuadrar(id);
+}
+function cerrarFicha() { ficha.classList.remove('show'); selId = null; if (map.getLayer('sel')) map.setFilter('sel', ['==', ['get', 'id'], '']); document.querySelectorAll('.ruta').forEach(r => r.classList.remove('sel')); hoverMk.remove(); }
+function encuadrar(id) {
+  const c = getRuta(id).geometry.coordinates, b = new maplibregl.LngLatBounds();
+  c.forEach(x => b.extend([x[0], x[1]]));
+  const wide = window.innerWidth > 760;
+  const pad = wide ? { top: 40, bottom: 40, left: 360, right: 400 } : { top: 40, bottom: Math.round(window.innerHeight * 0.62), left: 10, right: 10 };
+  const cam = map.cameraForBounds(b, { padding: 40, bearing: map.getBearing() });
+  const ancho = wide ? Math.max(0.3, (window.innerWidth - 780) / window.innerWidth) : 1;
+  map.flyTo({ center: b.getCenter(), padding: pad, pitch: 60, bearing: map.getBearing(), zoom: Math.min(15, cam.zoom + Math.log2(ancho) + (wide ? 0.3 : -0.9)), duration: 1800 });
+  recentrar(b.getCenter(), pad);
+}
+
+// Perfil de altitud SVG coloreado por pendiente
+const hoverMk = new maplibregl.Marker({ color: '#5cc8ff' });
+function dibujarPerfil(f) {
+  const svg = document.getElementById('perfil'), pr = f.properties.perfil;
+  const W = 360, H = 140, pad = { l: 34, r: 6, t: 8, b: 18 };
+  const maxD = pr[pr.length - 1][0], zs = pr.map(x => x[1]), zMin = Math.min(...zs) - 20, zMax = Math.max(...zs) + 20;
+  const X = d => pad.l + (d / maxD) * (W - pad.l - pad.r), Y = z => pad.t + (1 - (z - zMin) / (zMax - zMin)) * (H - pad.t - pad.b);
+  let segs = '';
+  for (let i = 1; i < pr.length; i++) {
+    const dx = (pr[i][0] - pr[i - 1][0]) * 1000, dz = Math.abs(pr[i][1] - pr[i - 1][1]);
+    const s = dx > 0 ? Math.atan(dz / dx) * 180 / Math.PI : 0;
+    const col = s < 25 ? COLORS.azul : s < 33 ? COLORS.roja : '#000';
+    segs += `<polygon points="${X(pr[i-1][0])},${H-pad.b} ${X(pr[i-1][0])},${Y(pr[i-1][1])} ${X(pr[i][0])},${Y(pr[i][1])} ${X(pr[i][0])},${H-pad.b}" fill="${col}" opacity=".85"/>`;
+  }
+  const line = pr.map((x, i) => (i ? 'L' : 'M') + X(x[0]) + ',' + Y(x[1])).join('');
+  const ticks = [zMin + 20, (zMin + zMax) / 2, zMax - 20].map(z => `<text x="2" y="${Y(z) + 3}" fill="#9fb0c3" font-size="9">${Math.round(z)}</text><line x1="${pad.l}" x2="${W - pad.r}" y1="${Y(z)}" y2="${Y(z)}" stroke="rgba(255,255,255,.08)"/>`).join('');
+  const cl = cota > zMin && cota < zMax ? `<line x1="${pad.l}" x2="${W - pad.r}" y1="${Y(cota)}" y2="${Y(cota)}" stroke="#9fe2ff" stroke-dasharray="4 3" stroke-width="1.2"/><text x="${W - pad.r - 2}" y="${Y(cota) - 3}" fill="#9fe2ff" font-size="9" text-anchor="end">nieve ${cota} m</text>` : '';
+  svg.innerHTML = `${ticks}${segs}${cl}<path d="${line}" fill="none" stroke="#fff" stroke-width="1.6"/>
+    <text x="${W - pad.r}" y="${H - 4}" fill="#9fb0c3" font-size="9" text-anchor="end">${maxD.toFixed(1)} km</text><text x="${pad.l}" y="${H - 4}" fill="#9fb0c3" font-size="9">0</text>
+    <line id="pcur" y1="${pad.t}" y2="${H - pad.b}" stroke="#5cc8ff" stroke-width="1.5" opacity="0"/><text id="ptxt" y="${pad.t + 10}" fill="#fff" font-size="10" font-weight="600"></text>`;
+  const coords = f.geometry.coordinates, cum = [0];
+  for (let i = 1; i < coords.length; i++) cum.push(cum[i - 1] + haversine(coords[i - 1], coords[i]));
+  const move = ev => {
+    const r = svg.getBoundingClientRect(), cx = ((ev.touches ? ev.touches[0].clientX : ev.clientX) - r.left) / r.width * W;
+    const d = Math.max(0, Math.min(maxD, (cx - pad.l) / (W - pad.l - pad.r) * maxD));
+    let k = cum.findIndex(v => v / 1000 >= d); if (k < 0) k = coords.length - 1;
+    const cur = svg.querySelector('#pcur'), tx = svg.querySelector('#ptxt');
+    cur.setAttribute('x1', X(d)); cur.setAttribute('x2', X(d)); cur.setAttribute('opacity', 1);
+    tx.setAttribute('x', Math.min(X(d) + 4, W - 70)); tx.textContent = `${coords[k][2]} m · ${d.toFixed(2)} km`;
+    hoverMk.setLngLat([coords[k][0], coords[k][1]]).addTo(map);
+  };
+  svg.onmousemove = move; svg.ontouchmove = e => { e.preventDefault(); move(e); };
+  svg.onmouseleave = () => { hoverMk.remove(); svg.querySelector('#pcur').setAttribute('opacity', 0); svg.querySelector('#ptxt').textContent = ''; };
+}
+function haversine(a, b) {
+  const R = 6371000, r = Math.PI / 180, dLat = (b[1] - a[1]) * r, dLon = (b[0] - a[0]) * r;
+  const h = Math.sin(dLat / 2) ** 2 + Math.cos(a[1] * r) * Math.cos(b[1] * r) * Math.sin(dLon / 2) ** 2;
+  return 2 * R * Math.asin(Math.sqrt(h));
+}
+
+// Vuelo de cámara siguiendo la ruta
+function volar(id) {
+  pararVuelo(); setRotar(false);
+  const c = getRuta(id).geometry.coordinates, cum = [0];
+  for (let i = 1; i < c.length; i++) cum.push(cum[i - 1] + haversine(c[i - 1], c[i]));
+  const total = cum[cum.length - 1], dur = Math.min(45000, Math.max(12000, total * 4)), t0 = performance.now();
+  const at = d => { let k = cum.findIndex(v => v >= d); if (k <= 0) return c[Math.max(0, k)]; const f = (d - cum[k - 1]) / (cum[k] - cum[k - 1]); return [c[k - 1][0] + (c[k][0] - c[k - 1][0]) * f, c[k - 1][1] + (c[k][1] - c[k - 1][1]) * f]; };
+  const brg = (a, b) => { const r = Math.PI / 180, y = Math.sin((b[0] - a[0]) * r) * Math.cos(b[1] * r), x = Math.cos(a[1] * r) * Math.sin(b[1] * r) - Math.sin(a[1] * r) * Math.cos(b[1] * r) * Math.cos((b[0] - a[0]) * r); return Math.atan2(y, x) / r; };
+  let bear = brg(at(0), at(Math.min(total, 300)));
+  map.jumpTo({ center: at(0), zoom: 14.6, pitch: 68, bearing: bear });
+  document.getElementById('flyStop').style.display = 'block';
+  const step = now => {
+    const t = Math.min(1, (now - t0) / dur), d = t * total, pos = at(d);
+    const target = brg(at(Math.max(0, d - 150)), at(Math.min(total, d + 350)));
+    let diff = ((target - bear + 540) % 360) - 180; bear += diff * 0.04;
+    map.jumpTo({ center: pos, bearing: bear });
+    hoverMk.setLngLat(pos).addTo(map);
+    if (t < 1) flying = requestAnimationFrame(step); else pararVuelo();
+  };
+  flying = requestAnimationFrame(step);
+}
+function pararVuelo() { if (flying) cancelAnimationFrame(flying); flying = null; document.getElementById('flyStop').style.display = 'none'; }
+document.getElementById('flyStop').onclick = pararVuelo;
+
+// GPX
+function gpx(id) {
+  const f = getRuta(id), p = f.properties;
+  const pts = f.geometry.coordinates.map(c => `<trkpt lat="${c[1]}" lon="${c[0]}"><ele>${c[2]}</ele></trkpt>`).join('');
+  const xml = `<?xml version="1.0" encoding="UTF-8"?><gpx version="1.1" creator="Mapa de travesía" xmlns="http://www.topografix.com/GPX/1/1"><trk><name>${p.nombre}</name><desc>${p.desc}</desc><trkseg>${pts}</trkseg></trk></gpx>`;
+  const btn = document.getElementById('bGpx'), area = document.getElementById('gpxTxt');
+  const ok = () => { btn.textContent = '✓ GPX copiado'; setTimeout(() => (btn.textContent = '⧉ Copiar GPX'), 2500); };
+  const manual = () => { area.hidden = false; area.value = xml; area.focus(); area.select(); btn.textContent = 'Selecciona y copia el texto'; };
+  try { navigator.clipboard.writeText(xml).then(ok, manual); } catch { manual(); }
+}
+
+// ---------- Controles ----------
+const visDif = { subida:true, azul:true, roja:true, negra:true };
+function aplicarFiltros() {
+  if (!map.getLayer('bajadas')) return;
+  const difs = Object.keys(visDif).filter(k => visDif[k]);
+  const fb = ['all', ['==', ['get', 'tipo'], 'bajada'], ['in', ['get', 'dificultad'], ['literal', difs]]];
+  map.setFilter('bajadas', fb); map.setFilter('bajadas-glow', fb);
+  const vs = visDif.subida ? 'visible' : 'none';
+  map.setLayoutProperty('subidas', 'visibility', vs); map.setLayoutProperty('subidas-case', 'visibility', vs);
+  map.setFilter('hit', ['in', ['get', 'dificultad'], ['literal', difs]]);
+  if (map.getLayer('nums')) map.setFilter('nums', ['in', ['get', 'dificultad'], ['literal', difs]]);
+  filtrarPois();
+}
+const visPoi = { cima:true, parking:true, refugio:true, laguna:true };
+function filtrarPois() {
+  if (!map.getLayer('pois')) return;
+  map.setFilter('pois', ['in', ['get', 'grupo'], ['literal', Object.keys(visPoi).filter(k => visPoi[k])]]);
+}
+document.querySelectorAll('[data-layer]').forEach(cb => cb.onchange = () => { visDif[cb.dataset.layer] = cb.checked; aplicarFiltros(); });
+document.querySelectorAll('[data-poi]').forEach(cb => cb.onchange = () => { visPoi[cb.dataset.poi] = cb.checked; filtrarPois(); });
+document.getElementById('tPistas').onchange = e => ['pistas', 'pistas-case'].forEach(l => map.setLayoutProperty(l, 'visibility', e.target.checked ? 'visible' : 'none'));
+document.getElementById('tLabels').onchange = e => { if (map.getLayer('pois')) map.setLayoutProperty('pois', 'icon-image', e.target.checked ? ['get', 'img'] : ['concat', ['get', 'img'], 's']); };
+document.getElementById('ex').oninput = e => { document.getElementById('exVal').textContent = e.target.value; map.setTerrain({ source: 'dem', exaggeration: +e.target.value }); };
+// Satélite y topo solo fuera del Artifact (allí se bloquean las teselas externas): p. ej. con «Abrir mapa.bat» en el PC
+const ONLINE = true;
+document.querySelectorAll('[data-online]').forEach(b => b.hidden = !ONLINE);
+document.querySelectorAll('[data-base]').forEach(b => b.onclick = () => {
+  document.querySelectorAll('[data-base]').forEach(x => x.classList.toggle('on', x === b));
+  const m = b.dataset.base;
+  if (ONLINE && !map.getSource('sat')) {
+    map.addSource('sat', { type:'raster', tiles:['https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}'], tileSize:256, maxzoom:18, attribution:'Imagen © Esri, Maxar, Earthstar Geographics' });
+    map.addSource('topo', { type:'raster', tiles:['a', 'b', 'c'].map(s => `https://${s}.tile.opentopomap.org/{z}/{x}/{y}.png`), tileSize:256, maxzoom:17, attribution:'© OpenTopoMap (CC-BY-SA), © OpenStreetMap' });
+    map.addLayer({ id:'sat', type:'raster', source:'sat', layout:{ visibility:'none' }, paint:{ 'raster-fade-duration':0 } }, 'hs');
+    map.addLayer({ id:'topo', type:'raster', source:'topo', layout:{ visibility:'none' }, paint:{ 'raster-fade-duration':0 } }, 'hs');
+  }
+  if (map.getLayer('sat')) {
+    map.setLayoutProperty('sat', 'visibility', m === 'sat' ? 'visible' : 'none');
+    map.setLayoutProperty('topo', 'visibility', m === 'topo' ? 'visible' : 'none');
+  }
+  const ex = { fuerte: 1, suave: 0.75, sat: 0.25, topo: 0.15 }[m];
+  map.setPaintProperty('hs', 'hillshade-exaggeration', ex);
+  map.setPaintProperty('hs', 'hillshade-shadow-color', m === 'fuerte' ? '#22304d' : '#41557a');
+  map.setPaintProperty('hs', 'hillshade-highlight-color', m === 'sat' || m === 'topo' ? 'rgba(255,255,255,0)' : '#ffffff');
+});
+function setRotar(on) {
+  rotating = on; document.getElementById('bRotar').classList.toggle('on', on);
+  if (on) { const spin = () => { if (!rotating) return; map.easeTo({ bearing: map.getBearing() + 12, duration: 1000, easing: t => t }); }; map.on('moveend', spin); map._spin = spin; spin(); }
+  else if (map._spin) { map.off('moveend', map._spin); map._spin = null; }
+}
+document.getElementById('bRotar').onclick = () => setRotar(!rotating);
+map.on('mousedown', () => rotating && setRotar(false));
+map.on('touchstart', () => { rotating && setRotar(false); });
+document.getElementById('menu').onclick = () => document.getElementById('side').classList.toggle('closed');
+
+// Cota de nieve, orden, plan y capas de análisis
+const cotaIn = document.getElementById('cota');
+cotaIn.value = cota; document.getElementById('cotaVal').textContent = cota;
+cotaIn.oninput = () => { cota = +cotaIn.value; document.getElementById('cotaVal').textContent = cota; renderLista(); renderPlan();
+  if (selId) { const f = getRuta(selId); dibujarPerfil(f); const s = ficha.querySelector('.info2 .ski'); if (s) s.innerHTML = `${kmNieve(f)} de ${f.properties.distancia_km} km`; } };
+cotaIn.onchange = () => { try { localStorage.setItem('cota', cota); } catch (e) {} if (anaModo === 'n') setAna('n'); if (selId) selectRuta(selId, false); };
+document.getElementById('orden').onchange = renderLista;
+document.getElementById('bSugerir').onclick = sugerirDia;
+document.getElementById('bVaciar').onclick = () => { plan = []; guardarPlan(); };
+renderPlan();
+let anaModo = '';
+const LEY = {
+  p: PEND_COL.map(([l, c], i) => `<span class="sw" style="background:rgb(${c})"></span><span>${l}°${PEND_COL[i + 1] ? '–' + PEND_COL[i + 1][0] + '°' : ' o más'}</span>`).join('') +
+     '<span></span><span class="note">La mayoría de aludes de placa salen entre 30° y 45°. Acércate (zoom ≥10) para verlo; cuenta también lo que tienes por encima.</span>',
+  o: ['N · polvo', 'NE', 'E · transforma pronto', 'SE', 'S · transformada / costra', 'SO', 'O · transforma tarde', 'NO'].map((t, i) => `<span class="sw" style="background:rgb(${ORI_COL[i]})"></span><span>${t}</span>`).join('') +
+     '<span></span><span class="note">Hacia dónde cae la ladera (solo pendientes &gt;15°).</span>',
+  n: () => `<span class="sw" style="background:#fff"></span><span>Terreno por encima de ${cota} m</span><span></span><span class="note">Aproximado: el viento y la orientación cambian mucho la nieve real. Mueve la cota en «Cota de nieve».</span>`,
+};
+function setAna(m) {
+  anaModo = m;
+  document.querySelectorAll('[data-ana]').forEach(b => b.classList.toggle('on', b.dataset.ana === m));
+  if (map.getLayer('ana')) map.removeLayer('ana');
+  if (map.getSource('ana')) map.removeSource('ana');
+  if (m && iniciado) {
+    map.addSource('ana', { type:'raster', tiles:[`ana://${m === 'n' ? 'n' + cota : m}/{z}/{x}/{y}`], tileSize:256, minzoom:10, maxzoom:13 });
+    map.addLayer({ id:'ana', type:'raster', source:'ana', paint:{ 'raster-opacity':0.85, 'raster-fade-duration':0 } }, 'pistas-case');
+  }
+  document.getElementById('anaLeyenda').innerHTML = m ? (typeof LEY[m] === 'function' ? LEY[m]() : LEY[m]) : '';
+}
+document.querySelectorAll('[data-ana]').forEach(b => b.onclick = () => setAna(b.dataset.ana));
+</script>
+
+</body></html>
