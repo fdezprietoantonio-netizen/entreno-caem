@@ -520,7 +520,9 @@ function renderLista() {
     des: (a, b) => (b.properties.desnivel_neg + b.properties.desnivel_pos) - (a.properties.desnivel_neg + a.properties.desnivel_pos),
     ori: (a, b) => ORI.indexOf(a.properties.orientacion) - ORI.indexOf(b.properties.orientacion) }[ord];
   document.getElementById('lista').innerHTML =
-    `<div class="grp">⬇ Bajadas</div>` + fs.filter(f => f.properties.tipo === 'bajada').sort(cmp).map(item).join('') +
+    (() => { // bajadas agrupadas por la cima de la que salen, como los sectores de una estación
+      const g = new Map(); fs.filter(f => f.properties.tipo === 'bajada').sort(cmp).forEach(f => { const k = f.properties.nombre.split(' → ')[0]; g.set(k, [...(g.get(k) || []), f]); });
+      return [...g].sort((a, b) => b[1].length - a[1].length).map(([k, l]) => `<div class="grp">⬇ ${k} <span style="opacity:.6;font-weight:500">· ${l.length}</span></div>` + l.map(item).join('')).join(''); })() +
     `<div class="grp">⬆ Subidas</div>` + fs.filter(f => f.properties.tipo === 'subida').sort(ord === 'dif' ? () => 0 : cmp).map(item).join('');
   document.querySelectorAll('.ruta').forEach(r => r.onclick = () => selectRuta(r.dataset.id, true));
   renderResumen();
@@ -542,12 +544,15 @@ function kmNieve(f) { // km de la ruta que quedan por encima de la cota de nieve
 }
 const ini = f => f.geometry.coordinates[0], fin = f => f.geometry.coordinates[f.geometry.coordinates.length - 1];
 const horasDe = p => p.horas ?? +(p.tipo === 'subida' ? p.distancia_km / 4 + p.desnivel_pos / 350 : p.distancia_km / 12 + p.desnivel_neg / 2500).toFixed(1);
+// La red va de nodo a nodo (cimas, collados, bases): dos rutas se encadenan si una acaba donde empieza la otra (≤ ENL m)
+const ENL = 250;
 function enlaces(f) {
   const sig = [], ant = [];
   D.rutas.features.forEach(g => { if (g === f) return;
-    if (haversine(fin(f), ini(g)) < 600) sig.push(g);
-    if (haversine(fin(g), ini(f)) < 600) ant.push(g); });
-  return { sig, ant };
+    if (haversine(fin(f), ini(g)) < ENL) sig.push(g);
+    if (haversine(fin(g), ini(f)) < ENL) ant.push(g); });
+  const ord = (a, b) => (a.properties.tipo === 'subida') - (b.properties.tipo === 'subida') || a.properties.pendiente_max - b.properties.pendiente_max;
+  return { sig: sig.sort(ord), ant: ant.sort(ord) };
 }
 const HORA = { N:'Polvo que aguanta días tras la nevada; en primavera transforma tarde o nunca', NE:'Transformada pronto: 9–11 h', E:'Transformada pronto: 9–11 h',
   SE:'Transformada 10–12 h', S:'Transformada 10:30–12:30 h; si no heló de noche, costra o nieve podrida', SO:'Transformada 12–14 h', O:'Transformada 12–14 h',
@@ -600,7 +605,7 @@ function renderPlan() {
   if (!plan.length) { el.innerHTML = '<p class="note">Añade subidas y bajadas desde su ficha («＋ Mi día») o pulsa el botón: te propone el encadenado con más km de esquí de la zona (≤ 8 h, con la cota de nieve actual y solo con los colores marcados en «Capas»).</p>'; return; }
   let html = '', km = 0, kmS = 0, up = 0, h = 0;
   plan.forEach((id, i) => { const f = getRuta(id), p = f.properties;
-    if (i) { const gap = haversine(fin(getRuta(plan[i - 1])), ini(f)); if (gap > 600) html += `<div class="pl warn">⚠ Salto de ${(gap / 1000).toFixed(1)} km hasta el inicio (coche o a pie)</div>`; }
+    if (i) { const gap = haversine(fin(getRuta(plan[i - 1])), ini(f)); if (gap > ENL) html += `<div class="pl warn">⚠ Salto de ${(gap / 1000).toFixed(1)} km hasta el inicio (coche o a pie)</div>`; }
     km += p.distancia_km; up += p.desnivel_pos; h += horasDe(p); if (p.tipo === 'bajada') kmS += kmNieve(f);
     html += `<div class="pl"><span class="chip ${p.dificultad}">${p.num}</span><span class="nm" data-id="${id}">${p.nombre}</span><button aria-label="Quitar" data-i="${i}">×</button></div>`; });
   el.innerHTML = `<div class="kpis" style="margin-bottom:6px"><div><b class="ski">${kmS.toFixed(1)}</b><small>km esquí</small></div><div><b>+${up}</b><small>m subida</small></div><div><b>~${h.toFixed(1)} h</b><small>${km.toFixed(1)} km total</small></div></div>${html}`;
@@ -613,17 +618,19 @@ function sugerirDia() {
   const fs = D.rutas.features.filter(f => f.properties.zona === zonaActual && visDif[f.properties.dificultad]);
   const pk = D.pois.features.filter(p => p.properties.zona === zonaActual && p.properties.tipo === 'parking').map(p => p.geometry.coordinates);
   const cercaPk = pt => pk.some(q => haversine(pt, q) < 1500);
-  let best = null;
+  let best = null, pasos = 0;
+  const sigDe = new Map(fs.map(f => [f, fs.filter(g => g !== f && haversine(fin(f), ini(g)) <= ENL)]));
   const dfs = (cad, h, km) => {
+    if (++pasos > 400000) return; // con la red grande se corta la búsqueda: se queda con lo mejor encontrado
     const ult = cad[cad.length - 1];
     // vale si acaba en un parking; se prefiere volver al mismo coche (circular) a igualdad práctica de km
     const circ = haversine(fin(ult), ini(cad[0])) < 1500, score = km + (circ ? 1.5 : 0);
     if (ult.properties.tipo === 'bajada' && cercaPk(fin(ult)) && (!best || score > best.score + 0.05 || (Math.abs(score - best.score) <= 0.05 && h < best.h))) best = { ids: cad.map(f => f.properties.id), km, h, score };
     if (cad.length >= 7) return;
-    for (const g of fs) {
-      if (cad.includes(g) || haversine(fin(ult), ini(g)) > 600) continue;
+    for (const g of sigDe.get(ult)) {
+      if (cad.includes(g)) continue;
       const hh = h + horasDe(g.properties); if (hh > 8) continue;
-      dfs([...cad, g], hh, km + (g.properties.tipo === 'bajada' ? kmNieve(g) : 0));
+      dfs([...cad, g], hh, km + (g.properties.tipo === 'bajada' && g.properties.desnivel_neg >= 100 ? kmNieve(g) : 0)); // los enlaces llanos de cuerda no cuentan como esquí
     }
   };
   fs.filter(f => f.properties.tipo === 'subida' && cercaPk(ini(f))).forEach(s => dfs([s], horasDe(s.properties), 0));
