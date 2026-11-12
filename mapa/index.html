@@ -180,7 +180,7 @@ body.nolabels .mk .lb{display:none}
       <label class="tog">Subidas (foqueo)<input type="checkbox" data-layer="subida" checked></label>
       <label class="tog">Bajadas azules<input type="checkbox" data-layer="azul" checked></label>
       <label class="tog">Bajadas rojas<input type="checkbox" data-layer="roja" checked></label>
-      <label class="tog">Bajadas negras<input type="checkbox" data-layer="negra" checked></label>
+      <label class="tog">Bajadas negras (más de 35°)<input type="checkbox" data-layer="negra"></label>
       <label class="tog">Pistas estación (Covatilla)<input type="checkbox" id="tPistas" checked></label>
       <label class="tog">Cimas<input type="checkbox" data-poi="cima" checked></label>
       <label class="tog">Parkings<input type="checkbox" data-poi="parking" checked></label>
@@ -282,6 +282,7 @@ async function teselaLlana() { // terreno a ~800 m (meseta) para el horizonte fu
   return llano.slice(0);
 }
 async function demPng(z, x, y) {
+  try { const r = await fetch(`https://tiles.mapterhorn.com/${z - 1}/${x >> 1}/${y >> 1}.webp`); if (r.ok) { const bmp = await createImageBitmap(await r.blob()), [c, g] = lienzo(); g.drawImage(bmp, (x & 1) * 256, (y & 1) * 256, 256, 256, 0, 0, 256, 256); return await (await c.convertToBlob({ type: 'image/png' })).arrayBuffer(); } } catch (e) {}
   try { const r = await fetch(`https://s3.amazonaws.com/elevation-tiles-prod/terrarium/${z}/${x}/${y}.png`); if (r.ok) return await r.arrayBuffer(); } catch (e) {}
   const d = await buscar(z, x, y);
   if (d) return b64(d);
@@ -341,8 +342,8 @@ maplibregl.addProtocol('ana', async (params) => {
 const style = {
   version: 8,
   sources: {
-    dem: { type:'raster-dem', tiles:['pack://dem/{z}/{x}/{y}'], encoding:'terrarium', tileSize:256, maxzoom:13,
-      attribution:'Relieve: AWS Terrain Tiles / Mapzen' },
+    dem: { type:'raster-dem', tiles:['pack://dem/{z}/{x}/{y}'], encoding:'terrarium', tileSize:256, maxzoom:14,
+      attribution:'Relieve: © Mapterhorn (MDT IGN, CC-BY 4.0 scne.es)' },
   },
   layers: [
     { id:'bg', type:'background', paint:{ 'background-color':'#f3f6fa' } },
@@ -377,6 +378,9 @@ map.on('style.load', () => {
   map.addLayer({ id:'bajadas-glow', type:'line', source:'rutas', filter:bajadas, paint:{ 'line-color':'#fff', 'line-width':['interpolate',['linear'],['zoom'],10,4,15,13], 'line-opacity':.9, 'line-blur':.5 }, layout:{ 'line-cap':'round','line-join':'round' } });
   map.addLayer({ id:'bajadas', type:'line', source:'rutas', filter:bajadas,
     paint:{ 'line-color':['match',['get','dificultad'],'azul',COLORS.azul,'roja',COLORS.roja,COLORS.negra], 'line-width':['interpolate',['linear'],['zoom'],10,2.5,15,8] }, layout:{ 'line-cap':'round','line-join':'round' } });
+  // Bajadas calculadas (sin reseña): rayas blancas encima del color
+  map.addLayer({ id:'bajadas-calc', type:'line', source:'rutas', filter:['all', bajadas, ['!', ['to-boolean', ['get','doc']]]],
+    paint:{ 'line-color':'#fff', 'line-width':['interpolate',['linear'],['zoom'],10,1.2,15,3.5], 'line-dasharray':[1.2,2.2] }, layout:{ 'line-cap':'butt','line-join':'round' } });
   // Subidas: verde discontinuo con borde oscuro
   const subidas = ['==',['get','tipo'],'subida'];
   map.addLayer({ id:'subidas-case', type:'line', source:'rutas', filter:subidas, paint:{ 'line-color':'#0a2a18', 'line-width':['interpolate',['linear'],['zoom'],10,3.5,15,8], 'line-opacity':.7 }, layout:{ 'line-cap':'round','line-join':'round' } });
@@ -682,8 +686,10 @@ function selectRuta(id, fit) {
       ${sig.length ? `<div class="note" style="margin-top:8px">Desde el final puedes seguir por:</div>${chips(sig)}` : ''}
       ${ant.length ? `<div class="note" style="margin-top:6px">Para llegar al inicio:</div>${chips(ant)}` : ''}`; })()}
     <svg id="perfil" viewBox="0 0 360 140" preserveAspectRatio="none" style="margin-top:10px"></svg>
-    <p class="note">Perfil coloreado por pendiente (azul &lt;25°, roja 25–33°, negra &gt;33°); línea discontinua = cota de nieve. Pasa el dedo para verlo en el mapa.</p>
-    <p class="desc">${p.desc}${p.aprox ? ' <span class="warn">Trazado aproximado: confírmalo con una reseña reciente.</span>' : ''}</p>
+    <p class="note">Perfil coloreado por pendiente; línea discontinua = cota de nieve. Pasa el dedo para verlo en el mapa.</p>
+    <p class="desc"><b>${p.doc ? 'Itinerario reseñado' : 'Línea calculada · sin verificar'}</b> — ${p.desc}</p>
+    ${p.avisos && p.avisos.length ? `<ul style="margin:8px 0;padding:8px 10px 8px 26px;border:1px solid #e8a23a;border-radius:8px;color:#ffcf6b;font-size:12.5px;line-height:1.45">${p.avisos.map(a => `<li>${a}</li>`).join('')}</ul>` : ''}
+    <p class="note">Medido sobre el LiDAR de 5 m del IGN: ${p.pendiente_max}° sostenidos, ${p.pendiente_5m ?? '–'}° en el punto más tieso, ${p.m_mas35 ?? 0} m por encima de 35°. Color: azul hasta 25°, roja 25–35°, negra más de 35°.${p.fuente_url ? ` Fuente: <a href="${p.fuente_url}" target="_blank" style="color:#9fe2ff">${p.fuente}</a>.` : ''}</p>
     <div class="row">
       <button class="btn" id="bPlan" onclick="alPlan('${p.id}')">${plan.includes(p.id) ? '✓ En mi día' : '＋ Mi día'}</button>
       <button class="btn" onclick="volar('${p.id}')">🚁 Volar por la ruta</button>
@@ -692,7 +698,7 @@ function selectRuta(id, fit) {
     </div>
     <textarea id="gpxTxt" hidden readonly style="width:100%;height:80px;margin-top:8px;background:var(--panel2);color:var(--tx);border:1px solid var(--line);border-radius:8px;font:11px monospace"></textarea>
     <p class="note">Pega el GPX copiado en un archivo .gpx o en tu app de mapas (Wikiloc, Komoot, OruxMaps…).</p>
-    <p class="note" style="margin-top:10px">Trazado ${p.tipo === 'subida' ? 'por senderos (BRouter) entre puntos de paso de las reseñas' : 'aproximado de la línea de descenso, sobre el relieve'}. Pendiente media ${p.pendiente_media}°, cota mín ${p.cota_min} m.</p>`;
+    <p class="note" style="margin-top:10px">La línea evita cortados, lagunas y laderas colgadas sobre cortados, pero es orientativa: el relieve no ve resaltes de menos de 5 m, cornisas ni el estado de la nieve. Decide sobre el terreno. Pendiente media ${p.pendiente_media}°, cota mín ${p.cota_min} m.</p>`;
   ficha.classList.add('show');
   ficha.querySelectorAll('.mini').forEach(m => m.onclick = () => selectRuta(m.dataset.id, true));
   dibujarPerfil(f);
@@ -787,12 +793,14 @@ function gpx(id) {
 }
 
 // ---------- Controles ----------
-const visDif = { subida:true, azul:true, roja:true, negra:true };
+const visDif = { subida:true, azul:true, roja:true, negra:false }; // negras = más de 35° sostenidos: ocultas hasta que las pidas
+map.once('idle', () => aplicarFiltros());
 function aplicarFiltros() {
   if (!map.getLayer('bajadas')) return;
   const difs = Object.keys(visDif).filter(k => visDif[k]);
   const fb = ['all', ['==', ['get', 'tipo'], 'bajada'], ['in', ['get', 'dificultad'], ['literal', difs]]];
   map.setFilter('bajadas', fb); map.setFilter('bajadas-glow', fb);
+  if (map.getLayer('bajadas-calc')) map.setFilter('bajadas-calc', [...fb, ['!', ['to-boolean', ['get', 'doc']]]]);
   const vs = visDif.subida ? 'visible' : 'none';
   map.setLayoutProperty('subidas', 'visibility', vs); map.setLayoutProperty('subidas-case', 'visibility', vs);
   map.setFilter('hit', ['in', ['get', 'dificultad'], ['literal', difs]]);
@@ -864,7 +872,7 @@ function setAna(m) {
   if (map.getLayer('ana')) map.removeLayer('ana');
   if (map.getSource('ana')) map.removeSource('ana');
   if (m && iniciado) {
-    map.addSource('ana', { type:'raster', tiles:[`ana://${m === 'n' ? 'n' + cota : m}/{z}/{x}/{y}`], tileSize:256, minzoom:10, maxzoom:13 });
+    map.addSource('ana', { type:'raster', tiles:[`ana://${m === 'n' ? 'n' + cota : m}/{z}/{x}/{y}`], tileSize:256, minzoom:10, maxzoom:15 });
     map.addLayer({ id:'ana', type:'raster', source:'ana', paint:{ 'raster-opacity':0.85, 'raster-fade-duration':0 } }, 'pistas-case');
   }
   document.getElementById('anaLeyenda').innerHTML = m ? (typeof LEY[m] === 'function' ? LEY[m]() : LEY[m]) : '';
