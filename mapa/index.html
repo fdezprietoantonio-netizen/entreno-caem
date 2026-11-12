@@ -180,7 +180,7 @@ body.nolabels .mk .lb{display:none}
       <label class="tog">Subidas (foqueo)<input type="checkbox" data-layer="subida" checked></label>
       <label class="tog">Bajadas azules<input type="checkbox" data-layer="azul" checked></label>
       <label class="tog">Bajadas rojas<input type="checkbox" data-layer="roja" checked></label>
-      <label class="tog">Bajadas negras (más de 35°)<input type="checkbox" data-layer="negra"></label>
+      <label class="tog">Bajadas negras (35–40°)<input type="checkbox" data-layer="negra" checked></label>
       <label class="tog">Pistas estación (Covatilla)<input type="checkbox" id="tPistas" checked></label>
       <label class="tog">Cimas<input type="checkbox" data-poi="cima" checked></label>
       <label class="tog">Parkings<input type="checkbox" data-poi="parking" checked></label>
@@ -689,7 +689,7 @@ function selectRuta(id, fit) {
     <p class="note">Perfil coloreado por pendiente; línea discontinua = cota de nieve. Pasa el dedo para verlo en el mapa.</p>
     <p class="desc"><b>${p.doc ? 'Itinerario reseñado' : 'Línea calculada · sin verificar'}</b> — ${p.desc}</p>
     ${p.avisos && p.avisos.length ? `<ul style="margin:8px 0;padding:8px 10px 8px 26px;border:1px solid #e8a23a;border-radius:8px;color:#ffcf6b;font-size:12.5px;line-height:1.45">${p.avisos.map(a => `<li>${a}</li>`).join('')}</ul>` : ''}
-    <p class="note">Medido sobre el LiDAR de 5 m del IGN: ${p.pendiente_max}° sostenidos, ${p.pendiente_5m ?? '–'}° en el punto más tieso, ${p.m_mas35 ?? 0} m por encima de 35°. Color: azul hasta 25°, roja 25–35°, negra más de 35°.${p.fuente_url ? ` Fuente: <a href="${p.fuente_url}" target="_blank" style="color:#9fe2ff">${p.fuente}</a>.` : ''}</p>
+    <p class="note">Afinada sobre el LiDAR de 1 m para no cruzar escalones de más de 1 m${p.saltos_evitados ? ` (rodea ${p.saltos_evitados} puntos con escalón)` : ''}. Medido sobre el LiDAR de 5 m del IGN: ${p.pendiente_max}° sostenidos, ${p.pendiente_5m ?? '–'}° en el punto más tieso, ${p.m_mas35 ?? 0} m por encima de 35°. Color: azul hasta 25°, roja 25–35°, negra más de 35°.${p.fuente_url ? ` Fuente: <a href="${p.fuente_url}" target="_blank" style="color:#9fe2ff">${p.fuente}</a>.` : ''}</p>
     <div class="row">
       <button class="btn" id="bPlan" onclick="alPlan('${p.id}')">${plan.includes(p.id) ? '✓ En mi día' : '＋ Mi día'}</button>
       <button class="btn" onclick="volar('${p.id}')">🚁 Volar por la ruta</button>
@@ -698,7 +698,7 @@ function selectRuta(id, fit) {
     </div>
     <textarea id="gpxTxt" hidden readonly style="width:100%;height:80px;margin-top:8px;background:var(--panel2);color:var(--tx);border:1px solid var(--line);border-radius:8px;font:11px monospace"></textarea>
     <p class="note">Pega el GPX copiado en un archivo .gpx o en tu app de mapas (Wikiloc, Komoot, OruxMaps…).</p>
-    <p class="note" style="margin-top:10px">La línea evita cortados, lagunas y laderas colgadas sobre cortados, pero es orientativa: el relieve no ve resaltes de menos de 5 m, cornisas ni el estado de la nieve. Decide sobre el terreno. Pendiente media ${p.pendiente_media}°, cota mín ${p.cota_min} m.</p>`;
+    <p class="note" style="margin-top:10px">La línea evita cortados, lagunas y laderas colgadas sobre cortados, pero es orientativa: el relieve no ve escalones de menos de 1 m, cornisas ni el estado de la nieve. Decide sobre el terreno. Pendiente media ${p.pendiente_media}°, cota mín ${p.cota_min} m.</p>`;
   ficha.classList.add('show');
   ficha.querySelectorAll('.mini').forEach(m => m.onclick = () => selectRuta(m.dataset.id, true));
   dibujarPerfil(f);
@@ -793,7 +793,7 @@ function gpx(id) {
 }
 
 // ---------- Controles ----------
-const visDif = { subida:true, azul:true, roja:true, negra:false }; // negras = más de 35° sostenidos: ocultas hasta que las pidas
+const visDif = { subida:true, azul:true, roja:true, negra:true };
 map.once('idle', () => aplicarFiltros());
 function aplicarFiltros() {
   if (!map.getLayer('bajadas')) return;
