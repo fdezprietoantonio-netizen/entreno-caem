@@ -111,7 +111,7 @@ main { max-width: 960px; margin: 0 auto; padding-block: 20px 72px;
 .blq .ill svg { width: 100%; height: 100%; display: block; }
 .blq .ill.none { cursor: default; display: grid; place-items: center; color: var(--muted); font: 700 1.1rem var(--f-display); }
 .blq .nom { font-weight: 700; }
-.blq .dos { font: 500 .82rem var(--f-data); text-align: right; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.blq .dos { font: 500 .82rem var(--f-data); text-align: right; max-width: 12em; font-variant-numeric: tabular-nums; }
 .blq .como { grid-column: 2 / 4; font-size: .88rem; color: var(--muted); }
 .clase-row { display: flex; gap: 10px; align-items: baseline; font-size: .88rem; color: var(--muted); padding: 2px 2px; }
 .clase-row .hh { font: 500 .78rem var(--f-data); }
@@ -183,7 +183,7 @@ dialog::backdrop { background: rgba(10, 16, 22, .55); }
 @media (max-width: 560px) {
   .blq { grid-template-columns: 56px minmax(0, 1fr); }
   .blq .ill { width: 56px; height: 48px; }
-  .blq .dos { grid-column: 2; text-align: left; }
+  .blq .dos { grid-column: 2; text-align: left; max-width: none; }
   .blq .como { grid-column: 1 / 3; }
   .day-h .dd { display: none; }
   .wk-title h2 { font-size: 1.5rem; }
@@ -387,6 +387,11 @@ const EJ = {
         [[54, -4], [54, 6], [54, 32], [58, 18], [68, 22], [57, 19], [68, 23], [54, 54], [52, 76], [56, 54], [64, 58]]],
     tec: ['Punta del pie en el borde de un escalón.', 'Sube con las dos piernas y baja con una sola en 3 s.', 'Llega abajo del todo, con el talón por debajo del escalón.'],
     mal: 'Bajar rápido.' },
+  birddog: { n: 'Bird-dog', g: 'core', para: 'Lumbar estable sin cargarla', props: ['floor'],
+    p: [[[28, 52], [40, 58], [64, 62], [40, 72], [40, 88], [42, 73], [42, 89], [66, 88], [80, 91], [67, 89], [81, 92]],
+        [[26, 48], [40, 56], [62, 58], [26, 52], [12, 50], [42, 72], [42, 88], [66, 88], [80, 91], [80, 56], [96, 54]]],
+    tec: ['A cuatro patas, manos bajo los hombros.', 'Estira a la vez un brazo y la pierna contraria hasta la horizontal.', 'La lumbar no se mueve: imagina un vaso de agua apoyado en la espalda.', 'Aguanta 2 s y cambia de lado.'],
+    mal: 'Arquear la lumbar o girar la cadera al subir la pierna.' },
   plancha: { n: 'Plancha lateral', g: 'core', para: 'Estabilidad con mochila', props: ['floor'],
     p: [[[24, 68], [30, 74], [62, 82], [30, 89], [40, 89], [42, 72], [56, 76], [80, 86], [98, 90], [80, 85], [98, 89]],
         [[24, 66], [30, 72], [62, 74], [30, 89], [40, 89], [42, 70], [56, 70], [80, 81], [98, 90], [80, 80], [98, 89]]],
@@ -525,7 +530,11 @@ function fig(id, frame) {
   const style = `<style>.l1{stroke:var(--fig);stroke-width:4;stroke-linecap:round;stroke-linejoin:round;fill:none}.l2{stroke:var(--fig2);stroke-width:4;stroke-linecap:round;stroke-linejoin:round;fill:none}.hd{fill:var(--fig)}
     .pr-l{stroke:var(--prop);stroke-width:2}.pr-bar{stroke:var(--prop);stroke-width:4;stroke-linecap:round}.pr-f{fill:var(--prop)}.pr-s{fill:var(--rescue)}.pr-pack{fill:var(--rescue)}
     .pr-band{stroke:var(--ok);stroke-width:2;stroke-dasharray:3 2}.pr-water{fill:none;stroke:var(--ice);stroke-width:2}.arr{fill:var(--rescue)}</style>`;
-  if (frame === 'anim') return `<svg viewBox="0 -10 120 110" role="img" aria-label="${esc(e.n)}: animación entre la posición inicial y la final">${style}<style>@keyframes caemSw{0%,42%{opacity:1}50%,92%{opacity:0}100%{opacity:1}}.gA{animation:caemSw 2.4s infinite}.gB{opacity:0;animation:caemSw 2.4s infinite -1.2s}</style>${stage(0)}<g class="gA">${one(e.p[0], 0)}</g><g class="gB">${one(e.p[1], 0)}</g></svg>`;
+  if (frame === 'anim') { // 4 fotogramas (inicial → medio → final → medio): movimiento de ida y vuelta
+    const mid = e.p[0].map((P, i) => [(P[0] + e.p[1][i][0]) / 2, (P[1] + e.p[1][i][1]) / 2]);
+    const fr = [e.p[0], mid, e.p[1], mid];
+    return `<svg viewBox="0 -10 120 110" role="img" aria-label="${esc(e.n)}: animación entre la posición inicial y la final">${style}<style>@keyframes caemF{0%,24.9%{opacity:1}25%,100%{opacity:0}}.gF{opacity:0;animation:caemF 2s infinite}</style>${stage(0)}${fr.map((P, i) => `<g class="gF" style="animation-delay:${(-i * 0.5).toFixed(1)}s${i === 0 ? ';opacity:1' : ''}">${one(P, 0)}</g>`).join('')}</svg>`;
+  }
   if (frame != null) return `<svg viewBox="0 -10 120 110" role="img" aria-label="${esc(e.n)}">${style}${stage(0)}${one(e.p[frame], 0)}</svg>`;
   return `<svg viewBox="0 -10 250 110" role="img" aria-label="${esc(e.n)}: posición inicial y final">${style}${stage(0)}${one(e.p[0], 0)}
     <path class="arr" d="M118 40 l8 5 l-8 5 z"/>${stage(130)}${one(e.p[1], 130)}</svg>`;
@@ -573,7 +582,7 @@ function extB(des) {
   return B('ext', 'Flexiones de suelo', t[0] + (des ? ' ' + HALF : ''), t[1]);
 }
 /* Gym: martes tren superior (más empuje que tirón: el tirón ya lo dan escalar y nadar); miércoles pierna fuerte; viernes pierna ligera (mañana hay montaña). Todos con movilidad. */
-const movIniInf = () => B('tobillo', 'Movilidad de entrada', '8 min', 'Rodilla a la pared 1 × 10 por lado, cadera 90-90 6 cambios, paso alto activo 1 × 8 por pierna y 10 sentadillas sin peso.');
+const movIniInf = () => B('birddog', 'Movilidad de entrada', '9 min', 'Rodilla a la pared 1 × 10 por lado, cadera 90-90 6 cambios, paso alto activo 1 × 8 por pierna, bird-dog 1 × 6 por lado (despierta la lumbar sin cargarla) y 10 sentadillas sin peso.');
 const movFinInf = () => B('rana', 'Movilidad al acabar', '5 min', 'Rana 45 s, cadera 90-90 30 s por lado y rodilla a la pared 1 × 10.');
 const movIniSup = () => B('disloc', 'Movilidad de entrada', '8 min', 'Dislocaciones con goma 2 × 10, rotación externa con goma 1 × 15, hombro en pared 2 × 30 s y 10 flexiones escapulares.');
 const movFinSup = () => B('libro', 'Movilidad al acabar', '5 min', 'Libro abierto 1 × 8 por lado, hombro en pared 30 s y antebrazo suave.');
@@ -582,15 +591,14 @@ function domSup(f, des) {
   const L = lvDom();
   const t = [['4 × 3 negativas', 'neg', 'Baja en 5 s.'], ['3 × (máx − 3)', 'dom', 'Técnica de la prueba: brazos estirados abajo y barbilla sobre la barra. Lejos del fallo.'],
     ['4 × 4 lastradas (+3–6 kg)', 'dom', 'Lejos del fallo. Descanso 2–3 min.']][L];
-  return B(t[1], 'Dominadas (técnica de prueba)', t[0] + (des ? ' ' + HALF : ''), t[2] + ' Poco volumen: el tirón ya lo hacen escalar y nadar.');
+  return B(t[1], 'Dominadas (técnica de prueba)', t[0] + (des ? ' ' + HALF : ''), t[2] + ' Van las primeras, en fresco: son tu prueba más floja. Poco volumen: el resto del tirón lo hacen escalar y nadar.');
 }
 function gymSup(w, corta) {
   const f = w.f.id, d = w.des;
   const pressD = { base: '3 × 8', pre: '2 × 8', nav: '3 × 8', ene: '2 × 8', esp: '4 × 6', afi: '3 × 5' }[f];
-  const b = [movIniSup(), extA(d),
+  const b = [movIniSup(), domSup(f, d), extA(d),
     B('press', 'Press militar con mancuernas', pressD + (d ? ' ' + HALF : ''), 'De pie, sin arquear la espalda. Peso que deje 2 repeticiones de sobra; apúntalo en Registro.'),
-    B('fondos', 'Fondos en paralelas', (corta ? '2' : '3') + ' × 6–10', 'Hasta que el brazo quede a 90°. Si aún no salen, con goma o press de banca 3 × 8.'),
-    domSup(f, d)];
+    B('fondos', 'Fondos en paralelas', (corta ? '2' : '3') + ' × 6–10', 'Hasta que el brazo quede a 90°. Si aún no salen, con goma o press de banca 3 × 8.')];
   if (!corta) b.push(B('rot', 'Rotación externa con goma', '2 × 15', 'Equilibra el hombro frente a todo el tirón de escalar y nadar.'),
     B('hollow', 'Hollow', '3 × 30 s', 'Lumbar pegada al suelo.'), B('elev', 'Elevación de rodillas colgado', '3 × 10', 'Core y agarre.'));
   b.push(movFinSup());
@@ -626,19 +634,20 @@ const SIN_LUMBAR = 'Sin peso muerto ni saltos por la lumbar. Si algún ejercicio
 function natacion(w, suave) {
   const f = w.f.id, k = w.k, d = w.des;
   const drill = ['patada con tabla', 'crol a un brazo', 'respiración cada 3 brazadas', 'brazada con pull-buoy'][k % 4];
-  if (suave) return S('nat', 'agua', 'Natación suave', '30 min', [B('crol', 'Nado continuo', '800–1000 m', 'Ritmo cómodo, técnica limpia. Sirve para soltar.')]);
+  if (suave) return S('nat', 'agua', 'Natación suave', '30 min', [B('crol', 'Nado continuo', '800–1000 m (40–50 largos)', 'Ritmo cómodo, técnica limpia. Sirve para soltar.')]);
+  // Piscina de 20 m: series de 2 y 3 largos (40 / 60 m) y sprints de 1 largo, en vez de 50 y 25 m
   const main = {
-    base: ['8 × 50 m, salida cada 1:30 + 4 × 25 m a tope (salida cada 1:00)', 'El 50 m es casi todo anaeróbico: los 25 m a tope son tan importantes como la serie. Apunta el 50 más rápido.'],
-    pre: ['6 × 50 m cómodos', 'Sin apretar.'],
-    nav: ['8 × 50 m, salida cada 1:30', 'Si la piscina cierra por festivo, pásalo al día siguiente.'],
-    ene: ['6 × 50 m, salida cada 1:30', 'Mantenimiento: ritmo de 50–52 s.'],
-    esp: ['6 × 50 m al 95 %, 3 min de descanso + 4 × 25 m a tope', 'Pocas repeticiones muy rápidas con descanso largo. Objetivo: por debajo de 46 s.'],
-    afi: ['2 × (4 × 50 m a ritmo de prueba), 3 min entre bloques', 'Ritmo de prueba: 45–47 s.'] }[f];
-  const b = [B(null, 'Calentamiento', '200 m', 'Suave, cambiando de estilo.'), B('crol', 'Técnica: ' + drill, '4 × 25 m', 'Despacio, cuidando la posición del cuerpo.'),
+    base: ['10 × 40 m (2 largos), salida cada 1:15 + 4 × 20 m a tope (cada 50 s)', 'El 50 de la prueba es casi todo anaeróbico: los largos a tope valen tanto como la serie. Apunta tu mejor 2,5 largos.'],
+    pre: ['6 × 40 m cómodos', 'Sin apretar.'],
+    nav: ['10 × 40 m, salida cada 1:15', 'Si la piscina cierra por festivo, pásalo al día siguiente.'],
+    ene: ['8 × 40 m, salida cada 1:15', 'Mantenimiento: ritmo vivo sin vaciarte.'],
+    esp: ['6 × 60 m (3 largos) al 95 %, 3 min de descanso + 4 × 20 m a tope', 'Pocas repeticiones muy rápidas con descanso largo. El 60 es algo más largo que la prueba: te sobra fondo para el 50.'],
+    afi: ['2 × (4 × 60 m a ritmo de prueba), 3 min entre bloques', 'El 60 en 56–58 s equivale al 50 de la prueba en unos 47 s.'] }[f];
+  const b = [B(null, 'Calentamiento', '200 m (10 largos)', 'Suave, cambiando de estilo.'), B('crol', 'Técnica: ' + drill, '4 × 20 m', 'Despacio, cuidando la posición del cuerpo.'),
     B('crol', 'Serie principal', main[0] + (d ? ' ' + HALF : ''), main[1])];
-  if (f === 'esp' || f === 'afi') b.push(B('crol', 'Salidas y viraje', '4 × salida + 15 m rápidos', 'Practica la salida que exija la convocatoria (desde el borde o desde el agua).'));
+  if (f === 'esp' || f === 'afi') b.push(B('crol', 'Salidas y virajes', '4 × salida + 15 m rápidos · 8 volteos', 'Practica la salida que exija la convocatoria y el volteo rápido: en 20 m harás más virajes que nadie.'));
   b.push(B(null, 'Vuelta a la calma', '100–200 m', 'Muy suave.'));
-  return S('nat', 'agua', 'Natación', '60 min', b);
+  return S('nat', 'agua', 'Natación', '60 min', b, 'Piscina de 20 m: el 50 son 2,5 largos. Con más virajes el crono sale algo mejor que en una piscina larga: para compararte con el mínimo de 48 s, súmale 1–2 s a tu marca.');
 }
 function roca(w, suave) {
   const f = w.f.id, d = w.des;
@@ -691,10 +700,10 @@ function monte(w, extra) {
 const NOGYM = 'Sin gimnasio del 17 de diciembre al 7 de enero: versión con tu peso y la mochila cargada.';
 function gymSupCasa(w) {
   const d = w.des;
-  return S('gsup', 'fuerza', 'Tren superior en casa', '50 min', [movIniSup(), extA(d),
+  return S('gsup', 'fuerza', 'Tren superior en casa', '50 min', [movIniSup(), domSup(w.f.id, d), extA(d),
     B('press', 'Flexiones en pica', '3 × 8', 'Cadera alta y cabeza hacia el suelo: es el empuje vertical sin mancuernas. Pies en una silla para hacerlo más duro.'),
     B('fondos', 'Fondos entre dos sillas o en un banco', '3 × 10–12', 'Brazo a 90° abajo. Con la mochila en las piernas si salen más de 15.'),
-    domSup(w.f.id, d), B('rot', 'Rotación externa con goma', '2 × 15', ''), B('hollow', 'Hollow', '3 × 30 s', ''), movFinSup()],
+    B('rot', 'Rotación externa con goma', '2 × 15', ''), B('hollow', 'Hollow', '3 × 30 s', ''), movFinSup()],
     NOGYM + ' Dominadas en una barra de parque o de puerta.');
 }
 function gymInfCasa(w, modo) {
@@ -726,6 +735,7 @@ const desc = () => S('mov', 'aux', 'Descanso + movilidad', '25 min', [
   B('hombroPared', 'Hombro en pared', '3 × 30 s', 'Lo que más se relaciona con el nivel de escalada es la movilidad de hombro.'),
   B('rot', 'Rotación externa con goma', '2 × 15', 'Rotación externa: clave para presas lejanas y para proteger el hombro.'),
   B('libro', 'Libro abierto', '2 × 8 / lado', ''),
+  B('birddog', 'Bird-dog', '2 × 8 / lado', 'Estabilidad lumbar sin carga: tu básico mientras moleste la zona.'),
   B('rana', 'Rana', '2 × 45 s', 'Para pegar la cadera a la pared en placas y diedros.'),
   B('c9090', 'Cadera 90-90', '2 × 6 cambios + 30 s / lado', ''),
   B('pasoAlto', 'Paso alto activo', '2 × 8 / pierna', 'Movilidad con fuerza: es la que se usa escalando.'),
@@ -741,7 +751,7 @@ const test = (w) => S('test', 'test', 'Test mensual', '2–3 h', [
   B(null, 'Salto vertical', 'Mejor de 3', 'Marca en la pared con tiza o con app de salto.'),
   B('dom', 'Dominadas máx.', '1 serie', 'Con la técnica de la prueba. Descansa 5 min.'),
   B('ext', 'Flexiones máx.', '1 serie', 'Sin parar arriba más de 1 s. Descansa 5 min.'),
-  B('crol', 'Natación 50 m', 'Crono', 'Tras 300 m de calentamiento en la piscina.'),
+  B('crol', 'Natación 50 m', 'Crono de 2,5 largos', 'Tras 300 m de calentamiento; acaba a mitad del tercer largo.'),
   w.casa ? B('stepup', 'Cuesta con mochila', '30 min al máximo ritmo sostenible', `Con ${w.kg} kg en una cuesta larga. Apunta los m/h del reloj en «Subida real».`)
     : B('cinta', 'Cinta al 15 %', '30 min a la máxima velocidad que aguantes', `Con ${w.kg} kg. Apunta la velocidad: la app calcula los m/h.`),
   w.casa ? B('roca', 'Escalada', 'Este mes no se mide', 'Sin rocódromo: deja el grado vacío en el registro.')
@@ -948,8 +958,8 @@ const M = [
   { g: 'Fuerza', k: 'hip', n: 'Hip thrust (×8)', u: 'kg', up: true },
   { g: 'Fuerza', k: 'bulg', n: 'Búlgara (×8, cada mano)', u: 'kg', up: true },
   { g: 'Fuerza', k: 'peso', n: 'Peso corporal', u: 'kg' },
-  { g: 'Natación', k: 'n50', n: 'Natación 50 m', u: 's', meta: 48, up: false, elim: true, t: 'tiempo' },
-  { g: 'Natación', k: 'n400', n: 'Natación 400 m', u: 'min:s', up: false, t: 'tiempo' },
+  { g: 'Natación', k: 'n50', n: 'Natación 50 m (2,5 largos)', u: 's', meta: 48, up: false, elim: true, t: 'tiempo' },
+  { g: 'Natación', k: 'n400', n: 'Natación 400 m (20 largos)', u: 'min:s', up: false, t: 'tiempo' },
   { g: 'Escalada', k: 'gPri', n: 'Grado máx. de primero', u: 'grado', meta: 7, up: true, elim: true, t: 'grado' },
   { g: 'Escalada', k: 'gPol', n: 'Grado máx. en polea', u: 'grado', up: true, t: 'grado' },
   { g: 'Escalada', k: 'susp', n: 'Regleta más pequeña que aguantas 7 s sin pies', u: 'mm', up: false },
@@ -977,7 +987,7 @@ function renderRegistro() {
     <div class="panel protocolo"><h3>De dónde sacar cada marca</h3><ol>
       <li>Pesos de fuerza: el que usas en tus series de la semana.</li>
       <li>Dominadas y flexiones máximas: cuando hagas una serie hasta donde llegues con la técnica de la prueba, apúntala.</li>
-      <li>Natación 50 m: el 50 más rápido de las series del mes.</li>
+      <li>Natación 50 m: en tu piscina de 20 m son 2,5 largos (acaba a mitad del tercero); apunta el más rápido del mes.</li>
       <li>Escalada: la vía más dura que encadenes de primero ese mes.</li>
       <li>Cinta y montaña: la velocidad que aguantas en la cinta y los m/h de tu mejor subida del mes.</li></ol></div>
     <div class="reg-foot"><button class="btn pri" id="guardar">Guardar ${mesNom(mesSel).toLowerCase()}</button><span class="estado-g" id="reg-est"></span></div>`;
@@ -1147,7 +1157,7 @@ const EVIDENCIA = [
     [['Knapik: marchas cada 2 semanas bastan dentro de un plan completo', 'https://apps.dtic.mil/sti/pdfs/ADA221239.pdf'], ['HPRC · estrategias de carga', 'https://www.hprc-online.org/physical-fitness/training-performance/load-carriage-strategies']]],
   ['Bajar > 600 m/h', 'Step-down, gemelo excéntrico y bajadas de escaleras y a pie con mochila.', 'Moderada',
     [['Efecto de series repetidas en bajada (USQ)', 'https://research.usq.edu.au/download/de2e33a2ad8a6f1346d1b7b0615e7e0cd0b80ef61cd0c19abde7af604308e960/729153/sms.13222.pdf'], ['Bajada andando hacia atrás (Adelaide)', 'https://digital.library.adelaide.edu.au/items/7c551fb3-3cfa-468d-9441-14768284ebbf']]],
-  ['Dominadas', 'Pocas series de técnica de prueba el martes, lejos del fallo; el resto del tirón lo dan escalar (2 días) y nadar (2 días).', 'Débil',
+  ['Dominadas', 'Pocas series de técnica de prueba el martes, las primeras de la sesión y lejos del fallo; el resto del tirón lo dan escalar (2 días) y nadar (2 días).', 'Débil',
     [['Mountain Tactical: mini estudio de series sueltas', 'https://mtntactical.com/knowledge/mini-study-grease-the-groove-beats-density-for-push-up-pull-up-improvement/']]],
   ['Más empuje que tirón', 'Martes: flexiones, press militar y fondos; solo un bloque corto de dominadas y rotación externa.', 'Moderada',
     [['Revisión: flexibilidad y rotación externa de hombro en escaladores (JSSM 2025)', 'https://www.jssm.org/jssm-24-84.xml-Fulltext']]],
@@ -1155,7 +1165,7 @@ const EVIDENCIA = [
     [['El trabajo excéntrico deja pérdida de fuerza y agujetas varios días (USQ)', 'https://research.usq.edu.au/download/de2e33a2ad8a6f1346d1b7b0615e7e0cd0b80ef61cd0c19abde7af604308e960/729153/sms.13222.pdf']]],
   ['Flexiones', 'Pirámides el martes, la prueba más específica de empuje.', 'Débil',
     [['Military.com · consejos para la prueba', 'https://www.military.com/military-fitness/5-tips-help-you-achieve-your-push-goals']]],
-  ['Natación 50 m', 'Series de 50 m y sprints de 25 m con descanso largo.', 'Moderada',
+  ['Natación 50 m', 'Adaptada a tu piscina de 20 m: series de 40–60 m a ritmo de prueba y sprints de 1 largo con descanso largo (estilo USRPT).', 'Moderada',
     [['Distribución de intensidad en velocistas (2025)', 'https://www.fisiologiadelejercicio.com/wp-content/uploads/2025/11/Training-intensity-distribution-for-sprinter-swimmers.pdf'], ['USRPT (Dovepress)', 'https://www.dovepress.com/ultra-short-race-pace-training-usrpt-in-swimming-current-perspectives-peer-reviewed-article-OAJSM']]],
   ['Dedos', 'Sin regleta hasta febrero; en febrero–marzo suspensiones intermitentes (7 s / 3 s, resistencia) con pies apoyados, y desde abril colgados máximos de 10 s (fuerza). Los ensayos apuntan a colgados máximos para fuerza e intermitentes para resistencia.', 'Moderada',
     [['López-Rivera 2019: intermitentes mejor para resistencia (escaladores avanzados)', 'https://pmc.ncbi.nlm.nih.gov/articles/PMC6458579/'], ['Devise 2022: intensidades de regleta', 'https://www.ncbi.nlm.nih.gov/pmc/articles/PMC9039162/']]],
