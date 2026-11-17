@@ -3,7 +3,8 @@
 <meta name="theme-color" content="#c94310"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Entreno CAEM"><link rel="manifest" href="manifest.json"><link rel="icon" href="icon-192.png"><link rel="apple-touch-icon" href="icon-192.png">
 <style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}</style>
-<script>if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost' || location.hostname === '127.0.0.1')) addEventListener('load', () => navigator.serviceWorker.register('sw.js'));</script>
+<script>if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost' || location.hostname === '127.0.0.1')) addEventListener('load', () => { const habia = !!navigator.serviceWorker.controller; navigator.serviceWorker.register('sw.js', { updateViaCache: 'none' }).then(r => r.update()).catch(() => {});
+  navigator.serviceWorker.addEventListener('controllerchange', () => { if (habia && !sessionStorage.getItem('caem:recargado')) { sessionStorage.setItem('caem:recargado', '1'); location.reload(); } }); });</script>
 </head><body>
 <title>Entreno CAEM</title>
 <meta name="claude:viewport-fit-sides" content="cover">
