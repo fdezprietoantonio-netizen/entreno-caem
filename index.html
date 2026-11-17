@@ -435,6 +435,18 @@ const EJ = {
         [[60, 14], [60, 24], [60, 52], [52, 8], [52, -4], [68, 8], [68, -4], [56, 72], [55, 92], [64, 72], [65, 92]]],
     tec: ['De pie, glúteos y abdomen apretados.', 'Empuja las mancuernas desde los hombros hasta estirar los brazos encima de la cabeza.', 'Baja controlando hasta la altura de las orejas.'],
     mal: 'Arquear la zona lumbar para subir el peso.' },
+  curlMart: { n: 'Curl martillo', g: 'fuerza', para: 'Bíceps y braquial: bloqueos al escalar y dominadas', props: ['floor', 'dbs2'],
+    p: [[[60, 14], [60, 24], [60, 52], [58, 38], [58, 51], [62, 38], [62, 51], [56, 72], [55, 92], [64, 72], [65, 92]],
+        [[60, 14], [60, 24], [60, 52], [58, 38], [67, 28], [62, 38], [70, 28], [56, 72], [55, 92], [64, 72], [65, 92]]],
+    cue: 'Codos pegados al cuerpo: sube las mancuernas con las palmas mirándose y baja en 2–3 s.',
+    tec: ['De pie, palmas mirándose (agarre neutro), como al agarrar una presa de canto.', 'Codos quietos pegados al costado.', 'Sube hasta el hombro y baja despacio, sin balancear el tronco.'],
+    mal: 'Balancear la espalda o adelantar los codos.' },
+  tricPolea: { n: 'Extensión de tríceps en polea', g: 'fuerza', para: 'Tríceps para flexiones, fondos y mantles', props: ['floor', 'cable'],
+    p: [[[62, 14], [61, 24], [58, 52], [60, 38], [69, 29], [61, 39], [70, 30], [56, 72], [55, 92], [63, 72], [64, 92]],
+        [[62, 14], [61, 24], [58, 52], [60, 38], [62, 51], [61, 39], [63, 52], [56, 72], [55, 92], [63, 72], [64, 92]]],
+    cue: 'Codos fijos al costado: estira los brazos hacia abajo y vuelve controlando.',
+    tec: ['De cara a la polea alta, con cuerda o barra.', 'Codos pegados al cuerpo; solo se mueven los antebrazos.', 'Estira del todo abajo, aprieta 1 s y sube controlando.'],
+    mal: 'Separar los codos o echar el peso del cuerpo encima.' },
   fondos: { n: 'Fondos en paralelas', g: 'fuerza', para: 'Empuje: ayuda a las 50 flexiones', props: ['dipbar'],
     p: [[[61, 18], [60, 28], [60, 56], [60, 39], [60, 50], [61, 39], [61, 50], [56, 74], [66, 84], [57, 74], [67, 84]],
         [[64, 34], [62, 44], [60, 70], [50, 42], [60, 50], [51, 43], [61, 50], [56, 86], [66, 94], [57, 86], [67, 94]]],
@@ -534,6 +546,7 @@ function fig(id, frame) {
     if (props.includes('band')) o += `<line class="pr-band" x1="${w1[0]}" y1="${w1[1]}" x2="${w2[0]}" y2="${w2[1]}"/>`;
     if (props.includes('bandL')) o += `<line class="pr-band" x1="${6 + (w1[0] > 120 ? 120 : 0)}" y1="36" x2="${w1[0]}" y2="${w1[1]}"/>`;
     if (props.includes('poles')) o += `<line class="pr-l" x1="${w1[0]}" y1="${w1[1]}" x2="${w1[0] + 6}" y2="${w1[1] + 40}"/>`;
+    if (props.includes('cable')) o += `<line class="pr-band" x1="${(w1[0] > 120 ? 130 : 0) + 88}" y1="-4" x2="${w1[0]}" y2="${w1[1]}"/>`;
     return o;
   };
   const stage = ox => {
@@ -558,6 +571,7 @@ function fig(id, frame) {
     if (p.includes('seat')) o += `<rect class="pr-f" x="${ox + 34}" y="62" width="30" height="5"/><line class="pr-l" x1="${ox + 40}" y1="62" x2="${ox + 40}" y2="93"/><line class="pr-l" x1="${ox + 36}" y1="62" x2="${ox + 38}" y2="22"/>`;
     if (p.includes('benchL')) o += `<rect class="pr-f" x="${ox + 8}" y="62" width="24" height="31"/>`;
     if (p.includes('pbench')) o += `<rect class="pr-f" x="${ox + 18}" y="72" width="66" height="5"/><line class="pr-l" x1="${ox + 26}" y1="77" x2="${ox + 26}" y2="93"/><line class="pr-l" x1="${ox + 76}" y1="77" x2="${ox + 76}" y2="93"/>`;
+    if (p.includes('cable')) o += `<line class="pr-bar" x1="${ox + 90}" y1="-6" x2="${ox + 90}" y2="93"/><circle class="pr-s" cx="${ox + 88}" cy="-4" r="2.5"/>`;
     if (p.includes('chair')) o += `<rect class="pr-f" x="${ox + 76}" y="72" width="22" height="4"/><line class="pr-l" x1="${ox + 78}" y1="76" x2="${ox + 78}" y2="93"/><line class="pr-l" x1="${ox + 96}" y1="76" x2="${ox + 96}" y2="93"/>`;
     if (p.includes('hold')) o += `<rect class="pr-f" x="${ox + 44}" y="4" width="32" height="6" rx="1"/>`;
     return o;
@@ -582,6 +596,7 @@ function fig(id, frame) {
       props += `<g><rect class="pr-pack" x="${mx}" y="${my}" width="8" height="15" rx="2"/><animateTransform attributeName="transform" type="translate" values="0 0;0 0;${dx} ${dy};${dx} ${dy};0 0" ${KT}/></g>`; }
     if (pr.includes('band')) props += `<line class="pr-band" x1="${w1[0]}" y1="${w1[1]}" x2="${w2[0]}" y2="${w2[1]}">${anim('x1', w1[0], Z[4][0])}${anim('y1', w1[1], Z[4][1])}${anim('x2', w2[0], Z[6][0])}${anim('y2', w2[1], Z[6][1])}</line>`;
     if (pr.includes('bandL')) props += `<line class="pr-band" x1="6" y1="36" x2="${w1[0]}" y2="${w1[1]}">${anim('x2', w1[0], Z[4][0])}${anim('y2', w1[1], Z[4][1])}</line>`;
+    if (pr.includes('cable')) props += `<line class="pr-band" x1="88" y1="-4" x2="${w1[0]}" y2="${w1[1]}">${anim('x2', w1[0], Z[4][0])}${anim('y2', w1[1], Z[4][1])}</line>`;
     if (pr.includes('poles')) props += follow(4, `<line class="pr-l" x1="${w1[0]}" y1="${w1[1]}" x2="${w1[0] + 6}" y2="${w1[1] + 40}"/>`);
     const ghost = `<g opacity=".16">${one(A, 0).replace(/<(rect|circle) class="pr-[^"]*"[^>]*\/>|<line class="pr-[^"]*"[^>]*\/>/g, '')}</g>`;
     const fig1 = pl([1, 5, 6], 'l2') + pl([2, 9, 10], 'l2') + pl([1, 2], 'l1') + pl([2, 7, 8], 'l1') + pl([1, 3, 4], 'l1') +
@@ -653,7 +668,9 @@ function gymSup(w, corta) {
   const pressD = { base: '3 × 8', pre: '2 × 8', nav: '3 × 8', ene: '2 × 8', esp: '4 × 6', afi: '3 × 5' }[f];
   const b = [movIniSup(), domSup(f, d), extA(d),
     B('press', 'Press militar con mancuernas', pressD + (d ? ' ' + HALF : ''), 'De pie, sin arquear la espalda. Peso que deje 2 repeticiones de sobra; apúntalo en Registro.'),
-    B('fondos', 'Fondos en paralelas', (corta ? '2' : '3') + ' × 6–10', 'Hasta que el brazo quede a 90°. Si aún no salen, con goma o press de banca 3 × 8.')];
+    B('fondos', 'Fondos en paralelas', (corta ? '2' : '3') + ' × 6–10', 'Hasta que el brazo quede a 90°. Si aún no salen, con goma o press de banca 3 × 8.'),
+    B('curlMart', 'Curl martillo', (corta ? '2' : '3') + ' × 10' + (d ? ' ' + HALF : ''), 'Agarre neutro, el mismo que en presas de canto y en los bloqueos. Peso que deje 2 repeticiones de sobra.')];
+  if (!corta) b.push(B('tricPolea', 'Extensión de tríceps en polea', '2 × 12' + (d ? ' ' + HALF : ''), 'Remata el empuje para las 50 flexiones. Sin llegar al fallo.'));
   if (!corta) b.push(B('rot', 'Rotación externa con goma', '2 × 15', 'Equilibra el hombro frente a todo el tirón de escalar y nadar.'),
     B('hollow', 'Hollow', '3 × 30 s', 'Lumbar pegada al suelo.'), B('elev', 'Elevación de rodillas colgado', '3 × 10', 'Core y agarre.'));
   b.push(movFinSup());
@@ -758,6 +775,7 @@ function gymSupCasa(w) {
   return S('gsup', 'fuerza', 'Tren superior en casa', '50 min', [movIniSup(), domSup(w.f.id, d), extA(d),
     B('press', 'Flexiones en pica', '3 × 8', 'Cadera alta y cabeza hacia el suelo: es el empuje vertical sin mancuernas. Pies en una silla para hacerlo más duro.'),
     B('fondos', 'Fondos entre dos sillas o en un banco', '3 × 10–12', 'Brazo a 90° abajo. Con la mochila en las piernas si salen más de 15.'),
+    B('curlMart', 'Curl martillo con mochila o garrafas', '3 × 12', 'Dos garrafas de agua de 5 L o la mochila cargada cogida del asa.'),
     B('rot', 'Rotación externa con goma', '2 × 15', ''), B('hollow', 'Hollow', '3 × 30 s', ''), movFinSup()],
     NOGYM + ' Dominadas en una barra de parque o de puerta.');
 }
@@ -1214,7 +1232,7 @@ const EVIDENCIA = [
     [['Efecto de series repetidas en bajada (USQ)', 'https://research.usq.edu.au/download/de2e33a2ad8a6f1346d1b7b0615e7e0cd0b80ef61cd0c19abde7af604308e960/729153/sms.13222.pdf'], ['Bajada andando hacia atrás (Adelaide)', 'https://digital.library.adelaide.edu.au/items/7c551fb3-3cfa-468d-9441-14768284ebbf']]],
   ['Dominadas', 'Pocas series de técnica de prueba el martes, las primeras de la sesión y lejos del fallo; el resto del tirón lo dan escalar (2 días) y nadar (2 días).', 'Débil',
     [['Mountain Tactical: mini estudio de series sueltas', 'https://mtntactical.com/knowledge/mini-study-grease-the-groove-beats-density-for-push-up-pull-up-improvement/']]],
-  ['Más empuje que tirón', 'Martes: flexiones, press militar y fondos; solo un bloque corto de dominadas y rotación externa.', 'Moderada',
+  ['Más empuje que tirón', 'Martes: flexiones, press militar y fondos; solo un bloque corto de dominadas y rotación externa. Brazo al final: curl martillo (agarre neutro, como en presas de canto) y tríceps en polea para el empuje.', 'Moderada',
     [['Revisión: flexibilidad y rotación externa de hombro en escaladores (JSSM 2025)', 'https://www.jssm.org/jssm-24-84.xml-Fulltext']]],
   ['Pierna ligera el día antes de montaña', 'Viernes: potencia y unilateral sin excéntricos pesados ni fallo; la carga excéntrica fuerte va el miércoles.', 'Moderada',
     [['El trabajo excéntrico deja pérdida de fuerza y agujetas varios días (USQ)', 'https://research.usq.edu.au/download/de2e33a2ad8a6f1346d1b7b0615e7e0cd0b80ef61cd0c19abde7af604308e960/729153/sms.13222.pdf']]],
