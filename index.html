@@ -129,6 +129,9 @@ main { max-width: 960px; margin: 0 auto; padding-block: 20px 72px;
 .ej .para { font: 600 .72rem var(--f-body); text-transform: uppercase; letter-spacing: .07em; color: var(--rescue); }
 .ej ul { margin: 0; padding-left: 1.1em; font-size: .9rem; display: grid; gap: 3px; }
 .ej .mal { color: var(--bad); font-size: .85rem; }
+.ej .cue { font-weight: 600; font-size: .92rem; border-left: 3px solid var(--rescue); padding-left: 8px; }
+.ej .fig svg { max-height: 240px; }
+.blq .ill svg text { display: none; }
 
 /* Registro */
 .reg-top { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
@@ -323,8 +326,9 @@ const EJ = {
     tec: ['Tumbado boca abajo en la máquina, rodillas justo fuera del banco.', 'Lleva los talones hacia el glúteo.', 'Baja en 3 s.'],
     mal: 'Levantar la cadera del banco.' },
   copInv: { n: 'Plancha Copenhague inversa', g: 'core', para: 'Glúteo medio y abductores para esquiar', props: ['floor'],
-    p: [[[24, 68], [30, 74], [62, 82], [30, 89], [40, 89], [42, 72], [56, 76], [80, 86], [98, 90], [80, 85], [98, 89]],
-        [[24, 66], [30, 72], [62, 74], [30, 89], [40, 89], [42, 70], [56, 70], [80, 81], [98, 90], [78, 70], [96, 62]]],
+    p: [[[24, 62], [30, 70], [60, 86], [30, 89], [42, 89], [44, 74], [57, 82], [80, 89], [98, 91], [80, 88], [98, 90]],
+        [[22, 56], [30, 68], [62, 72], [30, 89], [42, 89], [44, 64], [58, 70], [80, 82], [98, 91], [78, 64], [96, 54]]],
+    cue: 'Sube la cadera del suelo y eleva la pierna de arriba; aguanta.',
     tec: ['Plancha lateral sobre el codo.', 'Inversa: sube la cadera y eleva la pierna de arriba (glúteo medio).', 'Normal: la pierna de ARRIBA apoyada en un banco y la de abajo libre; aguantas con los aductores de la ingle.', 'Mantén el cuerpo recto, sin girar hacia delante. Si eres nuevo, empieza con la rodilla apoyada en vez del pie.'],
     mal: 'Dejar caer la cadera o girar el tronco.' },
   sent: { n: 'Sentadilla goblet / trasera', g: 'fuerza', para: 'Fuerza de pierna para la montaña', props: ['floor', 'kb'],
@@ -393,8 +397,8 @@ const EJ = {
     tec: ['A cuatro patas, manos bajo los hombros.', 'Estira a la vez un brazo y la pierna contraria hasta la horizontal.', 'La lumbar no se mueve: imagina un vaso de agua apoyado en la espalda.', 'Aguanta 2 s y cambia de lado.'],
     mal: 'Arquear la lumbar o girar la cadera al subir la pierna.' },
   plancha: { n: 'Plancha lateral', g: 'core', para: 'Estabilidad con mochila', props: ['floor'],
-    p: [[[24, 68], [30, 74], [62, 82], [30, 89], [40, 89], [42, 72], [56, 76], [80, 86], [98, 90], [80, 85], [98, 89]],
-        [[24, 66], [30, 72], [62, 74], [30, 89], [40, 89], [42, 70], [56, 70], [80, 81], [98, 90], [80, 80], [98, 89]]],
+    p: [[[24, 62], [30, 70], [60, 86], [30, 89], [42, 89], [44, 74], [57, 82], [80, 89], [98, 91], [80, 88], [98, 90]],
+        [[22, 56], [30, 68], [62, 72], [30, 89], [42, 89], [44, 64], [58, 70], [80, 82], [98, 91], [80, 81], [98, 90]]],
     tec: ['Codo bajo el hombro.', 'Cadera alta: línea recta de cabeza a pies.', 'Respira sin soltar el abdomen.'],
     mal: 'Cadera caída hacia el suelo.' },
   pallof: { n: 'Pallof press', g: 'core', para: 'Antirrotación en terreno roto', props: ['floor', 'wallL', 'bandL'],
@@ -412,9 +416,10 @@ const EJ = {
         [[62, 14], [60, 24], [58, 50], [54, 36], [50, 46], [66, 36], [70, 46], [52, 68], [46, 88], [66, 66], [72, 84]]],
     tec: ['Pendiente al 15 %, sin agarrarte a la barra.', 'Paso corto y apoyo de todo el pie.', 'A 15 %: 3,4 km/h ≈ 500 m/h de desnivel; 4 km/h ≈ 590; 4,5 km/h ≈ 670.'],
     mal: 'Agarrarse a la cinta: deja de contar como desnivel.' },
-  susp: { n: 'Suspensión en regleta (con pies)', g: 'roca', para: 'Fuerza de dedos para el 6c', props: ['hold'],
-    p: [[[64, 26], [60, 32], [60, 58], [60, 20], [60, 10], [61, 20], [61, 10], [60, 75], [60, 92], [61, 75], [61, 92]],
-        [[64, 26], [60, 32], [60, 58], [60, 20], [60, 10], [61, 20], [61, 10], [62, 74], [58, 90], [63, 74], [59, 90]]],
+  susp: { n: 'Suspensión en regleta (con pies)', g: 'roca', para: 'Fuerza de dedos para el 6c', props: ['hold', 'floor', 'chair'],
+    p: [[[56, 30], [56, 38], [54, 62], [55, 22], [56, 10], [57, 22], [58, 10], [72, 60], [84, 72], [73, 61], [86, 72]],
+        [[56, 30], [56, 38], [54, 62], [55, 22], [56, 10], [57, 22], [58, 10], [72, 62], [82, 66], [73, 63], [84, 66]]],
+    cue: 'Cuelga de la regleta con los pies en la silla; poco a poco, menos peso en los pies.',
     tec: ['Empieza en una regleta grande (30–35 mm) con los pies apoyados en una silla o un cajón: quitas el peso que haga falta.',
       'Agarre semiarqueo (dedos a 90°, sin cerrar el pulgar encima).', 'Colgado 7 s, descanso 3 s, 6 veces; luego 3 min de pausa.',
       'Cuando aguantes la serie entera sin apenas pies, quita apoyo; cuando la hagas colgado, pasa a una regleta 5 mm más pequeña.',
@@ -481,6 +486,35 @@ const EJ = {
     tec: ['Desliza el esquí, no lo levantes.', 'Paso regular que puedas mantener una hora.', 'Mide los m/h de cada subida con el reloj o el móvil.'],
     mal: 'Salir muy rápido y parar cada 10 minutos.' },
 };
+// Una frase de cómo moverse: acompaña al dibujo animado
+const CUES = { sentBanco: 'Sentado → de pie con una sola pierna, rápido; baja despacio hasta rozar el banco.',
+  mediaUni: 'Sobre una pierna, baja hasta media sentadilla y vuelve arriba.', extUni: 'Estira la rodilla del todo, 1 s arriba, baja en 2–3 s.',
+  hip: 'Cadera abajo → empuja con los talones hasta dejar el tronco recto.', curlFem: 'Lleva los talones al glúteo; baja en 3 s.',
+  sent: 'Baja con la cadera atrás hasta pasar la rodilla y sube empujando el suelo.', dom: 'Brazos estirados → barbilla por encima de la barra.',
+  neg: 'Empiezas arriba (sube desde el cajón) y bajas en 5 s.', austr: 'Cuerpo recto → lleva el pecho a la barra.',
+  ext: 'Brazos estirados → pecho a un puño del suelo → arriba.', bulg: 'Pie de atrás en el banco: baja vertical y sube con la pierna de delante.',
+  hollow: 'Tumbado → despega hombros y piernas con la lumbar pegada; aguanta.', elev: 'Colgado → sube las rodillas por encima de la cadera.',
+  rot: 'Codos pegados → abre las manos hacia fuera estirando la goma.', stepup: 'Sube al cajón empujando solo con la pierna de arriba.',
+  stepdown: 'Arriba del cajón → baja el otro pie al suelo en 3 s, solo roza y sube.', gemelo: 'Sube de puntillas con las dos y baja con una en 3 s.',
+  birddog: 'A cuatro patas → estira brazo y pierna contrarios sin mover la lumbar.', plancha: 'Sube la cadera del suelo y aguanta en línea recta.',
+  pallof: 'Estira los brazos al frente sin dejar que la goma te gire.', crol: 'Brazada larga y patada corta; respira de lado.',
+  cinta: 'Paso corto al 15 % sin agarrarte.', roca: 'Sube con las piernas y chapa con el brazo estirado.',
+  press: 'Mancuernas en los hombros → brazos estirados encima de la cabeza.', fondos: 'Brazos estirados → baja hasta codo a 90° → arriba.',
+  disloc: 'Brazos estirados: pasa la goma de delante a detrás de la cabeza.', hombroPared: 'Antebrazos en la pared → lleva el pecho hacia el suelo.',
+  libro: 'Tumbado de lado → abre el brazo de arriba al otro lado y sigue la mano con la mirada.', rana: 'A cuatro patas con rodillas abiertas → lleva la cadera atrás.',
+  c9090: 'Sentado con las dos rodillas a 90° → inclínate sobre la espinilla de delante y cambia de lado.',
+  pasoAlto: 'Pie en el cajón alto → pasa el peso encima de él.', tobillo: 'Lleva la rodilla a tocar la pared sin levantar el talón.',
+  antebrazo: 'Brazo estirado → con la otra mano lleva los dedos hacia abajo, suave.', esqui: 'Desliza el esquí, paso regular.' };
+// Flecha del recorrido: sigue la articulación que más se mueve
+function flecha(A, Z, ox = 0) {
+  let i = 0, dm = 0; A.forEach((P, k) => { const d = Math.hypot(Z[k][0] - P[0], Z[k][1] - P[1]); if (d > dm) { dm = d; i = k; } });
+  if (dm < 5) return '';
+  const [ax, ay] = [A[i][0] + ox, A[i][1]], [zx, zy] = [Z[i][0] + ox, Z[i][1]], mx = (ax + zx) / 2, my = (ay + zy) / 2;
+  const nx = -(zy - ay) / dm, ny = (zx - ax) / dm, cx = mx + nx * dm * .3, cy = my + ny * dm * .3;
+  const tx = zx - cx, ty = zy - cy, tl = Math.hypot(tx, ty) || 1, ux = tx / tl, uy = ty / tl, h = 4.5;
+  const p1 = `${zx - ux * h - uy * h * .6},${zy - uy * h + ux * h * .6}`, p2 = `${zx - ux * h + uy * h * .6},${zy - uy * h - ux * h * .6}`;
+  return `<path d="M${ax} ${ay} Q${cx} ${cy} ${zx} ${zy}" fill="none" stroke="var(--rescue)" stroke-width="1.6" stroke-dasharray="3 2" opacity=".8"/><polygon points="${zx},${zy} ${p1} ${p2}" fill="var(--rescue)" opacity=".9"/>`;
+}
 function fig(id, frame) {
   const e = EJ[id]; if (!e) return '';
   const one = (P, ox) => {
@@ -524,20 +558,41 @@ function fig(id, frame) {
     if (p.includes('seat')) o += `<rect class="pr-f" x="${ox + 34}" y="62" width="30" height="5"/><line class="pr-l" x1="${ox + 40}" y1="62" x2="${ox + 40}" y2="93"/><line class="pr-l" x1="${ox + 36}" y1="62" x2="${ox + 38}" y2="22"/>`;
     if (p.includes('benchL')) o += `<rect class="pr-f" x="${ox + 8}" y="62" width="24" height="31"/>`;
     if (p.includes('pbench')) o += `<rect class="pr-f" x="${ox + 18}" y="72" width="66" height="5"/><line class="pr-l" x1="${ox + 26}" y1="77" x2="${ox + 26}" y2="93"/><line class="pr-l" x1="${ox + 76}" y1="77" x2="${ox + 76}" y2="93"/>`;
+    if (p.includes('chair')) o += `<rect class="pr-f" x="${ox + 76}" y="72" width="22" height="4"/><line class="pr-l" x1="${ox + 78}" y1="76" x2="${ox + 78}" y2="93"/><line class="pr-l" x1="${ox + 96}" y1="76" x2="${ox + 96}" y2="93"/>`;
     if (p.includes('hold')) o += `<rect class="pr-f" x="${ox + 44}" y="4" width="32" height="6" rx="1"/>`;
     return o;
   };
   const style = `<style>.l1{stroke:var(--fig);stroke-width:4;stroke-linecap:round;stroke-linejoin:round;fill:none}.l2{stroke:var(--fig2);stroke-width:4;stroke-linecap:round;stroke-linejoin:round;fill:none}.hd{fill:var(--fig)}
     .pr-l{stroke:var(--prop);stroke-width:2}.pr-bar{stroke:var(--prop);stroke-width:4;stroke-linecap:round}.pr-f{fill:var(--prop)}.pr-s{fill:var(--rescue)}.pr-pack{fill:var(--rescue)}
     .pr-band{stroke:var(--ok);stroke-width:2;stroke-dasharray:3 2}.pr-water{fill:none;stroke:var(--ice);stroke-width:2}.arr{fill:var(--rescue)}</style>`;
-  if (frame === 'anim') { // 4 fotogramas (inicial → medio → final → medio): movimiento de ida y vuelta
-    const mid = e.p[0].map((P, i) => [(P[0] + e.p[1][i][0]) / 2, (P[1] + e.p[1][i][1]) / 2]);
-    const fr = [e.p[0], mid, e.p[1], mid];
-    return `<svg viewBox="0 -10 120 110" role="img" aria-label="${esc(e.n)}: animación entre la posición inicial y la final">${style}<style>@keyframes caemF{0%,24.9%{opacity:1}25%,100%{opacity:0}}.gF{opacity:0;animation:caemF 2s infinite}</style>${stage(0)}${fr.map((P, i) => `<g class="gF" style="animation-delay:${(-i * 0.5).toFixed(1)}s${i === 0 ? ';opacity:1' : ''}">${one(P, 0)}</g>`).join('')}</svg>`;
+  if (frame === 'anim') { // movimiento continuo: pausa en la postura inicial, transición suave, pausa en la final y vuelta; la inicial queda en gris de fondo
+    const A = e.p[0], Z = e.p[1], KT = 'keyTimes="0;.18;.5;.68;1" calcMode="spline" keySplines="0 0 1 1;.42 0 .58 1;0 0 1 1;.42 0 .58 1" dur="3.2s" repeatCount="indefinite"';
+    const pts = (P, idx) => idx.map(i => P[i].join(',')).join(' ');
+    const anim = (attr, a, z) => `<animate attributeName="${attr}" values="${a};${a};${z};${z};${a}" ${KT}/>`;
+    const pl = (idx, cls) => `<polyline class="${cls}" points="${pts(A, idx)}">${anim('points', pts(A, idx), pts(Z, idx))}</polyline>`;
+    const follow = (i, inner) => { const dx = Z[i][0] - A[i][0], dy = Z[i][1] - A[i][1];
+      return `<g>${inner}<animateTransform attributeName="transform" type="translate" values="0 0;0 0;${dx} ${dy};${dx} ${dy};0 0" ${KT}/></g>`; };
+    const pr = e.props, w1 = A[4], w2 = A[6], s = A[1], hp = A[2];
+    let props = '';
+    if (pr.includes('kb')) props += follow(4, `<circle class="pr-s" cx="${w1[0] + 2}" cy="${w1[1] + 3}" r="4"/>`);
+    if (pr.includes('dbs2')) props += follow(4, `<rect class="pr-s" x="${w1[0] - 5}" y="${w1[1] - 1.5}" width="10" height="3" rx="1"/>`) + follow(6, `<rect class="pr-s" x="${w2[0] - 5}" y="${w2[1] - 1.5}" width="10" height="3" rx="1"/>`);
+    if (pr.includes('dbs')) props += follow(4, `<rect class="pr-s" x="${w1[0] - 5}" y="${w1[1] - 1.5}" width="10" height="3" rx="1"/>`);
+    if (pr.includes('barbell')) props += follow(4, `<line class="pr-l" x1="${w1[0] - 14}" y1="${w1[1]}" x2="${w1[0] + 14}" y2="${w1[1]}"/><circle class="pr-s" cx="${w1[0] - 14}" cy="${w1[1]}" r="6"/>`);
+    if (pr.includes('pack')) { const mx = (s[0] + hp[0]) / 2 - 7, my = (s[1] + hp[1]) / 2 - 8, dx = ((Z[1][0] + Z[2][0]) - (s[0] + hp[0])) / 2, dy = ((Z[1][1] + Z[2][1]) - (s[1] + hp[1])) / 2;
+      props += `<g><rect class="pr-pack" x="${mx}" y="${my}" width="8" height="15" rx="2"/><animateTransform attributeName="transform" type="translate" values="0 0;0 0;${dx} ${dy};${dx} ${dy};0 0" ${KT}/></g>`; }
+    if (pr.includes('band')) props += `<line class="pr-band" x1="${w1[0]}" y1="${w1[1]}" x2="${w2[0]}" y2="${w2[1]}">${anim('x1', w1[0], Z[4][0])}${anim('y1', w1[1], Z[4][1])}${anim('x2', w2[0], Z[6][0])}${anim('y2', w2[1], Z[6][1])}</line>`;
+    if (pr.includes('bandL')) props += `<line class="pr-band" x1="6" y1="36" x2="${w1[0]}" y2="${w1[1]}">${anim('x2', w1[0], Z[4][0])}${anim('y2', w1[1], Z[4][1])}</line>`;
+    if (pr.includes('poles')) props += follow(4, `<line class="pr-l" x1="${w1[0]}" y1="${w1[1]}" x2="${w1[0] + 6}" y2="${w1[1] + 40}"/>`);
+    const ghost = `<g opacity=".16">${one(A, 0).replace(/<(rect|circle) class="pr-[^"]*"[^>]*\/>|<line class="pr-[^"]*"[^>]*\/>/g, '')}</g>`;
+    const fig1 = pl([1, 5, 6], 'l2') + pl([2, 9, 10], 'l2') + pl([1, 2], 'l1') + pl([2, 7, 8], 'l1') + pl([1, 3, 4], 'l1') +
+      `<circle class="hd" cx="${A[0][0]}" cy="${A[0][1]}" r="6.5">${anim('cx', A[0][0], Z[0][0])}${anim('cy', A[0][1], Z[0][1])}</circle>` + props;
+    const lbl = (t, v) => `<text x="3" y="-2" font-size="8.5" font-weight="700" fill="var(--muted)" font-family="sans-serif" opacity="${v[0]}">${t}<animate attributeName="opacity" values="${v.join(';')}" keyTimes="0;.34;.84;1" calcMode="discrete" dur="3.2s" repeatCount="indefinite"/></text>`;
+    return `<svg viewBox="0 -10 120 110" role="img" aria-label="${esc(e.n)}: movimiento de la posición inicial a la final">${style}${stage(0)}${ghost}${flecha(A, Z)}${fig1}${lbl('INICIO', [1, 0, 1, 1])}${lbl('FINAL', [0, 1, 0, 0])}</svg>`;
   }
   if (frame != null) return `<svg viewBox="0 -10 120 110" role="img" aria-label="${esc(e.n)}">${style}${stage(0)}${one(e.p[frame], 0)}</svg>`;
   return `<svg viewBox="0 -10 250 110" role="img" aria-label="${esc(e.n)}: posición inicial y final">${style}${stage(0)}${one(e.p[0], 0)}
-    <path class="arr" d="M118 40 l8 5 l-8 5 z"/>${stage(130)}${one(e.p[1], 130)}</svg>`;
+    <path class="arr" d="M118 40 l8 5 l-8 5 z"/>${stage(130)}<g opacity=".16">${one(e.p[0], 130)}</g>${flecha(e.p[0], e.p[1], 130)}${one(e.p[1], 130)}
+    <text x="3" y="-2" font-size="8.5" font-weight="700" fill="var(--muted)" font-family="sans-serif">INICIO</text><text x="133" y="-2" font-size="8.5" font-weight="700" fill="var(--muted)" font-family="sans-serif">FINAL</text></svg>`;
 }
 
 /* ================== niveles (desde el registro) ================== */
@@ -935,7 +990,7 @@ function verEj(id) {
 /* ================== vista: ejercicios ================== */
 const GRUPOS = [['todos', 'Todos'], ['fuerza', 'Fuerza'], ['core', 'Core'], ['monte', 'Montaña'], ['agua', 'Natación'], ['roca', 'Escalada'], ['movilidad', 'Movilidad']];
 let grupoSel = 'todos';
-function ejHTML(id) { const e = EJ[id]; return `<div class="ej" id="ej-${id}"><div class="fig">${fig(id, 'anim')}</div><span class="para">${esc(e.para)}</span><h3>${esc(e.n)}</h3>
+function ejHTML(id) { const e = EJ[id], cue = e.cue || CUES[id]; return `<div class="ej" id="ej-${id}"><div class="fig">${fig(id, 'anim')}</div>${cue ? `<p class="cue">${esc(cue)}</p>` : ''}<span class="para">${esc(e.para)}</span><h3>${esc(e.n)}</h3>
   <ul>${e.tec.map(t => `<li>${esc(t)}</li>`).join('')}</ul><p class="mal">✗ ${esc(e.mal)}</p></div>`; }
 function renderEjercicios() {
   const el = document.getElementById('v-ejercicios');
